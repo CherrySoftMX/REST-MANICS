@@ -9,6 +9,6 @@ import java.util.List;
 @Repository
 public interface PageRepository extends CrudRepository<Page, Integer> {
 
-    List<Page> getPagesByChapter_ChapterId(Integer chapterId);
+  List<Page> getPagesByChapter_ChapterId(Integer chapterId);
 
 }

@@ -4,7 +4,7 @@ import com.manics.rest.mappers.CategoryMapper;
 import com.manics.rest.model.core.Category;
 import com.manics.rest.rest.request.CategoryRequest;
 import com.manics.rest.service.stories.CategoryService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -14,49 +14,44 @@ import java.util.List;
 
 @RestController
 @RequestMapping("categorias")
+@AllArgsConstructor
 public class CategoryRest {
+  private final CategoryService categoryService;
+  private final CategoryMapper categoryMapper;
 
-    private final CategoryService categoryService;
-    private final CategoryMapper categoryMapper;
+  @GetMapping
+  public ResponseEntity<List<Category>> getCategories() {
+    return ResponseEntity.ok().body(categoryService.getCategories());
+  }
 
-    @Autowired
-    public CategoryRest(CategoryService categoryService, CategoryMapper categoryMapper) {
-        this.categoryService = categoryService;
-        this.categoryMapper = categoryMapper;
-    }
+  @GetMapping("/{id}")
+  public ResponseEntity<Category> getCategory(@PathVariable Integer id) {
+    return ResponseEntity.ok().body(categoryService.getCategory(id));
+  }
 
-    @GetMapping
-    public ResponseEntity<List<Category>> getCategories() {
-        return ResponseEntity.ok().body(categoryService.getCategories());
-    }
+  @PostMapping
+  @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+  public ResponseEntity<Category> createCategory(@RequestBody @Valid CategoryRequest request) {
+    return ResponseEntity.ok().body(
+        categoryService.createCategory(categoryMapper.categoryRequestToCategory(request))
+    );
+  }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Category> getCategory(@PathVariable Integer id) {
-        return ResponseEntity.ok().body(categoryService.getCategory(id));
-    }
+  @PutMapping("/{id}")
+  @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+  public ResponseEntity<Category> updateCategory(
+      @PathVariable Integer id,
+      @RequestBody @Valid CategoryRequest request
+  ) {
+    return ResponseEntity.ok().body(
+        categoryService.updateCategory(id, categoryMapper.categoryRequestToCategory(request))
+    );
+  }
 
-    @PostMapping
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
-    public ResponseEntity<Category> createCategory(@RequestBody @Valid CategoryRequest request) {
-        return ResponseEntity.ok().body(
-                categoryService.createCategory(categoryMapper.categoryRequestToCategory(request))
-        );
-    }
-    
-    @PutMapping("/{id}")
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
-    public ResponseEntity<Category> updateCategory(@PathVariable Integer id,
-                                                   @RequestBody @Valid CategoryRequest request) {
-
-        return ResponseEntity.ok().body(
-                categoryService.updateCategory(id, categoryMapper.categoryRequestToCategory(request))
-        );
-    }
-
-    @DeleteMapping("/{id}")
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
-    public ResponseEntity<Category> deleteCategory(@PathVariable Integer id) {
-        return ResponseEntity.ok().body(categoryService.deleteCategory(id));
-    }
+  @DeleteMapping("/{id}")
+  @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+  public ResponseEntity<Category> deleteCategory(@PathVariable Integer id) {
+    return ResponseEntity.ok().body(categoryService.deleteCategory(id));
+  }
 
 }

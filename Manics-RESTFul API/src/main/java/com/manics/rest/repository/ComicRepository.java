@@ -9,6 +9,6 @@ import java.util.List;
 @Repository
 public interface ComicRepository extends CrudRepository<Comic, Integer> {
 
-    public List<Comic> findByNameLike(String name);
+  public List<Comic> findByNameLike(String name);
 
 }

@@ -7,7 +7,7 @@ import com.manics.rest.rest.request.user.UserAuthorityRequest;
 import com.manics.rest.rest.request.user.UserRequest;
 import com.manics.rest.service.stories.StoryService;
 import com.manics.rest.service.user.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -20,65 +20,59 @@ import java.util.Set;
 
 @RestController
 @RequestMapping("usuarios")
+@AllArgsConstructor
 public class UserRest {
+  private final UserService userService;
+  private final StoryService storyService;
+  private final UserMapper userMapper;
 
-    private final UserService userService;
-    private final StoryService storyService;
-    private final UserMapper userMapper;
+  @GetMapping
+  public ResponseEntity<List<User>> getUsers() {
+    return ResponseEntity.ok().body(userService.getUsers());
+  }
 
-    @Autowired
-    public UserRest(UserService userService,
-                    StoryService storyService,
-                    UserMapper userMapper) {
+  @GetMapping("/{userId}")
+  public ResponseEntity<User> getUserById(@PathVariable Integer userId) {
+    User user = userService.getUserById(userId);
+    return ResponseEntity.ok().body(user);
+  }
 
-        this.userService = userService;
-        this.storyService = storyService;
-        this.userMapper = userMapper;
-    }
+  @GetMapping("/{userId}/read-later")
+  @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+  public ResponseEntity<Set<Story>> getReadLater(@PathVariable Integer userId) {
+    return ResponseEntity.ok().body(storyService.getReadLater(userId));
+  }
 
-    @GetMapping
-    public ResponseEntity<List<User>> getUsers() {
-        return ResponseEntity.ok().body(userService.getUsers());
-    }
+  @GetMapping("/self/read-later")
+  public ResponseEntity<Set<Story>> getReadLater(Principal principal) {
+    return ResponseEntity.ok().body(storyService.getReadLater(principal.getName()));
+  }
 
-    @GetMapping("/{userId}")
-    public ResponseEntity<User> getUserById(@PathVariable Integer userId) {
-        User user = userService.getUserById(userId);
-        return ResponseEntity.ok().body(user);
-    }
+  @PutMapping("/{userId}")
+  public ResponseEntity<User> updateUser(
+      @PathVariable Integer userId,
+      @RequestBody UserRequest request
+  ) {
+    User user = userService.updateUser(userId, userMapper.userRequestToUser(request));
+    return ResponseEntity.ok(user);
+  }
 
-    @GetMapping("/{userId}/read-later")
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
-    public ResponseEntity<Set<Story>> getReadLater(@PathVariable Integer userId) {
-        return ResponseEntity.ok().body(storyService.getReadLater(userId));
-    }
+  @PutMapping("/authorities/{userId}")
+  @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+  public ResponseEntity<User> updateUserAuthorities(
+      @PathVariable Integer userId,
+      @RequestBody @Valid UserAuthorityRequest userAuthorityRequest
+  ) {
 
-    @GetMapping("/self/read-later")
-    public ResponseEntity<Set<Story>> getReadLater(Principal principal) {
-        return ResponseEntity.ok().body(storyService.getReadLater(principal.getName()));
-    }
+    User user = userService.updateUserRoles(userId, userAuthorityRequest.getRoles());
+    return ResponseEntity.ok(user);
+  }
 
-    @PutMapping("/{userId}")
-    public ResponseEntity<User> updateUser(@PathVariable Integer userId,
-                                           @RequestBody UserRequest request) {
+  @DeleteMapping("/{userId}")
+  @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+  public ResponseEntity<User> deleteUser(@PathVariable Integer userId) {
+    User user = userService.deleteUser(userId);
+    return ResponseEntity.status(HttpStatus.ACCEPTED).body(user);
+  }
 
-        User user = userService.updateUser(userId, userMapper.userRequestToUser(request));
-        return ResponseEntity.ok(user);
-    }
-
-    @PutMapping("/authorities/{userId}")
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
-    public ResponseEntity<User> updateUserAuthorities(@PathVariable Integer userId,
-                                                      @RequestBody @Valid UserAuthorityRequest userAuthorityRequest) {
-
-        User user = userService.updateUserRoles(userId, userAuthorityRequest.getRoles());
-        return ResponseEntity.ok(user);
-    }
-
-    @DeleteMapping("/{userId}")
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
-    public ResponseEntity<User> deleteUser(@PathVariable Integer userId) {
-        User user = userService.deleteUser(userId);
-        return ResponseEntity.status(HttpStatus.ACCEPTED).body(user);
-    }
 }

@@ -7,13 +7,13 @@ import java.util.Set;
 
 public enum UserRole {
 
-    NORMAL,
-    ADMIN;
+  NORMAL,
+  ADMIN;
 
-    public Set<SimpleGrantedAuthority> getGrantedAuthorities() {
-        return Sets.newHashSet(
-                new SimpleGrantedAuthority(String.format("ROLE_%s", this.name()))
-        );
-    }
+  public Set<SimpleGrantedAuthority> getGrantedAuthorities() {
+    return Sets.newHashSet(
+        new SimpleGrantedAuthority(String.format("ROLE_%s", this.name()))
+    );
+  }
 
 }

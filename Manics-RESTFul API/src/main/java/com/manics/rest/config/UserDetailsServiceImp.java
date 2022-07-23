@@ -9,26 +9,27 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.Objects;
+import static java.util.Objects.isNull;
 
 @Service
 public class UserDetailsServiceImp implements UserDetailsService {
 
-    @Autowired
-    private UserRepository userRepo;
+  @Autowired
+  private UserRepository userRepo;
 
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        final User user = userRepo.findByUsername(username);
+  @Override
+  public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    final User user = userRepo.findByUsername(username);
 
-        if (Objects.isNull(user))
-            throw new NotFoundException(String.format("No existe el usuario: %s", username));
-
-        return new org.springframework.security.core.userdetails.User(
-                user.getUsername(),
-                user.getPassword(),
-                user.getRoles()
-        );
+    if (isNull(user)) {
+      throw new NotFoundException(String.format("No existe el usuario: %s", username));
     }
+
+    return new org.springframework.security.core.userdetails.User(
+        user.getUsername(),
+        user.getPassword(),
+        user.getRoles()
+    );
+  }
 
 }

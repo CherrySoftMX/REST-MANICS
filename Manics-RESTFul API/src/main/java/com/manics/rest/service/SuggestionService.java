@@ -6,50 +6,46 @@ import com.manics.rest.model.auth.User;
 import com.manics.rest.repository.SuggestionRepository;
 import com.manics.rest.repository.UserRepository;
 import com.manics.rest.rest.request.user.SuggestionRequest;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@AllArgsConstructor
 public class SuggestionService {
+  private final SuggestionRepository suggestionRepository;
+  private final UserRepository userRepository;
 
-    @Autowired
-    private SuggestionRepository suggestionRepository;
+  public List<Suggestion> getSuggestion() {
+    List<Suggestion> suggestions = new ArrayList<>();
+    suggestionRepository.findAll().iterator().forEachRemaining(suggestions::add);
+    return suggestions;
+  }
 
-    @Autowired
-    private UserRepository userRepository;
+  public Suggestion getSuggestionById(Integer suggestionId) {
+    return suggestionRepository
+        .findById(suggestionId)
+        .orElseThrow(() -> new NotFoundException("No se encontro la sugerencia con Id " + suggestionId));
+  }
 
-    public List<Suggestion> getSuggestion() {
-        List<Suggestion> suggestions = new ArrayList<>();
-        suggestionRepository.findAll().iterator().forEachRemaining(suggestions::add);
-        return suggestions;
-    }
+  public Suggestion createSuggestion(SuggestionRequest req, String username) {
+    User user = userRepository.findByUsername(username);
+    Suggestion suggestion = new Suggestion(user, req.getContent());
+    return suggestionRepository.save(suggestion);
+  }
 
-    public Suggestion getSuggestionById(Integer suggestionId) {
-        return suggestionRepository.findById(suggestionId)
-                .orElseThrow(() -> new NotFoundException("No se encontro la sugerencia con Id " + suggestionId));
-    }
+  public Suggestion updateSuggestion(SuggestionRequest req, Integer id) {
+    Suggestion suggestion = getSuggestionById(id);
+    suggestion.setContent(req.getContent());
+    return suggestionRepository.save(suggestion);
+  }
 
-    public Suggestion createSuggestion(SuggestionRequest req, String username) {
-        User user = userRepository.findByUsername(username);
-        Suggestion suggestion = new Suggestion(user, req.getContent());
-        Suggestion result = suggestionRepository.save(suggestion);
-        return result;
-    }
-
-    public Suggestion updateSuggestion(SuggestionRequest req, Integer id) {
-        Suggestion suggestion = getSuggestionById(id);
-        suggestion.setContent(req.getContent());
-        return suggestionRepository.save(suggestion);
-    }
-
-    public Suggestion deleteSuggestion(Integer id) {
-        Suggestion suggestion = getSuggestionById(id);
-
-        suggestionRepository.delete(suggestion);
-        return suggestion;
-    }
+  public Suggestion deleteSuggestion(Integer id) {
+    Suggestion suggestion = getSuggestionById(id);
+    suggestionRepository.delete(suggestion);
+    return suggestion;
+  }
 
 }

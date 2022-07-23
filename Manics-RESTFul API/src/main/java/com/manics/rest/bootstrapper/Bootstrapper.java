@@ -15,40 +15,40 @@ import org.springframework.context.annotation.Configuration;
 @ConfigurationProperties(prefix = "application.admin")
 public class Bootstrapper implements ApplicationRunner {
 
-    @Autowired
-    private UserService userService;
+  @Autowired
+  private UserService userService;
 
-    private String defaultUsername;
-    private String defaultPassword;
-    private String defaultEmail;
+  private String defaultUsername;
+  private String defaultPassword;
+  private String defaultEmail;
 
-    @Override
-    public void run(ApplicationArguments args) throws Exception {
-        System.out.printf("Default admin username: %s%nDefault admin password: %s%n", defaultUsername, defaultPassword);
+  @Override
+  public void run(ApplicationArguments args) throws Exception {
+    System.out.printf("Default admin username: %s%nDefault admin password: %s%n", defaultUsername, defaultPassword);
 
-        try {
-            userService.createUser(
-                    new User(
-                            defaultUsername,
-                            defaultEmail,
-                            defaultPassword,
-                            Sets.newHashSet(UserRole.ADMIN)
-                    )
-            );
-        } catch (UsuarioRegistradoException e) {
+    try {
+      userService.createUser(
+          new User(
+              defaultUsername,
+              defaultEmail,
+              defaultPassword,
+              Sets.newHashSet(UserRole.ADMIN)
+          )
+      );
+    } catch (UsuarioRegistradoException e) {
 
-        }
     }
+  }
 
-    public void setDefaultUsername(String defaultUsername) {
-        this.defaultUsername = defaultUsername;
-    }
+  public void setDefaultUsername(String defaultUsername) {
+    this.defaultUsername = defaultUsername;
+  }
 
-    public void setDefaultPassword(String defaultPassword) {
-        this.defaultPassword = defaultPassword;
-    }
+  public void setDefaultPassword(String defaultPassword) {
+    this.defaultPassword = defaultPassword;
+  }
 
-    public void setDefaultEmail(String defaultEmail) {
-        this.defaultEmail = defaultEmail;
-    }
+  public void setDefaultEmail(String defaultEmail) {
+    this.defaultEmail = defaultEmail;
+  }
 }

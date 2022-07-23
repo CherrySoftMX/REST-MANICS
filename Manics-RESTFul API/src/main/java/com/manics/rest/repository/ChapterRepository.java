@@ -11,6 +11,6 @@ import java.util.List;
 @Transactional
 public interface ChapterRepository extends CrudRepository<Chapter, Integer> {
 
-    List<Chapter> getChaptersByStory_Id(Integer storyId);
+  List<Chapter> getChaptersByStory_Id(Integer storyId);
 
 }

@@ -11,6 +11,6 @@ import java.util.List;
 @Repository
 public interface StoryRepository extends CrudRepository<Story, Integer> {
 
-    List<Comic> findAllByCategory(Category category);
+  List<Comic> findAllByCategory(Category category);
 
 }

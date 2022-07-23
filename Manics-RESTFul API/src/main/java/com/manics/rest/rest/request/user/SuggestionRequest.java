@@ -2,20 +2,20 @@ package com.manics.rest.rest.request.user;
 
 public class SuggestionRequest {
 
-    private Integer userId;
+  private Integer userId;
 
-    private String content;
+  private String content;
 
-    public SuggestionRequest() {
+  public SuggestionRequest() {
 
-    }
+  }
 
-    public Integer getUserId() {
-        return userId;
-    }
+  public Integer getUserId() {
+    return userId;
+  }
 
-    public String getContent() {
-        return content;
-    }
+  public String getContent() {
+    return content;
+  }
 
 }
