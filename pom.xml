@@ -7,7 +7,7 @@
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
-    <version>2.4.5</version>
+    <version>2.7.6</version>
     <relativePath/> <!-- lookup parent from repository -->
   </parent>
 
@@ -16,25 +16,23 @@
   <version>0.0.1</version>
   <name>manics</name>
   <description>
-    Proyecto de basado en la búsqueda de mangas y comics dentro de un
-    repositorio en la nube.
+    A project based on the search for manga and comics within a cloud
+    repository.
   </description>
 
   <properties>
     <java.version>11</java.version>
-    <org.mapstruct.version>1.5.1.Final</org.mapstruct.version>
     <io.jsonwebtoken.version>0.11.5</io.jsonwebtoken.version>
+    <guava.version>31.1-jre</guava.version>
+    <org.mapstruct.version>1.5.3.Final</org.mapstruct.version>
+    <lombok.version>1.18.24</lombok.version>
+    <mysql-connector-java.version>8.0.31</mysql-connector-java.version>
   </properties>
 
   <dependencies>
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>com.fasterxml.jackson.core</groupId>
-      <artifactId>jackson-databind</artifactId>
-      <version>2.13.3</version>
     </dependency>
 
     <dependency>
@@ -73,12 +71,13 @@
     <dependency>
       <groupId>com.google.guava</groupId>
       <artifactId>guava</artifactId>
-      <version>31.1-jre</version>
+      <version>${guava.version}</version>
     </dependency>
+
     <dependency>
       <groupId>org.projectlombok</groupId>
       <artifactId>lombok</artifactId>
-      <version>1.18.24</version>
+      <version>${lombok.version}</version>
       <scope>provided</scope>
     </dependency>
 
@@ -94,24 +93,23 @@
       <artifactId>spring-boot-starter-data-jpa</artifactId>
     </dependency>
 
+    <!-- Elasticsearch -->
+    <dependency>
+      <groupId>org.springframework.data</groupId>
+      <artifactId>spring-data-elasticsearch</artifactId>
+    </dependency>
+
     <!-- Mysql-->
     <dependency>
       <groupId>mysql</groupId>
       <artifactId>mysql-connector-java</artifactId>
-      <version>8.0.23</version>
+      <version>${mysql-connector-java.version}</version>
     </dependency>
 
     <!--Security-->
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-security</artifactId>
-    </dependency>
-
-    <!-- Elasticsearch -->
-    <dependency>
-      <groupId>org.springframework.data</groupId>
-      <artifactId>spring-data-elasticsearch</artifactId>
-      <version>4.2.2</version>
     </dependency>
 
     <!-- Image extraction-->
@@ -132,12 +130,6 @@
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-test</artifactId>
       <scope>test</scope>
-      <exclusions>
-        <exclusion>
-          <groupId>org.junit.vintage</groupId>
-          <artifactId>junit-vintage-engine</artifactId>
-        </exclusion>
-      </exclusions>
     </dependency>
   </dependencies>
 
