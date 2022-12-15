@@ -7,19 +7,20 @@ import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
 
-import java.util.Objects;
+import static java.util.Objects.isNull;
 
 @Mapper(componentModel = "spring")
 public abstract class ChapterMapper {
 
-    @AfterMapping
-    protected void updateBidirectionalRelationships(@MappingTarget Chapter chapter) {
-        if (!Objects.isNull(chapter.getPages()))
-            chapter.getPages().forEach((page) -> page.setChapter(chapter));
+  @AfterMapping
+  protected void updateBidirectionalRelationships(@MappingTarget Chapter chapter) {
+    if (!isNull(chapter.getPages())) {
+      chapter.getPages().forEach((page) -> page.setChapter(chapter));
     }
+  }
 
-    public abstract Chapter chapterRequestToChapter(ChapterRequest request);
+  public abstract Chapter chapterRequestToChapter(ChapterRequest request);
 
-    public abstract Chapter chapterUpdateRequestToChapter(ChapterUpdateRequest request);
+  public abstract Chapter chapterUpdateRequestToChapter(ChapterUpdateRequest request);
 
 }

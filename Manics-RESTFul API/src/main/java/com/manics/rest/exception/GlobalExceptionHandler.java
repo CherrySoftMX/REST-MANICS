@@ -15,31 +15,33 @@ import java.util.stream.Collectors;
 @ControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
-    public static ResponseEntity<Object> marshalErrorResponse(HttpStatus status, String error) {
-        return marshalErrorResponse(status, new ArrayList<>(Collections.singleton(error)));
-    }
+  public static ResponseEntity<Object> marshalErrorResponse(HttpStatus status, String error) {
+    return marshalErrorResponse(status, new ArrayList<>(Collections.singleton(error)));
+  }
 
-    public static ResponseEntity<Object> marshalErrorResponse(HttpStatus status, List<String> errors) {
-        Map<String, Object> body = new HashMap<>();
-        body.put("timestamp", new Date());
-        body.put("status", status.value());
-        body.put("errors", errors);
-        return new ResponseEntity<>(body, status);
-    }
+  public static ResponseEntity<Object> marshalErrorResponse(HttpStatus status, List<String> errors) {
+    Map<String, Object> body = new HashMap<>();
+    body.put("timestamp", new Date());
+    body.put("status", status.value());
+    body.put("errors", errors);
+    return new ResponseEntity<>(body, status);
+  }
 
-    @Override
-    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
-                                                                  HttpHeaders headers,
-                                                                  HttpStatus status,
-                                                                  WebRequest request) {
+  @Override
+  protected ResponseEntity<Object> handleMethodArgumentNotValid(
+      MethodArgumentNotValidException ex,
+      HttpHeaders headers,
+      HttpStatus status,
+      WebRequest request
+  ) {
 
-        List<String> errors = ex.getBindingResult()
-                .getFieldErrors()
-                .stream()
-                .map(DefaultMessageSourceResolvable::getDefaultMessage)
-                .collect(Collectors.toList());
+    List<String> errors = ex.getBindingResult()
+        .getFieldErrors()
+        .stream()
+        .map(DefaultMessageSourceResolvable::getDefaultMessage)
+        .collect(Collectors.toList());
 
-        return marshalErrorResponse(status, errors);
-    }
+    return marshalErrorResponse(status, errors);
+  }
 
 }

@@ -9,9 +9,9 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring")
 public interface CommentMapper {
 
-    @Mapping(target = "story.id", source = "storyId")
-    Comment commentRequestToComment(CommentRequest commentRequest);
+  @Mapping(target = "story.id", source = "storyId")
+  Comment commentRequestToComment(CommentRequest commentRequest);
 
-    Comment commentUpdateRequestToComment(CommentUpdateRequest commentUpdateRequest);
+  Comment commentUpdateRequestToComment(CommentUpdateRequest commentUpdateRequest);
 
 }

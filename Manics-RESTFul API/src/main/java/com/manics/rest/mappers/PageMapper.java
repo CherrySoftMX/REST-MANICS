@@ -8,8 +8,8 @@ import org.mapstruct.Mapper;
 @Mapper(componentModel = "spring")
 public abstract class PageMapper {
 
-    public abstract Page pageRequestToPage(PageRequest request);
+  public abstract Page pageRequestToPage(PageRequest request);
 
-    public abstract Page pageUpdateRequestToPage(PageUpdateRequest request);
+  public abstract Page pageUpdateRequestToPage(PageUpdateRequest request);
 
 }

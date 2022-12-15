@@ -5,7 +5,7 @@ import com.manics.rest.model.core.Comment;
 import com.manics.rest.rest.request.comment.CommentRequest;
 import com.manics.rest.rest.request.comment.CommentUpdateRequest;
 import com.manics.rest.service.CommentService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -16,64 +16,59 @@ import java.net.URISyntaxException;
 import java.util.List;
 
 @RestController
+@Deprecated
 @RequestMapping("comentarios")
+@AllArgsConstructor
 public class CommentRest {
+  private final CommentService commentService;
+  private final CommentMapper commentMapper;
 
-    private final CommentService commentService;
-    private final CommentMapper commentMapper;
+  @GetMapping
+  public ResponseEntity<List<Comment>> getAllComments() {
+    return ResponseEntity.ok(commentService.getAllComments());
+  }
 
-    @Autowired
-    public CommentRest(CommentService commentService, CommentMapper commentMapper) {
-        this.commentService = commentService;
-        this.commentMapper = commentMapper;
-    }
+  @GetMapping("/{id}")
+  public ResponseEntity<Comment> getCommentById(@PathVariable(name = "id") Integer commentId) {
+    return ResponseEntity.ok(commentService.getCommentById(commentId));
+  }
 
-    @GetMapping
-    public ResponseEntity<List<Comment>> getAllComments() {
-        return ResponseEntity.ok(commentService.getAllComments());
-    }
+  @GetMapping("/relatos/{id}")
+  public ResponseEntity<List<Comment>> getCommentsByStoryId(@PathVariable(name = "id") Integer storyId) {
+    return ResponseEntity.ok(commentService.getCommentsByStoryId(storyId));
+  }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Comment> getCommentById(@PathVariable(name = "id") Integer commentId) {
-        return ResponseEntity.ok(commentService.getCommentById(commentId));
-    }
+  @GetMapping("/usuarios/{id}")
+  public ResponseEntity<List<Comment>> getCommentsByUserId(@PathVariable(name = "id") Integer userId) {
+    return ResponseEntity.ok(commentService.getCommentsByUserId(userId));
+  }
 
-    @GetMapping("/relatos/{id}")
-    public ResponseEntity<List<Comment>> getCommentsByStoryId(@PathVariable(name = "id") Integer storyId) {
-        return ResponseEntity.ok(commentService.getCommentsByStoryId(storyId));
-    }
+  @PostMapping
+  public ResponseEntity<Comment> createComment(
+      @RequestBody @Valid CommentRequest commentRequest
+  ) throws URISyntaxException {
+    Comment comment = commentService.createComment(commentMapper.commentRequestToComment(commentRequest));
+    return ResponseEntity
+        .created(
+            new URI(String.format("/comentarios/%d", comment.getId()))
+        )
+        .body(comment);
+  }
 
-    @GetMapping("/usuarios/{id}")
-    public ResponseEntity<List<Comment>> getCommentsByUserId(@PathVariable(name = "id") Integer userId) {
-        return ResponseEntity.ok(commentService.getCommentsByUserId(userId));
-    }
+  @PutMapping("/{id}")
+  public ResponseEntity<Comment> updateComment(
+      @PathVariable(name = "id") Integer commentId,
+      @RequestBody @Valid CommentUpdateRequest commentRequest
+  ) {
+    return ResponseEntity.ok(
+        commentService.updateComment(commentId, commentMapper.commentUpdateRequestToComment(commentRequest))
+    );
+  }
 
-    @PostMapping
-    public ResponseEntity<Comment> createComment(@RequestBody @Valid CommentRequest commentRequest)
-            throws URISyntaxException {
-
-        Comment comment = commentService.createComment(commentMapper.commentRequestToComment(commentRequest));
-
-        return ResponseEntity
-                .created(
-                        new URI(String.format("/comentarios/%d", comment.getId()))
-                )
-                .body(comment);
-    }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<Comment> updateComment(@PathVariable(name = "id") Integer commentId,
-                                                 @RequestBody @Valid CommentUpdateRequest commentRequest) {
-
-        return ResponseEntity.ok(
-                commentService.updateComment(commentId, commentMapper.commentUpdateRequestToComment(commentRequest))
-        );
-    }
-
-    @DeleteMapping("/{id}")
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
-    public ResponseEntity<Comment> deleteComment(@PathVariable(name = "id") Integer commentId) {
-        return ResponseEntity.ok(commentService.deleteComment(commentId));
-    }
+  @DeleteMapping("/{id}")
+  @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+  public ResponseEntity<Comment> deleteComment(@PathVariable(name = "id") Integer commentId) {
+    return ResponseEntity.ok(commentService.deleteComment(commentId));
+  }
 
 }

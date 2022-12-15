@@ -14,39 +14,39 @@ import java.io.IOException;
 
 public class JwtTokenVerifier extends OncePerRequestFilter {
 
-    private final JwtUtils jwtUtils;
+  private final JwtUtils jwtUtils;
 
-    public JwtTokenVerifier(JwtUtils jwtUtils) {
-        this.jwtUtils = jwtUtils;
-    }
+  public JwtTokenVerifier(JwtUtils jwtUtils) {
+    this.jwtUtils = jwtUtils;
+  }
 
-    @Override
-    protected void doFilterInternal(HttpServletRequest request,
-                                    HttpServletResponse response,
-                                    FilterChain filterChain) throws ServletException, IOException {
+  @Override
+  protected void doFilterInternal(HttpServletRequest request,
+                                  HttpServletResponse response,
+                                  FilterChain filterChain) throws ServletException, IOException {
 
-        String token = jwtUtils.resolveToken(request);
+    String token = jwtUtils.resolveToken(request);
 
-        try {
+    try {
 
-            if (isValidToken(token)) {
-                Authentication auth = jwtUtils.getAuthentication(token);
-                SecurityContextHolder.getContext().setAuthentication(auth);
-                filterChain.doFilter(request, response);
-                return;
-            }
-
-        } catch (InvalidJwtTokenException ex) {
-            SecurityContextHolder.clearContext();
-            throw ex;
-        }
-
+      if (isValidToken(token)) {
+        Authentication auth = jwtUtils.getAuthentication(token);
+        SecurityContextHolder.getContext().setAuthentication(auth);
         filterChain.doFilter(request, response);
+        return;
+      }
+
+    } catch (InvalidJwtTokenException ex) {
+      SecurityContextHolder.clearContext();
+      throw ex;
     }
 
-    private boolean isValidToken(String token) {
-        return !Strings.isNullOrEmpty(token)
-                && jwtUtils.validateToken(token);
-    }
+    filterChain.doFilter(request, response);
+  }
+
+  private boolean isValidToken(String token) {
+    return !Strings.isNullOrEmpty(token)
+        && jwtUtils.validateToken(token);
+  }
 
 }
