@@ -1,4 +1,4 @@
-package com.cherrysoft.manics.repository;
+package com.cherrysoft.manics.repository.legacy;
 
 import com.cherrysoft.manics.model.legacy.auth.User;
 import org.springframework.data.jpa.repository.JpaRepository;

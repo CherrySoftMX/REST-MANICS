@@ -3,7 +3,7 @@ package com.cherrysoft.manics.service.legacy;
 import com.cherrysoft.manics.exception.NotFoundException;
 import com.cherrysoft.manics.model.legacy.core.Comment;
 import com.cherrysoft.manics.model.legacy.core.Story;
-import com.cherrysoft.manics.repository.CommentRepository;
+import com.cherrysoft.manics.repository.legacy.CommentRepository;
 import com.cherrysoft.manics.service.legacy.stories.StoryService;
 import com.cherrysoft.manics.service.legacy.user.UserService;
 import lombok.AllArgsConstructor;

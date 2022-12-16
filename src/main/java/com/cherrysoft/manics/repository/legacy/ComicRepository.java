@@ -1,4 +1,4 @@
-package com.cherrysoft.manics.repository;
+package com.cherrysoft.manics.repository.legacy;
 
 import com.cherrysoft.manics.model.legacy.Comic;
 import org.springframework.data.repository.CrudRepository;

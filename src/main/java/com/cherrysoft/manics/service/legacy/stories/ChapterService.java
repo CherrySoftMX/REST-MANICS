@@ -4,7 +4,7 @@ import com.cherrysoft.manics.exception.BadRequestException;
 import com.cherrysoft.manics.exception.NotFoundException;
 import com.cherrysoft.manics.model.legacy.core.Chapter;
 import com.cherrysoft.manics.model.legacy.core.Story;
-import com.cherrysoft.manics.repository.ChapterRepository;
+import com.cherrysoft.manics.repository.legacy.ChapterRepository;
 import com.cherrysoft.manics.service.legacy.search.StorySearchService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

@@ -6,7 +6,7 @@ import com.cherrysoft.manics.exception.NotFoundException;
 import com.cherrysoft.manics.model.legacy.core.Chapter;
 import com.cherrysoft.manics.model.legacy.core.Page;
 import com.cherrysoft.manics.model.legacy.core.Story;
-import com.cherrysoft.manics.repository.PageRepository;
+import com.cherrysoft.manics.repository.legacy.PageRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 

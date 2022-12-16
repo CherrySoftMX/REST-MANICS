@@ -4,7 +4,7 @@ import com.cherrysoft.manics.exception.NotFoundException;
 import com.cherrysoft.manics.exception.UsuarioRegistradoException;
 import com.cherrysoft.manics.model.legacy.auth.User;
 import com.cherrysoft.manics.model.legacy.auth.UserRole;
-import com.cherrysoft.manics.repository.UserRepository;
+import com.cherrysoft.manics.repository.legacy.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;

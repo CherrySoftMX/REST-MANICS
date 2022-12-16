@@ -3,7 +3,7 @@ package com.cherrysoft.manics.service.legacy.stories;
 import com.cherrysoft.manics.exception.CategoryInUseException;
 import com.cherrysoft.manics.exception.NotFoundException;
 import com.cherrysoft.manics.model.legacy.core.Category;
-import com.cherrysoft.manics.repository.CategoryRepository;
+import com.cherrysoft.manics.repository.legacy.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
