@@ -1,6 +1,6 @@
 package com.cherrysoft.manics.controller.legacy.user;
 
-import com.cherrysoft.manics.mappers.UserMapper;
+import com.cherrysoft.manics.mappers.legacy.UserMapper;
 import com.cherrysoft.manics.model.legacy.auth.User;
 import com.cherrysoft.manics.model.legacy.core.Story;
 import com.cherrysoft.manics.controller.legacy.request.user.UserAuthorityRequest;

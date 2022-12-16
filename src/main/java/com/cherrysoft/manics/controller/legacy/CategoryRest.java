@@ -1,6 +1,6 @@
 package com.cherrysoft.manics.controller.legacy;
 
-import com.cherrysoft.manics.mappers.CategoryMapper;
+import com.cherrysoft.manics.mappers.legacy.CategoryMapper;
 import com.cherrysoft.manics.model.legacy.core.Category;
 import com.cherrysoft.manics.controller.legacy.request.CategoryRequest;
 import com.cherrysoft.manics.service.legacy.stories.CategoryService;

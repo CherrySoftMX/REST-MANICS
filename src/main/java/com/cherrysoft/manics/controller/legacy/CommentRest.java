@@ -1,6 +1,6 @@
 package com.cherrysoft.manics.controller.legacy;
 
-import com.cherrysoft.manics.mappers.CommentMapper;
+import com.cherrysoft.manics.mappers.legacy.CommentMapper;
 import com.cherrysoft.manics.service.legacy.CommentService;
 import com.cherrysoft.manics.model.legacy.core.Comment;
 import com.cherrysoft.manics.controller.legacy.request.comment.CommentRequest;

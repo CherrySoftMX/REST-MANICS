@@ -1,4 +1,4 @@
-package com.cherrysoft.manics.mappers;
+package com.cherrysoft.manics.mappers.legacy;
 
 import com.cherrysoft.manics.model.legacy.core.Page;
 import com.cherrysoft.manics.controller.legacy.request.page.PageRequest;
