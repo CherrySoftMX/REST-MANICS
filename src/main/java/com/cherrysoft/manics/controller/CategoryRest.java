@@ -1,8 +1,8 @@
-package com.cherrysoft.manics.rest;
+package com.cherrysoft.manics.controller;
 
 import com.cherrysoft.manics.mappers.CategoryMapper;
 import com.cherrysoft.manics.model.legacy.core.Category;
-import com.cherrysoft.manics.rest.request.CategoryRequest;
+import com.cherrysoft.manics.controller.request.CategoryRequest;
 import com.cherrysoft.manics.service.legacy.stories.CategoryService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;

@@ -1,7 +1,7 @@
-package com.cherrysoft.manics.rest;
+package com.cherrysoft.manics.controller;
 
 import com.cherrysoft.manics.model.legacy.Suggestion;
-import com.cherrysoft.manics.rest.request.user.SuggestionRequest;
+import com.cherrysoft.manics.controller.request.user.SuggestionRequest;
 import com.cherrysoft.manics.service.legacy.SuggestionService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;

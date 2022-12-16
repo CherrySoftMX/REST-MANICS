@@ -1,7 +1,7 @@
 package com.cherrysoft.manics.mappers;
 
 import com.cherrysoft.manics.model.legacy.core.Category;
-import com.cherrysoft.manics.rest.request.CategoryRequest;
+import com.cherrysoft.manics.controller.request.CategoryRequest;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")

@@ -1,4 +1,4 @@
-package com.cherrysoft.manics.rest.request.comment;
+package com.cherrysoft.manics.controller.request.comment;
 
 import javax.validation.constraints.NotNull;
 

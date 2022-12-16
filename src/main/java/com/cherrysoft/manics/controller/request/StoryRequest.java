@@ -1,6 +1,6 @@
-package com.cherrysoft.manics.rest.request;
+package com.cherrysoft.manics.controller.request;
 
-import com.cherrysoft.manics.rest.request.chapter.ChapterRequest;
+import com.cherrysoft.manics.controller.request.chapter.ChapterRequest;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;

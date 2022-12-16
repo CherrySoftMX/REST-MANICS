@@ -1,4 +1,4 @@
-package com.cherrysoft.manics.rest;
+package com.cherrysoft.manics.controller;
 
 import com.cherrysoft.manics.model.legacy.core.Story;
 import com.cherrysoft.manics.service.legacy.search.SearchService;
