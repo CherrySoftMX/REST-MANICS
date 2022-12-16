@@ -1,7 +1,7 @@
 package com.cherrysoft.manics.service.legacy.user;
 
-import com.cherrysoft.manics.exception.NotFoundException;
-import com.cherrysoft.manics.exception.UsuarioRegistradoException;
+import com.cherrysoft.manics.exception.legacy.NotFoundException;
+import com.cherrysoft.manics.exception.legacy.UsuarioRegistradoException;
 import com.cherrysoft.manics.model.legacy.auth.User;
 import com.cherrysoft.manics.model.legacy.auth.UserRole;
 import com.cherrysoft.manics.repository.legacy.UserRepository;

@@ -1,4 +1,4 @@
-package com.cherrysoft.manics.exception;
+package com.cherrysoft.manics.exception.legacy;
 
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpHeaders;

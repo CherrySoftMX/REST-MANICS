@@ -4,7 +4,7 @@ import com.cherrysoft.manics.model.legacy.auth.User;
 import com.cherrysoft.manics.model.legacy.auth.UserRole;
 import com.cherrysoft.manics.service.legacy.user.UserService;
 import com.google.common.collect.Sets;
-import com.cherrysoft.manics.exception.UsuarioRegistradoException;
+import com.cherrysoft.manics.exception.legacy.UsuarioRegistradoException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;

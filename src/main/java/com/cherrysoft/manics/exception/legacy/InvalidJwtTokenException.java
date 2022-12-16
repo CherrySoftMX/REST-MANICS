@@ -1,4 +1,4 @@
-package com.cherrysoft.manics.exception;
+package com.cherrysoft.manics.exception.legacy;
 
 public class InvalidJwtTokenException extends RuntimeException {
 

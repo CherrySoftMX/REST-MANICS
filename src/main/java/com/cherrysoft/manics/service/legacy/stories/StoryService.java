@@ -1,7 +1,7 @@
 package com.cherrysoft.manics.service.legacy.stories;
 
 import com.cherrysoft.manics.service.legacy.search.StorySearchService;
-import com.cherrysoft.manics.exception.NotFoundException;
+import com.cherrysoft.manics.exception.legacy.NotFoundException;
 import com.cherrysoft.manics.model.legacy.auth.User;
 import com.cherrysoft.manics.model.legacy.core.Category;
 import com.cherrysoft.manics.model.legacy.core.Story;

@@ -1,6 +1,6 @@
 package com.cherrysoft.manics.service.legacy;
 
-import com.cherrysoft.manics.exception.NotFoundException;
+import com.cherrysoft.manics.exception.legacy.NotFoundException;
 import com.cherrysoft.manics.model.legacy.core.Comment;
 import com.cherrysoft.manics.model.legacy.core.Story;
 import com.cherrysoft.manics.repository.legacy.CommentRepository;

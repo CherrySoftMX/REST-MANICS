@@ -3,7 +3,7 @@ package com.cherrysoft.manics.service.legacy.search;
 import com.cherrysoft.manics.model.legacy.core.elasticsearch.PageSearch;
 import com.cherrysoft.manics.model.legacy.core.elasticsearch.StorySearch;
 import com.cherrysoft.manics.repository.legacy.elasticsearch.StorySearchRepository;
-import com.cherrysoft.manics.exception.NotFoundException;
+import com.cherrysoft.manics.exception.legacy.NotFoundException;
 import com.cherrysoft.manics.model.legacy.core.Chapter;
 import com.cherrysoft.manics.model.legacy.core.Page;
 import com.cherrysoft.manics.model.legacy.core.Story;

@@ -1,4 +1,4 @@
-package com.cherrysoft.manics.exception;
+package com.cherrysoft.manics.exception.legacy;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;

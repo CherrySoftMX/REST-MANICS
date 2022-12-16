@@ -1,7 +1,7 @@
 package com.cherrysoft.manics.config.jwt;
 
 import com.google.common.base.Strings;
-import com.cherrysoft.manics.exception.InvalidJwtTokenException;
+import com.cherrysoft.manics.exception.legacy.InvalidJwtTokenException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;

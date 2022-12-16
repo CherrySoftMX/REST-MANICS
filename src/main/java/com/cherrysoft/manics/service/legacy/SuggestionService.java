@@ -1,6 +1,6 @@
 package com.cherrysoft.manics.service.legacy;
 
-import com.cherrysoft.manics.exception.NotFoundException;
+import com.cherrysoft.manics.exception.legacy.NotFoundException;
 import com.cherrysoft.manics.model.legacy.Suggestion;
 import com.cherrysoft.manics.model.legacy.auth.User;
 import com.cherrysoft.manics.repository.legacy.SuggestionRepository;
