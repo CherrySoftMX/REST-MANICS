@@ -1,11 +1,11 @@
-package com.cherrysoft.manics.service;
+package com.cherrysoft.manics.service.legacy;
 
 import com.cherrysoft.manics.exception.NotFoundException;
 import com.cherrysoft.manics.model.legacy.core.Comment;
 import com.cherrysoft.manics.model.legacy.core.Story;
 import com.cherrysoft.manics.repository.CommentRepository;
-import com.cherrysoft.manics.service.stories.StoryService;
-import com.cherrysoft.manics.service.user.UserService;
+import com.cherrysoft.manics.service.legacy.stories.StoryService;
+import com.cherrysoft.manics.service.legacy.user.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 

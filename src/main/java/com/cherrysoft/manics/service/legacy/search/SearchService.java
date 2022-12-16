@@ -1,9 +1,9 @@
-package com.cherrysoft.manics.service.search;
+package com.cherrysoft.manics.service.legacy.search;
 
 import com.cherrysoft.manics.model.legacy.core.Story;
 import com.cherrysoft.manics.model.legacy.core.elasticsearch.StorySearch;
-import com.cherrysoft.manics.service.elasticsearch.ImageAnalyzerService;
-import com.cherrysoft.manics.service.stories.StoryService;
+import com.cherrysoft.manics.service.legacy.elasticsearch.ImageAnalyzerService;
+import com.cherrysoft.manics.service.legacy.stories.StoryService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 

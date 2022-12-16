@@ -1,4 +1,4 @@
-package com.cherrysoft.manics.service;
+package com.cherrysoft.manics.service.legacy;
 
 import com.cherrysoft.manics.exception.NotFoundException;
 import com.cherrysoft.manics.model.legacy.Suggestion;

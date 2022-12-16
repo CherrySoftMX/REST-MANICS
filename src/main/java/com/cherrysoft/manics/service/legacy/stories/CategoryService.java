@@ -1,4 +1,4 @@
-package com.cherrysoft.manics.service.stories;
+package com.cherrysoft.manics.service.legacy.stories;
 
 import com.cherrysoft.manics.exception.CategoryInUseException;
 import com.cherrysoft.manics.exception.NotFoundException;

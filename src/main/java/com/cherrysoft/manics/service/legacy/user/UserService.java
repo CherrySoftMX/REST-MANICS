@@ -1,4 +1,4 @@
-package com.cherrysoft.manics.service.user;
+package com.cherrysoft.manics.service.legacy.user;
 
 import com.cherrysoft.manics.exception.NotFoundException;
 import com.cherrysoft.manics.exception.UsuarioRegistradoException;

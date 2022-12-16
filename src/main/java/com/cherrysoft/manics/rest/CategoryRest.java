@@ -3,7 +3,7 @@ package com.cherrysoft.manics.rest;
 import com.cherrysoft.manics.mappers.CategoryMapper;
 import com.cherrysoft.manics.model.legacy.core.Category;
 import com.cherrysoft.manics.rest.request.CategoryRequest;
-import com.cherrysoft.manics.service.stories.CategoryService;
+import com.cherrysoft.manics.service.legacy.stories.CategoryService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;

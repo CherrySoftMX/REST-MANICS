@@ -1,4 +1,4 @@
-package com.cherrysoft.manics.service.elasticsearch;
+package com.cherrysoft.manics.service.legacy.elasticsearch;
 
 import org.openimaj.image.ImageUtilities;
 import org.openimaj.image.pixel.statistics.HistogramModel;
