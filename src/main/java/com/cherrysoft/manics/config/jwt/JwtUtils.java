@@ -1,7 +1,7 @@
 package com.cherrysoft.manics.config.jwt;
 
 import com.cherrysoft.manics.config.UserDetailsServiceImp;
-import com.cherrysoft.manics.exception.InvalidJwtTokenException;
+import com.cherrysoft.manics.exception.legacy.InvalidJwtTokenException;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
