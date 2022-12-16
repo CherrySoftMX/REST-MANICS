@@ -1,4 +1,4 @@
-package com.cherrysoft.manics.controller.request.user;
+package com.cherrysoft.manics.controller.legacy.request.user;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;

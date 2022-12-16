@@ -1,10 +1,10 @@
-package com.cherrysoft.manics.controller;
+package com.cherrysoft.manics.controller.legacy;
 
 import com.cherrysoft.manics.mappers.CommentMapper;
 import com.cherrysoft.manics.service.legacy.CommentService;
 import com.cherrysoft.manics.model.legacy.core.Comment;
-import com.cherrysoft.manics.controller.request.comment.CommentRequest;
-import com.cherrysoft.manics.controller.request.comment.CommentUpdateRequest;
+import com.cherrysoft.manics.controller.legacy.request.comment.CommentRequest;
+import com.cherrysoft.manics.controller.legacy.request.comment.CommentUpdateRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;

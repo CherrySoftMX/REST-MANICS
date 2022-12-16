@@ -1,4 +1,4 @@
-package com.cherrysoft.manics.controller.request.page;
+package com.cherrysoft.manics.controller.legacy.request.page;
 
 import javax.validation.constraints.NotNull;
 

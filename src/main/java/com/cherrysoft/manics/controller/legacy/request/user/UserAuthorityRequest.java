@@ -1,4 +1,4 @@
-package com.cherrysoft.manics.controller.request.user;
+package com.cherrysoft.manics.controller.legacy.request.user;
 
 import com.google.common.collect.Sets;
 import com.cherrysoft.manics.model.legacy.auth.UserRole;

@@ -1,7 +1,7 @@
 package com.cherrysoft.manics.config.jwt;
 
 
-import com.cherrysoft.manics.controller.request.user.UserRequest;
+import com.cherrysoft.manics.controller.legacy.request.user.UserRequest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

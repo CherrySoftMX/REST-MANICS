@@ -3,7 +3,7 @@ package com.cherrysoft.manics.mappers;
 import com.cherrysoft.manics.model.legacy.Comic;
 import com.cherrysoft.manics.model.legacy.Manga;
 import com.cherrysoft.manics.model.legacy.core.Story;
-import com.cherrysoft.manics.controller.request.StoryRequest;
+import com.cherrysoft.manics.controller.legacy.request.StoryRequest;
 import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;

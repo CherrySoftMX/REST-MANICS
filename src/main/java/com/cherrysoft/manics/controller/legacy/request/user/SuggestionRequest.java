@@ -1,4 +1,4 @@
-package com.cherrysoft.manics.controller.request.user;
+package com.cherrysoft.manics.controller.legacy.request.user;
 
 public class SuggestionRequest {
 

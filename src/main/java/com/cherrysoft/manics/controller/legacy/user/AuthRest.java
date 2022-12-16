@@ -1,8 +1,8 @@
-package com.cherrysoft.manics.controller.user;
+package com.cherrysoft.manics.controller.legacy.user;
 
 import com.cherrysoft.manics.mappers.UserMapper;
 import com.cherrysoft.manics.model.legacy.auth.User;
-import com.cherrysoft.manics.controller.request.user.UserRequest;
+import com.cherrysoft.manics.controller.legacy.request.user.UserRequest;
 import com.cherrysoft.manics.service.legacy.user.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;

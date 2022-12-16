@@ -1,4 +1,4 @@
-package com.cherrysoft.manics.controller.story;
+package com.cherrysoft.manics.controller.legacy.story;
 
 import com.cherrysoft.manics.mappers.ChapterMapper;
 import com.cherrysoft.manics.mappers.PageMapper;
@@ -7,12 +7,12 @@ import com.cherrysoft.manics.model.legacy.Comic;
 import com.cherrysoft.manics.model.legacy.core.Chapter;
 import com.cherrysoft.manics.model.legacy.core.Page;
 import com.cherrysoft.manics.model.legacy.core.Story;
-import com.cherrysoft.manics.controller.request.chapter.ChapterUpdateRequest;
-import com.cherrysoft.manics.controller.request.page.PageUpdateRequest;
+import com.cherrysoft.manics.controller.legacy.request.chapter.ChapterUpdateRequest;
+import com.cherrysoft.manics.controller.legacy.request.page.PageUpdateRequest;
 import com.cherrysoft.manics.service.legacy.stories.ChapterService;
 import com.cherrysoft.manics.service.legacy.stories.ComicService;
 import com.cherrysoft.manics.service.legacy.stories.PageService;
-import com.cherrysoft.manics.controller.request.StoryRequest;
+import com.cherrysoft.manics.controller.legacy.request.StoryRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

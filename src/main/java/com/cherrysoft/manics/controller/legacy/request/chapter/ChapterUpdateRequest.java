@@ -1,6 +1,6 @@
-package com.cherrysoft.manics.controller.request.chapter;
+package com.cherrysoft.manics.controller.legacy.request.chapter;
 
-import com.cherrysoft.manics.controller.request.page.PageUpdateRequest;
+import com.cherrysoft.manics.controller.legacy.request.page.PageUpdateRequest;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
