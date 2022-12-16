@@ -2,8 +2,7 @@ package com.cherrysoft.manics.model.v2.auth;
 
 import com.cherrysoft.manics.model.v2.Cartoon;
 import com.cherrysoft.manics.model.v2.SuggestionV2;
-import lombok.Getter;
-import lombok.ToString;
+import lombok.*;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;
@@ -12,27 +11,37 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
+import static java.util.Objects.isNull;
+import static java.util.Objects.nonNull;
+
 @Getter
+@Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @ToString
 @Entity
-@Table(name = "manic_users")
+@Table(
+    name = "manic_users",
+    uniqueConstraints = @UniqueConstraint(columnNames = {"username", "email"})
+)
 public class ManicUser {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "user_id")
   private Long id;
 
-  @Column
+  @Column(nullable = false)
   private String username;
 
-  @Column
+  @Column(nullable = false)
   private String email;
 
-  @Column
+  @Column(nullable = false)
   private String password;
 
   @ElementCollection(fetch = FetchType.EAGER)
-  private Set<UserRole> roles = Set.of(UserRole.NORMAL);
+  private Set<ManicUserRole> roles;
 
   @OneToMany(
       mappedBy = "user",
@@ -49,7 +58,7 @@ public class ManicUser {
       inverseJoinColumns = {@JoinColumn(name = "cartoon_id")}
   )
   @ToString.Exclude
-  private Set<Cartoon> likes = new HashSet<>();
+  private Set<Cartoon> likes;
 
   @ManyToMany(cascade = CascadeType.ALL)
   @JoinTable(
@@ -58,7 +67,22 @@ public class ManicUser {
       inverseJoinColumns = {@JoinColumn(name = "cartoon_id")}
   )
   @ToString.Exclude
-  private Set<Cartoon> readLater = new HashSet<>();
+  private Set<Cartoon> readLater;
+
+  public void addRoles(Set<ManicUserRole> newRoles) {
+    if (isNull(roles)) {
+      roles = new HashSet<>();
+    }
+    roles.addAll(newRoles);
+  }
+
+  public void removeRoles(Set<ManicUserRole> rolesToRemove) {
+    if (nonNull(roles)) {
+      roles.removeAll(rolesToRemove);
+    }
+    // All users always have the NORMAL role
+    roles.add(ManicUserRole.NORMAL);
+  }
 
   @Override
   public boolean equals(Object o) {

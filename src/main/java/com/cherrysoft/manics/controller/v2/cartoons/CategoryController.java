@@ -1,4 +1,4 @@
-package com.cherrysoft.manics.controller.v2;
+package com.cherrysoft.manics.controller.v2.cartoons;
 
 import com.cherrysoft.manics.controller.v2.dto.cartoons.CategoryDTO;
 import com.cherrysoft.manics.controller.v2.dto.validation.OnCreate;
