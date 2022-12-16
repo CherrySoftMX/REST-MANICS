@@ -44,7 +44,7 @@ public class ManicUser {
 
   @ManyToMany(cascade = CascadeType.ALL)
   @JoinTable(
-      name = "likes",
+      name = "likes_v2",
       joinColumns = {@JoinColumn(name = "user_id")},
       inverseJoinColumns = {@JoinColumn(name = "cartoon_id")}
   )

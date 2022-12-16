@@ -4,10 +4,12 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.Hibernate;
+import org.hibernate.annotations.SortNatural;
 
 import javax.persistence.*;
 import java.util.List;
 import java.util.Objects;
+import java.util.SortedSet;
 
 @Getter
 @Setter
@@ -53,14 +55,14 @@ public class Cartoon {
   @ToString.Exclude
   private List<CommentV2> comments;
 
-  @OneToMany(
-      mappedBy = "cartoon",
-      fetch = FetchType.LAZY,
-      cascade = CascadeType.ALL,
-      orphanRemoval = true
+  @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+  @JoinTable(name = "cartoon_categories",
+      joinColumns = @JoinColumn(name = "cartoon_id"),
+      inverseJoinColumns = @JoinColumn(name = "category_id")
   )
   @ToString.Exclude
-  private List<CategoryV2> categories;
+  @SortNatural
+  private SortedSet<CategoryV2> categories;
 
   @Override
   public boolean equals(Object o) {
