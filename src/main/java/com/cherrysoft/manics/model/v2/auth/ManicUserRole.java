@@ -4,7 +4,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import java.util.Set;
 
-public enum UserRole {
+public enum ManicUserRole {
   NORMAL,
   ADMIN;
 
