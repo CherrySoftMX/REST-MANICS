@@ -2,7 +2,7 @@ package com.cherrysoft.manics.rest;
 
 import com.cherrysoft.manics.mappers.CommentMapper;
 import com.cherrysoft.manics.service.CommentService;
-import com.cherrysoft.manics.model.core.Comment;
+import com.cherrysoft.manics.model.legacy.core.Comment;
 import com.cherrysoft.manics.rest.request.comment.CommentRequest;
 import com.cherrysoft.manics.rest.request.comment.CommentUpdateRequest;
 import lombok.AllArgsConstructor;

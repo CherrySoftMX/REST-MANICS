@@ -1,12 +1,12 @@
 package com.cherrysoft.manics.service.search;
 
-import com.cherrysoft.manics.model.core.elasticsearch.PageSearch;
-import com.cherrysoft.manics.model.core.elasticsearch.StorySearch;
+import com.cherrysoft.manics.model.legacy.core.elasticsearch.PageSearch;
+import com.cherrysoft.manics.model.legacy.core.elasticsearch.StorySearch;
 import com.cherrysoft.manics.repository.elasticsearch.StorySearchRepository;
 import com.cherrysoft.manics.exception.NotFoundException;
-import com.cherrysoft.manics.model.core.Chapter;
-import com.cherrysoft.manics.model.core.Page;
-import com.cherrysoft.manics.model.core.Story;
+import com.cherrysoft.manics.model.legacy.core.Chapter;
+import com.cherrysoft.manics.model.legacy.core.Page;
+import com.cherrysoft.manics.model.legacy.core.Story;
 import com.cherrysoft.manics.service.elasticsearch.ImageAnalyzerService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;

@@ -1,6 +1,6 @@
 package com.cherrysoft.manics.mappers;
 
-import com.cherrysoft.manics.model.core.Comment;
+import com.cherrysoft.manics.model.legacy.core.Comment;
 import com.cherrysoft.manics.rest.request.comment.CommentRequest;
 import com.cherrysoft.manics.rest.request.comment.CommentUpdateRequest;
 import org.mapstruct.Mapper;

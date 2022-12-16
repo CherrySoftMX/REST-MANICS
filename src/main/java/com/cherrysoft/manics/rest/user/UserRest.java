@@ -1,8 +1,8 @@
 package com.cherrysoft.manics.rest.user;
 
 import com.cherrysoft.manics.mappers.UserMapper;
-import com.cherrysoft.manics.model.auth.User;
-import com.cherrysoft.manics.model.core.Story;
+import com.cherrysoft.manics.model.legacy.auth.User;
+import com.cherrysoft.manics.model.legacy.core.Story;
 import com.cherrysoft.manics.rest.request.user.UserAuthorityRequest;
 import com.cherrysoft.manics.rest.request.user.UserRequest;
 import com.cherrysoft.manics.service.stories.StoryService;

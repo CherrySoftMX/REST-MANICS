@@ -1,6 +1,6 @@
-package com.cherrysoft.manics.model;
+package com.cherrysoft.manics.model.legacy;
 
-import com.cherrysoft.manics.model.core.Story;
+import com.cherrysoft.manics.model.legacy.core.Story;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;

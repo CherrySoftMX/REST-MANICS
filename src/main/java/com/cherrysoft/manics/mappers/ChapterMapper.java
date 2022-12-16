@@ -1,6 +1,6 @@
 package com.cherrysoft.manics.mappers;
 
-import com.cherrysoft.manics.model.core.Chapter;
+import com.cherrysoft.manics.model.legacy.core.Chapter;
 import com.cherrysoft.manics.rest.request.chapter.ChapterRequest;
 import com.cherrysoft.manics.rest.request.chapter.ChapterUpdateRequest;
 import org.mapstruct.AfterMapping;

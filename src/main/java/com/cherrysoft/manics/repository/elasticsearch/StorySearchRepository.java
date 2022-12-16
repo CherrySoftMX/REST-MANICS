@@ -1,6 +1,6 @@
 package com.cherrysoft.manics.repository.elasticsearch;
 
-import com.cherrysoft.manics.model.core.elasticsearch.StorySearch;
+import com.cherrysoft.manics.model.legacy.core.elasticsearch.StorySearch;
 import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
 import org.springframework.stereotype.Repository;
 

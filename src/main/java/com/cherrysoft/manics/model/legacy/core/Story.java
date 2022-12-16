@@ -1,7 +1,7 @@
-package com.cherrysoft.manics.model.core;
+package com.cherrysoft.manics.model.legacy.core;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.cherrysoft.manics.model.auth.User;
+import com.cherrysoft.manics.model.legacy.auth.User;
 
 import javax.persistence.*;
 import java.util.HashSet;

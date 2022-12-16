@@ -1,7 +1,7 @@
-package com.cherrysoft.manics.model;
+package com.cherrysoft.manics.model.legacy;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.cherrysoft.manics.model.auth.User;
+import com.cherrysoft.manics.model.legacy.auth.User;
 
 import javax.persistence.*;
 import java.time.ZonedDateTime;

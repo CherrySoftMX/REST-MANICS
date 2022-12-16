@@ -1,4 +1,4 @@
-package com.cherrysoft.manics.model.core;
+package com.cherrysoft.manics.model.legacy.core;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import org.hibernate.annotations.CreationTimestamp;

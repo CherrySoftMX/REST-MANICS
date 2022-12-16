@@ -1,6 +1,6 @@
 package com.cherrysoft.manics.mappers;
 
-import com.cherrysoft.manics.model.core.Category;
+import com.cherrysoft.manics.model.legacy.core.Category;
 import com.cherrysoft.manics.rest.request.CategoryRequest;
 import org.mapstruct.Mapper;
 

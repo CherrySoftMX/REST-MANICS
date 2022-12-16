@@ -1,6 +1,6 @@
 package com.cherrysoft.manics.rest;
 
-import com.cherrysoft.manics.model.Suggestion;
+import com.cherrysoft.manics.model.legacy.Suggestion;
 import com.cherrysoft.manics.rest.request.user.SuggestionRequest;
 import com.cherrysoft.manics.service.SuggestionService;
 import lombok.AllArgsConstructor;

@@ -1,4 +1,4 @@
-package com.cherrysoft.manics.model.core.elasticsearch;
+package com.cherrysoft.manics.model.legacy.core.elasticsearch;
 
 import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;

@@ -2,9 +2,9 @@ package com.cherrysoft.manics.service.stories;
 
 import com.cherrysoft.manics.service.search.StorySearchService;
 import com.cherrysoft.manics.exception.NotFoundException;
-import com.cherrysoft.manics.model.auth.User;
-import com.cherrysoft.manics.model.core.Category;
-import com.cherrysoft.manics.model.core.Story;
+import com.cherrysoft.manics.model.legacy.auth.User;
+import com.cherrysoft.manics.model.legacy.core.Category;
+import com.cherrysoft.manics.model.legacy.core.Story;
 import com.cherrysoft.manics.repository.StoryRepository;
 import com.cherrysoft.manics.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;

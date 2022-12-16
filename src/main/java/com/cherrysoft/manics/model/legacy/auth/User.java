@@ -1,7 +1,7 @@
-package com.cherrysoft.manics.model.auth;
+package com.cherrysoft.manics.model.legacy.auth;
 
-import com.cherrysoft.manics.model.Suggestion;
-import com.cherrysoft.manics.model.core.Story;
+import com.cherrysoft.manics.model.legacy.Suggestion;
+import com.cherrysoft.manics.model.legacy.core.Story;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.collect.Sets;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

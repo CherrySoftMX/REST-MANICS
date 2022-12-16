@@ -2,8 +2,8 @@ package com.cherrysoft.manics.service.stories;
 
 import com.cherrysoft.manics.exception.BadRequestException;
 import com.cherrysoft.manics.exception.NotFoundException;
-import com.cherrysoft.manics.model.core.Chapter;
-import com.cherrysoft.manics.model.core.Story;
+import com.cherrysoft.manics.model.legacy.core.Chapter;
+import com.cherrysoft.manics.model.legacy.core.Story;
 import com.cherrysoft.manics.repository.ChapterRepository;
 import com.cherrysoft.manics.service.search.StorySearchService;
 import org.springframework.beans.factory.annotation.Autowired;

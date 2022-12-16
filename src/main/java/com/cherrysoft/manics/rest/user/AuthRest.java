@@ -1,7 +1,7 @@
 package com.cherrysoft.manics.rest.user;
 
 import com.cherrysoft.manics.mappers.UserMapper;
-import com.cherrysoft.manics.model.auth.User;
+import com.cherrysoft.manics.model.legacy.auth.User;
 import com.cherrysoft.manics.rest.request.user.UserRequest;
 import com.cherrysoft.manics.service.user.UserService;
 import lombok.AllArgsConstructor;

@@ -1,8 +1,8 @@
 package com.cherrysoft.manics.mappers;
 
-import com.cherrysoft.manics.model.Comic;
-import com.cherrysoft.manics.model.Manga;
-import com.cherrysoft.manics.model.core.Story;
+import com.cherrysoft.manics.model.legacy.Comic;
+import com.cherrysoft.manics.model.legacy.Manga;
+import com.cherrysoft.manics.model.legacy.core.Story;
 import com.cherrysoft.manics.rest.request.StoryRequest;
 import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapper;

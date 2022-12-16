@@ -1,4 +1,4 @@
-package com.cherrysoft.manics.model.core;
+package com.cherrysoft.manics.model.legacy.core;
 
 import javax.persistence.*;
 

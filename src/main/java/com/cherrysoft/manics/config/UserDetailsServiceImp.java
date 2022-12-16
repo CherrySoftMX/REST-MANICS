@@ -1,7 +1,7 @@
 package com.cherrysoft.manics.config;
 
 import com.cherrysoft.manics.exception.NotFoundException;
-import com.cherrysoft.manics.model.auth.User;
+import com.cherrysoft.manics.model.legacy.auth.User;
 import com.cherrysoft.manics.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;

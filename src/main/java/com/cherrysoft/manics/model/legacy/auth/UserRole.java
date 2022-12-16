@@ -1,4 +1,4 @@
-package com.cherrysoft.manics.model.auth;
+package com.cherrysoft.manics.model.legacy.auth;
 
 import com.google.common.collect.Sets;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

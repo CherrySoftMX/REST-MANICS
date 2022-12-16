@@ -1,7 +1,7 @@
 package com.cherrysoft.manics.bootstrapper;
 
-import com.cherrysoft.manics.model.auth.User;
-import com.cherrysoft.manics.model.auth.UserRole;
+import com.cherrysoft.manics.model.legacy.auth.User;
+import com.cherrysoft.manics.model.legacy.auth.UserRole;
 import com.cherrysoft.manics.service.user.UserService;
 import com.google.common.collect.Sets;
 import com.cherrysoft.manics.exception.UsuarioRegistradoException;

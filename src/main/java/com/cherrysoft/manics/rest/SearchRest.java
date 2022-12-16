@@ -1,6 +1,6 @@
 package com.cherrysoft.manics.rest;
 
-import com.cherrysoft.manics.model.core.Story;
+import com.cherrysoft.manics.model.legacy.core.Story;
 import com.cherrysoft.manics.service.search.SearchService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;

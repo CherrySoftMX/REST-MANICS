@@ -1,7 +1,7 @@
 package com.cherrysoft.manics.service.search;
 
-import com.cherrysoft.manics.model.core.Story;
-import com.cherrysoft.manics.model.core.elasticsearch.StorySearch;
+import com.cherrysoft.manics.model.legacy.core.Story;
+import com.cherrysoft.manics.model.legacy.core.elasticsearch.StorySearch;
 import com.cherrysoft.manics.service.elasticsearch.ImageAnalyzerService;
 import com.cherrysoft.manics.service.stories.StoryService;
 import lombok.AllArgsConstructor;

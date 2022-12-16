@@ -2,8 +2,8 @@ package com.cherrysoft.manics.service.user;
 
 import com.cherrysoft.manics.exception.NotFoundException;
 import com.cherrysoft.manics.exception.UsuarioRegistradoException;
-import com.cherrysoft.manics.model.auth.User;
-import com.cherrysoft.manics.model.auth.UserRole;
+import com.cherrysoft.manics.model.legacy.auth.User;
+import com.cherrysoft.manics.model.legacy.auth.UserRole;
 import com.cherrysoft.manics.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;

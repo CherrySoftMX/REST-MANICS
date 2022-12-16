@@ -1,7 +1,7 @@
 package com.cherrysoft.manics.service.stories;
 
-import com.cherrysoft.manics.model.Manga;
-import com.cherrysoft.manics.model.core.Category;
+import com.cherrysoft.manics.model.legacy.Manga;
+import com.cherrysoft.manics.model.legacy.core.Category;
 import com.cherrysoft.manics.repository.MangaRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;

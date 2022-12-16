@@ -1,7 +1,7 @@
 package com.cherrysoft.manics.rest.request.user;
 
 import com.google.common.collect.Sets;
-import com.cherrysoft.manics.model.auth.UserRole;
+import com.cherrysoft.manics.model.legacy.auth.UserRole;
 
 import javax.validation.constraints.NotNull;
 import java.util.Set;
