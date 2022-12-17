@@ -1,9 +1,6 @@
 package com.cherrysoft.manics.exception.v2.handler;
 
-import com.cherrysoft.manics.exception.v2.ApplicationException;
-import com.cherrysoft.manics.exception.v2.ErrorResponse;
-import com.cherrysoft.manics.exception.v2.CartoonNotFoundException;
-import com.cherrysoft.manics.exception.v2.CategoryNotFoundException;
+import com.cherrysoft.manics.exception.v2.*;
 import com.cherrysoft.manics.exception.v2.user.UserNotFoundException;
 import com.cherrysoft.manics.exception.v2.user.UsernameAlreadyTakenException;
 import org.springframework.core.Ordered;
@@ -39,6 +36,16 @@ public class ApplicationExceptionHandler {
 
   @ExceptionHandler(UsernameAlreadyTakenException.class)
   public ResponseEntity<Object> appExceptionHandler(final UsernameAlreadyTakenException e) {
+    return throwCustomException(e, HttpStatus.BAD_REQUEST);
+  }
+
+  @ExceptionHandler(ChapterNotFoundException.class)
+  public ResponseEntity<Object> appExceptionHandler(final ChapterNotFoundException e) {
+    return throwCustomException(e, HttpStatus.BAD_REQUEST);
+  }
+
+  @ExceptionHandler(PageNotFoundException.class)
+  public ResponseEntity<Object> appExceptionHandler(final PageNotFoundException e) {
     return throwCustomException(e, HttpStatus.BAD_REQUEST);
   }
 
