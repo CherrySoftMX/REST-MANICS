@@ -1,5 +1,6 @@
-package com.cherrysoft.manics.controller.v2.dto.cartoons;
+package com.cherrysoft.manics.controller.v2.dto.chapters;
 
+import com.cherrysoft.manics.controller.v2.dto.pages.PageDTO;
 import com.cherrysoft.manics.model.v2.ChapterV2;
 import lombok.Data;
 

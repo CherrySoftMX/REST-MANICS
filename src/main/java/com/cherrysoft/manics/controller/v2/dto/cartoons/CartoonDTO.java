@@ -1,5 +1,6 @@
 package com.cherrysoft.manics.controller.v2.dto.cartoons;
 
+import com.cherrysoft.manics.controller.v2.dto.chapters.ChapterDTO;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;

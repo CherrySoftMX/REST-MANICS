@@ -2,8 +2,8 @@ package com.cherrysoft.manics.exception.v2.handler;
 
 import com.cherrysoft.manics.exception.v2.ApplicationException;
 import com.cherrysoft.manics.exception.v2.ErrorResponse;
-import com.cherrysoft.manics.exception.v2.cartoon.CartoonNotFoundException;
-import com.cherrysoft.manics.exception.v2.cartoon.CategoryNotFoundException;
+import com.cherrysoft.manics.exception.v2.CartoonNotFoundException;
+import com.cherrysoft.manics.exception.v2.CategoryNotFoundException;
 import com.cherrysoft.manics.exception.v2.user.UserNotFoundException;
 import com.cherrysoft.manics.exception.v2.user.UsernameAlreadyTakenException;
 import org.springframework.core.Ordered;

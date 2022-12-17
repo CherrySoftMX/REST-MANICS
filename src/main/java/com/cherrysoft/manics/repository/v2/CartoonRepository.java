@@ -1,4 +1,4 @@
-package com.cherrysoft.manics.repository.v2.cartoons;
+package com.cherrysoft.manics.repository.v2;
 
 import com.cherrysoft.manics.model.v2.Cartoon;
 import com.cherrysoft.manics.model.v2.CartoonType;

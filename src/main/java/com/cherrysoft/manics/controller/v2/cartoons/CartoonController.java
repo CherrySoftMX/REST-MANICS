@@ -6,7 +6,7 @@ import com.cherrysoft.manics.mappers.v2.CartoonMapper;
 import com.cherrysoft.manics.model.v2.Cartoon;
 import com.cherrysoft.manics.model.v2.CartoonType;
 import com.cherrysoft.manics.model.v2.specs.CartoonSpec;
-import com.cherrysoft.manics.service.v2.cartoons.CartoonService;
+import com.cherrysoft.manics.service.v2.CartoonService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 
