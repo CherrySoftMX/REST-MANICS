@@ -27,6 +27,10 @@ public class ManicUserService {
         .orElseThrow(() -> new UserNotFoundException(id));
   }
 
+  public ManicUser getUserReferenceById(Long id) {
+    return userRepository.getReferenceById(id);
+  }
+
   public ManicUser getUserByUsername(String username) {
     return userRepository
         .findByUsername(username)
