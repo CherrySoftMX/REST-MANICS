@@ -29,10 +29,10 @@ public class ChapterController {
   }
 
   @GetMapping
-  public ResponseEntity<List<ChapterResponseDTO>> getCartoonsChapters(
+  public ResponseEntity<List<ChapterResponseDTO>> getCartoonChapters(
       @RequestParam Long cartoonId
   ) {
-    List<ChapterV2> result = chapterService.getChaptersByCartoonId(cartoonId);
+    List<ChapterV2> result = chapterService.getCartoonChapters(cartoonId);
     return ResponseEntity.ok(mapper.toResponseListDto(result));
   }
 
