@@ -1,7 +1,7 @@
 package com.cherrysoft.manics.service.v2.users;
 
-import com.cherrysoft.manics.exception.v2.UserNotFoundException;
-import com.cherrysoft.manics.exception.v2.UsernameAlreadyTakenException;
+import com.cherrysoft.manics.exception.v2.user.UserNotFoundException;
+import com.cherrysoft.manics.exception.v2.user.UsernameAlreadyTakenException;
 import com.cherrysoft.manics.model.v2.auth.ManicUser;
 import com.cherrysoft.manics.model.v2.auth.ManicUserRole;
 import com.cherrysoft.manics.repository.v2.users.ManicUserRepository;
