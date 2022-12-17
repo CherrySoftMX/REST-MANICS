@@ -41,11 +41,21 @@ public class ApplicationExceptionHandler {
 
   @ExceptionHandler(ChapterNotFoundException.class)
   public ResponseEntity<Object> appExceptionHandler(final ChapterNotFoundException e) {
-    return throwCustomException(e, HttpStatus.BAD_REQUEST);
+    return throwCustomException(e, HttpStatus.NOT_FOUND);
   }
 
   @ExceptionHandler(PageNotFoundException.class)
   public ResponseEntity<Object> appExceptionHandler(final PageNotFoundException e) {
+    return throwCustomException(e, HttpStatus.NOT_FOUND);
+  }
+
+  @ExceptionHandler(CommentNotFoundException.class)
+  public ResponseEntity<Object> appExceptionHandler(final CommentNotFoundException e) {
+    return throwCustomException(e, HttpStatus.NOT_FOUND);
+  }
+
+  @ExceptionHandler(AmbiguousFilterException.class)
+  public ResponseEntity<Object> appExceptionHandler(final AmbiguousFilterException e) {
     return throwCustomException(e, HttpStatus.BAD_REQUEST);
   }
 

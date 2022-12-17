@@ -2,6 +2,7 @@ package com.cherrysoft.manics.model.v2;
 
 import com.cherrysoft.manics.model.v2.auth.ManicUser;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.Hibernate;
 import org.hibernate.annotations.CreationTimestamp;
@@ -11,6 +12,7 @@ import java.util.Calendar;
 import java.util.Objects;
 
 @Getter
+@Setter
 @ToString
 @Entity
 @Table(name = "comments_v2")
@@ -18,7 +20,7 @@ public class CommentV2 {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "comment_id")
-  private Integer id;
+  private Long id;
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "user_id", nullable = false)
