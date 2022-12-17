@@ -22,7 +22,11 @@ public class ChapterServiceV2 {
         .orElseThrow(() -> new ChapterNotFoundException(id));
   }
 
-  public List<ChapterV2> getChaptersByCartoonId(Long cartoonId) {
+  ChapterV2 getChapterReferenceById(Long id) {
+    return chapterRepository.getReferenceById(id);
+  }
+
+  public List<ChapterV2> getCartoonChapters(Long cartoonId) {
     return chapterRepository.findChapterV2sByCartoon_Id(cartoonId);
   }
 
