@@ -6,8 +6,11 @@ import lombok.ToString;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
+
+import static java.util.Objects.isNull;
 
 @Setter
 @Getter
@@ -35,6 +38,7 @@ public class ChapterV2 {
   private Integer totalPages;
 
   @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "cartoon_id")
   @ToString.Exclude
   private Cartoon cartoon;
 
@@ -44,7 +48,15 @@ public class ChapterV2 {
       fetch = FetchType.LAZY
   )
   @ToString.Exclude
-  private List<PageV2> page;
+  private List<PageV2> pages;
+
+  public void setPages(List<PageV2> pages) {
+    if (isNull(pages)) {
+      return;
+    }
+    pages.forEach(p -> p.setChapter(this));
+    this.pages = pages;
+  }
 
   @Override
   public boolean equals(Object o) {

@@ -65,6 +65,21 @@ public class Cartoon {
   @SortNatural
   private SortedSet<CategoryV2> categories;
 
+  public void setChapters(List<ChapterV2> chapters) {
+    if (isNull(chapters)) {
+      return;
+    }
+    chapters.forEach(c -> c.setCartoon(this));
+    this.chapters = chapters;
+  }
+
+  public void setCategories(Set<CategoryV2> categories) {
+    if (isNull(categories)) {
+      return;
+    }
+    this.categories = new TreeSet<>(categories);
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) {
