@@ -1,4 +1,4 @@
-package com.cherrysoft.manics.exception.v2.cartoon;
+package com.cherrysoft.manics.exception.v2;
 
 public class CategoryNotFoundException extends RuntimeException {
 

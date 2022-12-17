@@ -1,4 +1,4 @@
-package com.cherrysoft.manics.exception.v2.cartoon;
+package com.cherrysoft.manics.exception.v2;
 
 import com.cherrysoft.manics.model.v2.CartoonType;
 

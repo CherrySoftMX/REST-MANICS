@@ -1,8 +1,8 @@
-package com.cherrysoft.manics.service.v2.cartoons;
+package com.cherrysoft.manics.service.v2;
 
-import com.cherrysoft.manics.exception.v2.cartoon.CategoryNotFoundException;
+import com.cherrysoft.manics.exception.v2.CategoryNotFoundException;
 import com.cherrysoft.manics.model.v2.CategoryV2;
-import com.cherrysoft.manics.repository.v2.cartoons.CategoryRepositoryV2;
+import com.cherrysoft.manics.repository.v2.CategoryRepositoryV2;
 import com.cherrysoft.manics.util.BeanUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

@@ -8,7 +8,7 @@ import com.cherrysoft.manics.model.v2.Cartoon;
 import com.cherrysoft.manics.model.v2.CartoonType;
 import com.cherrysoft.manics.model.v2.specs.CartoonSpec;
 import com.cherrysoft.manics.model.v2.specs.MangaCartoonSpec;
-import com.cherrysoft.manics.service.v2.cartoons.CartoonService;
+import com.cherrysoft.manics.service.v2.CartoonService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;

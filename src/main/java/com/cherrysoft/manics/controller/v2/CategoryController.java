@@ -1,10 +1,10 @@
-package com.cherrysoft.manics.controller.v2.cartoons;
+package com.cherrysoft.manics.controller.v2;
 
-import com.cherrysoft.manics.controller.v2.dto.cartoons.CategoryDTO;
+import com.cherrysoft.manics.controller.v2.dto.CategoryDTO;
 import com.cherrysoft.manics.controller.v2.dto.validation.OnCreate;
 import com.cherrysoft.manics.mappers.v2.CategoryMapperV2;
 import com.cherrysoft.manics.model.v2.CategoryV2;
-import com.cherrysoft.manics.service.v2.cartoons.CategoryServiceV2;
+import com.cherrysoft.manics.service.v2.CategoryServiceV2;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;

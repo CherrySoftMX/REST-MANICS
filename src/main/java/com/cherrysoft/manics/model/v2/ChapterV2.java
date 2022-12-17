@@ -23,7 +23,7 @@ public class ChapterV2 {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "chapter_id")
-  private Integer id;
+  private Long id;
 
   @Column
   private Integer chapterNumber;

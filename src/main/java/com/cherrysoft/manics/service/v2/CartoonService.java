@@ -1,10 +1,10 @@
-package com.cherrysoft.manics.service.v2.cartoons;
+package com.cherrysoft.manics.service.v2;
 
-import com.cherrysoft.manics.exception.v2.cartoon.CartoonNotFoundException;
+import com.cherrysoft.manics.exception.v2.CartoonNotFoundException;
 import com.cherrysoft.manics.model.v2.Cartoon;
 import com.cherrysoft.manics.model.v2.CartoonType;
 import com.cherrysoft.manics.model.v2.specs.CartoonSpec;
-import com.cherrysoft.manics.repository.v2.cartoons.CartoonRepository;
+import com.cherrysoft.manics.repository.v2.CartoonRepository;
 import com.cherrysoft.manics.util.BeanUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,6 +17,10 @@ import java.util.Set;
 public class CartoonService {
   private final CartoonRepository cartoonRepository;
   private final CategoryServiceV2 categoryService;
+
+  Cartoon getCartonReferenceById(Long id) {
+    return cartoonRepository.getReferenceById(id);
+  }
 
   public Cartoon getCartoonByIdAndType(Long id, CartoonType type) {
     return cartoonRepository
