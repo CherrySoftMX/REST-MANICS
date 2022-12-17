@@ -1,4 +1,4 @@
-package com.cherrysoft.manics.exception.v2;
+package com.cherrysoft.manics.exception.v2.user;
 
 public class UserNotFoundException extends RuntimeException {
 

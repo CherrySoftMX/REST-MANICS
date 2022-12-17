@@ -23,7 +23,7 @@ public class PageV2 {
   private Integer pageNumber;
 
   @Column
-  private String imgUrl;
+  private String imageUrl;
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "chapter_id")

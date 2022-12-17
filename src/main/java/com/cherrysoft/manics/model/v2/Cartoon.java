@@ -7,9 +7,10 @@ import org.hibernate.Hibernate;
 import org.hibernate.annotations.SortNatural;
 
 import javax.persistence.*;
-import java.util.List;
-import java.util.Objects;
-import java.util.SortedSet;
+import java.time.Year;
+import java.util.*;
+
+import static java.util.Objects.isNull;
 
 @Getter
 @Setter
@@ -35,7 +36,7 @@ public class Cartoon {
   private Integer availableChapters;
 
   @Column
-  private Integer publicationYear;
+  private Year publicationYear;
 
   @OneToMany(
       mappedBy = "cartoon",
@@ -63,6 +64,21 @@ public class Cartoon {
   @ToString.Exclude
   @SortNatural
   private SortedSet<CategoryV2> categories;
+
+  public void setChapters(List<ChapterV2> chapters) {
+    if (isNull(chapters)) {
+      return;
+    }
+    chapters.forEach(c -> c.setCartoon(this));
+    this.chapters = chapters;
+  }
+
+  public void setCategories(Set<CategoryV2> categories) {
+    if (isNull(categories)) {
+      return;
+    }
+    this.categories = new TreeSet<>(categories);
+  }
 
   @Override
   public boolean equals(Object o) {
