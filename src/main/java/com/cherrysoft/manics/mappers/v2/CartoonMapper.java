@@ -10,7 +10,10 @@ import org.mapstruct.Mappings;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring")
+@Mapper(
+    componentModel = "spring",
+    uses = {ChapterMapperV2.class}
+)
 public interface CartoonMapper {
 
   @Mappings({
