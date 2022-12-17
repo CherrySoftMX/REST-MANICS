@@ -7,9 +7,10 @@ import org.hibernate.Hibernate;
 import org.hibernate.annotations.SortNatural;
 
 import javax.persistence.*;
-import java.util.List;
-import java.util.Objects;
-import java.util.SortedSet;
+import java.time.Year;
+import java.util.*;
+
+import static java.util.Objects.isNull;
 
 @Getter
 @Setter
@@ -35,7 +36,7 @@ public class Cartoon {
   private Integer availableChapters;
 
   @Column
-  private Integer publicationYear;
+  private Year publicationYear;
 
   @OneToMany(
       mappedBy = "cartoon",

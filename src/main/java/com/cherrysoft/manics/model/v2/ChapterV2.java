@@ -14,7 +14,9 @@ import java.util.Objects;
 @ToString
 @Entity
 @Table(name = "chapters_v2")
-public abstract class ChapterV2 {
+public class ChapterV2 {
+  public static final String MONTH_DAY_YEAR_PATTERN = "MM-dd-yyyy";
+
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "chapter_id")
@@ -27,7 +29,7 @@ public abstract class ChapterV2 {
   private String name;
 
   @Column
-  private String publicationDate;
+  private LocalDate publicationDate;
 
   @Column
   private Integer totalPages;
