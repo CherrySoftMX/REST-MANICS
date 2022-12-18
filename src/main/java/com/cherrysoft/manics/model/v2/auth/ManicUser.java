@@ -51,7 +51,7 @@ public class ManicUser {
   @ToString.Exclude
   private List<SuggestionV2> suggestions;
 
-  @ManyToMany(cascade = CascadeType.ALL)
+  @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
   @JoinTable(
       name = "likes_v2",
       joinColumns = {@JoinColumn(name = "user_id")},
