@@ -31,9 +31,9 @@ public class LikeService {
 
   @Transactional
   public LikedResult like(LikeSpec spec) {
-    boolean wasLiked = isCartoonLikedBy(spec);
-    Cartoon cartoon = getCartoonReference(spec.getCartoonId());
-    ManicUser user = getUserReference(spec.getUserId());
+    boolean wasLiked = isCartoonLiked(spec);
+    Cartoon cartoon = getCartoon(spec.getCartoonId());
+    ManicUser user = getUser(spec.getUserId());
     if (wasLiked) {
       user.removeLike(cartoon);
     } else {
@@ -42,16 +42,16 @@ public class LikeService {
     return new LikedResult(wasLiked, !wasLiked);
   }
 
-  private boolean isCartoonLikedBy(LikeSpec spec) {
+  private boolean isCartoonLiked(LikeSpec spec) {
     return cartoonRepository.isCartoonLikedBy(spec.getCartoonId(), spec.getUserId());
   }
 
-  private Cartoon getCartoonReference(Long cartoonId) {
-    return cartoonService.getCartonReferenceById(cartoonId);
+  private Cartoon getCartoon(Long cartoonId) {
+    return cartoonService.getCartoonById(cartoonId);
   }
 
-  private ManicUser getUserReference(Long userId) {
-    return userService.getUserReferenceById(userId);
+  private ManicUser getUser(Long userId) {
+    return userService.getUserById(userId);
   }
 
 }
