@@ -53,6 +53,7 @@ public class CartoonService {
 
   public Cartoon deleteCartoon(Long id, CartoonType type) {
     Cartoon cartoon = getCartoonByIdAndType(id, type);
+    cartoon.removeLikes();
     cartoonRepository.deleteById(id);
     return cartoon;
   }

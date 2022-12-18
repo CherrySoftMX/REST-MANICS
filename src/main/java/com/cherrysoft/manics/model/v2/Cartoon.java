@@ -1,5 +1,6 @@
 package com.cherrysoft.manics.model.v2;
 
+import com.cherrysoft.manics.model.v2.auth.ManicUser;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -65,6 +66,10 @@ public class Cartoon {
   @SortNatural
   private SortedSet<CategoryV2> categories;
 
+  @ManyToMany(mappedBy = "likes", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+  @ToString.Exclude
+  private Set<ManicUser> likedBy;
+
   public void setChapters(List<ChapterV2> chapters) {
     if (isNull(chapters)) {
       return;
@@ -78,6 +83,14 @@ public class Cartoon {
       return;
     }
     this.categories = new TreeSet<>(categories);
+  }
+
+  public void removeLikes() {
+    for (Iterator<ManicUser> iterator = getLikedBy().iterator(); iterator.hasNext(); ) {
+      ManicUser user = iterator.next();
+      iterator.remove();
+      user.getLikes().remove(this);
+    }
   }
 
   @Override

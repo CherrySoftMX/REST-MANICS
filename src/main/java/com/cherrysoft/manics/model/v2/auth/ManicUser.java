@@ -51,7 +51,7 @@ public class ManicUser {
   @ToString.Exclude
   private List<SuggestionV2> suggestions;
 
-  @ManyToMany(cascade = CascadeType.ALL)
+  @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
   @JoinTable(
       name = "likes_v2",
       joinColumns = {@JoinColumn(name = "user_id")},
@@ -82,6 +82,16 @@ public class ManicUser {
     }
     // All users always have the NORMAL role
     roles.add(ManicUserRole.NORMAL);
+  }
+
+  public void addLike(Cartoon cartoon) {
+    likes.add(cartoon);
+    cartoon.getLikedBy().add(this);
+  }
+
+  public void removeLike(Cartoon cartoon) {
+    likes.remove(cartoon);
+    cartoon.getLikedBy().remove(this);
   }
 
   @Override
