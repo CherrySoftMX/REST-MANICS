@@ -18,6 +18,12 @@ public class CartoonService {
   private final CartoonRepository cartoonRepository;
   private final CategoryServiceV2 categoryService;
 
+  public Cartoon getCartoonById(Long cartoonId) {
+    return cartoonRepository
+        .findById(cartoonId)
+        .orElseThrow(() -> new CartoonNotFoundException(cartoonId));
+  }
+
   Cartoon getCartonReferenceById(Long id) {
     return cartoonRepository.getReferenceById(id);
   }
