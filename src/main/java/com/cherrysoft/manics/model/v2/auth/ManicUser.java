@@ -60,14 +60,14 @@ public class ManicUser {
   @ToString.Exclude
   private Set<Cartoon> likes;
 
-  @ManyToMany(cascade = CascadeType.ALL)
+  @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
   @JoinTable(
-      name = "read_later",
+      name = "bookmarks",
       joinColumns = {@JoinColumn(name = "user_id")},
       inverseJoinColumns = {@JoinColumn(name = "cartoon_id")}
   )
   @ToString.Exclude
-  private Set<Cartoon> readLater;
+  private Set<Cartoon> bookmarks;
 
   public void addRoles(Set<ManicUserRole> newRoles) {
     if (isNull(roles)) {
@@ -92,6 +92,16 @@ public class ManicUser {
   public void removeLike(Cartoon cartoon) {
     likes.remove(cartoon);
     cartoon.getLikedBy().remove(this);
+  }
+
+  public void addBookmark(Cartoon cartoon) {
+    bookmarks.add(cartoon);
+    cartoon.getBookmarkedBy().add(this);
+  }
+
+  public void removeBookmark(Cartoon cartoon) {
+    bookmarks.remove(cartoon);
+    cartoon.getBookmarkedBy().remove(this);
   }
 
   @Override

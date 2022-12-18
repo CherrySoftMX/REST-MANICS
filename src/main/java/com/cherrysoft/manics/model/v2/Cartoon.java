@@ -66,9 +66,13 @@ public class Cartoon {
   @SortNatural
   private SortedSet<CategoryV2> categories;
 
-  @ManyToMany(mappedBy = "likes", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+  @ManyToMany(mappedBy = "likes")
   @ToString.Exclude
   private Set<ManicUser> likedBy;
+
+  @ManyToMany(mappedBy = "bookmarks")
+  @ToString.Exclude
+  private Set<ManicUser> bookmarkedBy;
 
   public void setChapters(List<ChapterV2> chapters) {
     if (isNull(chapters)) {
