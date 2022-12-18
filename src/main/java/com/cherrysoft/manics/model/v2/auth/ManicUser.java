@@ -84,6 +84,16 @@ public class ManicUser {
     roles.add(ManicUserRole.NORMAL);
   }
 
+  public void addLike(Cartoon cartoon) {
+    likes.add(cartoon);
+    cartoon.getLikedBy().add(this);
+  }
+
+  public void removeLike(Cartoon cartoon) {
+    likes.remove(cartoon);
+    cartoon.getLikedBy().remove(this);
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) {
