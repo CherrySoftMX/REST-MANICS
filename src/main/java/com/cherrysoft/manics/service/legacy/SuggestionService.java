@@ -5,7 +5,7 @@ import com.cherrysoft.manics.model.legacy.Suggestion;
 import com.cherrysoft.manics.model.legacy.auth.User;
 import com.cherrysoft.manics.repository.legacy.SuggestionRepository;
 import com.cherrysoft.manics.repository.legacy.UserRepository;
-import com.cherrysoft.manics.controller.legacy.request.user.SuggestionRequest;
+import com.cherrysoft.manics.web.legacy.request.user.SuggestionRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 

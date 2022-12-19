@@ -1,0 +1,12 @@
+package com.cherrysoft.manics.web.v2.mapper.v2;
+
+import com.cherrysoft.manics.web.v2.dto.LikedResultDTO;
+import com.cherrysoft.manics.model.v2.LikedResult;
+import org.mapstruct.Mapper;
+
+@Mapper(componentModel = "spring")
+public interface LikedResultMapper {
+
+  LikedResultDTO toDto(LikedResult likedResult);
+
+}
