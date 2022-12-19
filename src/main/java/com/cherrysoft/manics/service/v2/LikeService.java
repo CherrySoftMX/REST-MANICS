@@ -29,6 +29,10 @@ public class LikeService {
     return cartoonRepository.getLikes(userId);
   }
 
+  public boolean userHasLikedAnyCartoon(Long userId) {
+    return cartoonRepository.hasUserLikedAnyCartoon(userId);
+  }
+
   @Transactional
   public LikedResult like(LikeSpec spec) {
     boolean wasLiked = isCartoonLiked(spec);

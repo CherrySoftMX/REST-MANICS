@@ -23,6 +23,10 @@ public class BookmarkService {
     return cartoonRepository.getBookmarks(userId);
   }
 
+  public boolean userHasBookmarkedAnyCartoon(Long userId) {
+    return cartoonRepository.hasUserBookmarkedAnyCartoon(userId);
+  }
+
   @Transactional
   public BookmarkedResult bookmark(BookmarkSpec spec) {
     boolean wasBookmarked = isCartoonBookmarked(spec);

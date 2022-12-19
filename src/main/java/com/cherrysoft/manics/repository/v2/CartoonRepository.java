@@ -22,6 +22,12 @@ public interface CartoonRepository extends JpaRepository<Cartoon, Long> {
   @Query("SELECT COUNT(c) > 0 FROM Cartoon c JOIN c.bookmarkedBy user WHERE c.id = :cartoonId AND user.id = :userId")
   boolean isCartoonBookmarkedBy(Long cartoonId, Long userId);
 
+  @Query("SELECT COUNT(c) > 0 FROM Cartoon c JOIN c.likedBy user WHERE user.id = :userId")
+  boolean hasUserLikedAnyCartoon(Long userId);
+
+  @Query("SELECT COUNT(c) > 0 FROM Cartoon c JOIN c.bookmarkedBy user WHERE user.id = :userId")
+  boolean hasUserBookmarkedAnyCartoon(Long userId);
+
   @Query("FROM Cartoon c JOIN c.likedBy user WHERE user.id = :userId")
   List<Cartoon> getLikes(Long userId);
 
