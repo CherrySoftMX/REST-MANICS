@@ -1,7 +1,7 @@
 package com.cherrysoft.manics.mappers.v2;
 
-import com.cherrysoft.manics.controller.v2.dto.cartoons.CartoonDTO;
-import com.cherrysoft.manics.controller.v2.dto.cartoons.CartoonResponseDTO;
+import com.cherrysoft.manics.web.v2.dto.cartoons.CartoonDTO;
+import com.cherrysoft.manics.web.v2.dto.cartoons.CartoonResponseDTO;
 import com.cherrysoft.manics.model.v2.Cartoon;
 import org.mapstruct.InheritInverseConfiguration;
 import org.mapstruct.Mapper;

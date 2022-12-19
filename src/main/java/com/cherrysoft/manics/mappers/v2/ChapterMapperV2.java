@@ -1,7 +1,7 @@
 package com.cherrysoft.manics.mappers.v2;
 
-import com.cherrysoft.manics.controller.v2.dto.chapters.ChapterDTO;
-import com.cherrysoft.manics.controller.v2.dto.chapters.ChapterResponseDTO;
+import com.cherrysoft.manics.web.v2.dto.chapters.ChapterDTO;
+import com.cherrysoft.manics.web.v2.dto.chapters.ChapterResponseDTO;
 import com.cherrysoft.manics.model.v2.ChapterV2;
 import org.mapstruct.InheritInverseConfiguration;
 import org.mapstruct.Mapper;

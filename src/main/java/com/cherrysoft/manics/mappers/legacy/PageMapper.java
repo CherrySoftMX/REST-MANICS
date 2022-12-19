@@ -1,8 +1,8 @@
 package com.cherrysoft.manics.mappers.legacy;
 
 import com.cherrysoft.manics.model.legacy.core.Page;
-import com.cherrysoft.manics.controller.legacy.request.page.PageRequest;
-import com.cherrysoft.manics.controller.legacy.request.page.PageUpdateRequest;
+import com.cherrysoft.manics.web.legacy.request.page.PageRequest;
+import com.cherrysoft.manics.web.legacy.request.page.PageUpdateRequest;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")

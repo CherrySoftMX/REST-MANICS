@@ -1,6 +1,6 @@
 package com.cherrysoft.manics.mappers.v2;
 
-import com.cherrysoft.manics.controller.v2.dto.BookmarkedResultDTO;
+import com.cherrysoft.manics.web.v2.dto.BookmarkedResultDTO;
 import com.cherrysoft.manics.model.v2.BookmarkedResult;
 import org.mapstruct.Mapper;
 
