@@ -1,4 +1,4 @@
-package com.cherrysoft.manics.mappers.v2;
+package com.cherrysoft.manics.web.v2.mapper.v2;
 
 import com.cherrysoft.manics.web.v2.dto.CategoryDTO;
 import com.cherrysoft.manics.model.v2.CategoryV2;

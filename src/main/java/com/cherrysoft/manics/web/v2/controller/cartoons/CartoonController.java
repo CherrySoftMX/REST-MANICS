@@ -2,7 +2,7 @@ package com.cherrysoft.manics.web.v2.controller.cartoons;
 
 import com.cherrysoft.manics.web.v2.dto.cartoons.CartoonDTO;
 import com.cherrysoft.manics.web.v2.dto.cartoons.CartoonResponseDTO;
-import com.cherrysoft.manics.mappers.v2.CartoonMapper;
+import com.cherrysoft.manics.web.v2.mapper.v2.CartoonMapper;
 import com.cherrysoft.manics.model.v2.Cartoon;
 import com.cherrysoft.manics.model.v2.CartoonType;
 import com.cherrysoft.manics.model.v2.specs.CartoonSpec;

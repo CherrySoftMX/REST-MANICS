@@ -2,7 +2,7 @@ package com.cherrysoft.manics.web.v2.controller.users;
 
 import com.cherrysoft.manics.web.v2.dto.users.ManicUserDTO;
 import com.cherrysoft.manics.web.v2.dto.users.ManicUserRoleSetDTO;
-import com.cherrysoft.manics.mappers.v2.ManicUserMapper;
+import com.cherrysoft.manics.web.v2.mapper.v2.ManicUserMapper;
 import com.cherrysoft.manics.model.v2.auth.ManicUser;
 import com.cherrysoft.manics.model.v2.auth.ManicUserRole;
 import com.cherrysoft.manics.model.v2.specs.UpdateUserRolesSpec;

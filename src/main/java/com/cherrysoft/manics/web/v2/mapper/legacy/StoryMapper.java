@@ -1,4 +1,4 @@
-package com.cherrysoft.manics.mappers.legacy;
+package com.cherrysoft.manics.web.v2.mapper.legacy;
 
 import com.cherrysoft.manics.model.legacy.Comic;
 import com.cherrysoft.manics.model.legacy.Manga;

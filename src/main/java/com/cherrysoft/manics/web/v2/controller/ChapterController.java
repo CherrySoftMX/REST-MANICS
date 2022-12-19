@@ -3,7 +3,7 @@ package com.cherrysoft.manics.web.v2.controller;
 import com.cherrysoft.manics.web.v2.dto.chapters.ChapterDTO;
 import com.cherrysoft.manics.web.v2.dto.chapters.ChapterResponseDTO;
 import com.cherrysoft.manics.web.v2.dto.validation.OnCreate;
-import com.cherrysoft.manics.mappers.v2.ChapterMapperV2;
+import com.cherrysoft.manics.web.v2.mapper.v2.ChapterMapperV2;
 import com.cherrysoft.manics.model.v2.ChapterV2;
 import com.cherrysoft.manics.service.v2.ChapterServiceV2;
 import lombok.RequiredArgsConstructor;

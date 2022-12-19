@@ -2,7 +2,7 @@ package com.cherrysoft.manics.web.v2.controller;
 
 import com.cherrysoft.manics.web.v2.dto.CategoryDTO;
 import com.cherrysoft.manics.web.v2.dto.validation.OnCreate;
-import com.cherrysoft.manics.mappers.v2.CategoryMapperV2;
+import com.cherrysoft.manics.web.v2.mapper.v2.CategoryMapperV2;
 import com.cherrysoft.manics.model.v2.CategoryV2;
 import com.cherrysoft.manics.service.v2.CategoryServiceV2;
 import lombok.RequiredArgsConstructor;

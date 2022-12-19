@@ -1,7 +1,7 @@
 package com.cherrysoft.manics.web.v2.controller;
 
 import com.cherrysoft.manics.web.v2.dto.SuggestionDTO;
-import com.cherrysoft.manics.mappers.v2.SuggestionMapper;
+import com.cherrysoft.manics.web.v2.mapper.v2.SuggestionMapper;
 import com.cherrysoft.manics.model.v2.SuggestionV2;
 import com.cherrysoft.manics.service.v2.SuggestionServiceV2;
 import lombok.RequiredArgsConstructor;

@@ -1,8 +1,8 @@
 package com.cherrysoft.manics.web.legacy.story;
 
-import com.cherrysoft.manics.mappers.legacy.ChapterMapper;
-import com.cherrysoft.manics.mappers.legacy.PageMapper;
-import com.cherrysoft.manics.mappers.legacy.StoryMapper;
+import com.cherrysoft.manics.web.v2.mapper.legacy.ChapterMapper;
+import com.cherrysoft.manics.web.v2.mapper.legacy.PageMapper;
+import com.cherrysoft.manics.web.v2.mapper.legacy.StoryMapper;
 import com.cherrysoft.manics.model.legacy.Comic;
 import com.cherrysoft.manics.model.legacy.Manga;
 import com.cherrysoft.manics.model.legacy.core.Chapter;

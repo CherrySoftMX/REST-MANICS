@@ -2,7 +2,7 @@ package com.cherrysoft.manics.web.v2.controller;
 
 import com.cherrysoft.manics.web.v2.dto.CommentDTO;
 import com.cherrysoft.manics.web.v2.dto.validation.OnCreate;
-import com.cherrysoft.manics.mappers.v2.CommentMapperV2;
+import com.cherrysoft.manics.web.v2.mapper.v2.CommentMapperV2;
 import com.cherrysoft.manics.model.v2.CommentV2;
 import com.cherrysoft.manics.model.v2.specs.CommentFilterSpec;
 import com.cherrysoft.manics.model.v2.specs.CreateCommentSpec;

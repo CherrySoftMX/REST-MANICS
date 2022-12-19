@@ -1,4 +1,4 @@
-package com.cherrysoft.manics.mappers.legacy;
+package com.cherrysoft.manics.web.v2.mapper.legacy;
 
 import com.cherrysoft.manics.model.legacy.core.Comment;
 import com.cherrysoft.manics.web.legacy.request.comment.CommentRequest;
