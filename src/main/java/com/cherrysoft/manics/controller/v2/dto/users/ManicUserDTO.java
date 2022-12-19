@@ -4,6 +4,8 @@ import com.cherrysoft.manics.controller.v2.dto.validation.OnCreate;
 import com.cherrysoft.manics.controller.v2.dto.validation.Username;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import org.springframework.hateoas.RepresentationModel;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -11,7 +13,8 @@ import javax.validation.constraints.Null;
 import javax.validation.constraints.Size;
 
 @Data
-public class ManicUserDTO {
+@EqualsAndHashCode(callSuper = false)
+public class ManicUserDTO extends RepresentationModel<ManicUserDTO> {
   @Null
   @JsonProperty(access = JsonProperty.Access.READ_ONLY)
   private final Long id;
