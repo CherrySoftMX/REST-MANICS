@@ -37,6 +37,12 @@ public class ManicUserService {
         .orElseThrow(() -> new UserNotFoundException(username));
   }
 
+  public void ensureUserExistByUsername(String username) {
+    if (!userRepository.existsByUsername(username)) {
+      throw new UserNotFoundException(username);
+    }
+  }
+
   public ManicUser createUser(ManicUser newUser) {
     ensureUniqueUsername(newUser.getUsername());
     newUser.addRoles(Set.of(ManicUserRole.NORMAL));
