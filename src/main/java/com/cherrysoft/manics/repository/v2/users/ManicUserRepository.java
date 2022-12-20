@@ -13,6 +13,8 @@ public interface ManicUserRepository extends JpaRepository<ManicUser, Long> {
 
   Optional<ManicUser> findByUsername(String username);
 
+  boolean existsByUsername(String username);
+
   @Query("FROM ManicUser m JOIN m.likes cartoon WHERE cartoon.id = :cartoonId")
   List<ManicUser> getLikedBy(Long cartoonId);
 
