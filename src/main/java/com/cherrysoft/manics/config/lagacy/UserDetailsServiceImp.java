@@ -1,4 +1,4 @@
-package com.cherrysoft.manics.config;
+package com.cherrysoft.manics.config.lagacy;
 
 import com.cherrysoft.manics.exception.legacy.NotFoundException;
 import com.cherrysoft.manics.model.legacy.auth.User;

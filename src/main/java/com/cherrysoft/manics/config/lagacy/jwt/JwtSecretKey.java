@@ -1,4 +1,4 @@
-package com.cherrysoft.manics.config.jwt;
+package com.cherrysoft.manics.config.lagacy.jwt;
 
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Autowired;

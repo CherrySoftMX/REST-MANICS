@@ -1,4 +1,4 @@
-package com.cherrysoft.manics.config.jwt;
+package com.cherrysoft.manics.config.lagacy.jwt;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;

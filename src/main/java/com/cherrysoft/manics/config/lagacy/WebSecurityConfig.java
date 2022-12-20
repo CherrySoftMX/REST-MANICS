@@ -1,23 +1,17 @@
-package com.cherrysoft.manics.config;
+package com.cherrysoft.manics.config.lagacy;
 
-import com.cherrysoft.manics.config.jwt.JwtConfig;
-import com.cherrysoft.manics.config.jwt.JwtTokenVerifier;
-import com.cherrysoft.manics.config.jwt.JwtUserAuthenticationFilter;
-import com.cherrysoft.manics.config.jwt.JwtUtils;
+import com.cherrysoft.manics.config.lagacy.jwt.JwtConfig;
+import com.cherrysoft.manics.config.lagacy.jwt.JwtTokenVerifier;
+import com.cherrysoft.manics.config.lagacy.jwt.JwtUserAuthenticationFilter;
+import com.cherrysoft.manics.config.lagacy.jwt.JwtUtils;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-@Configuration
-@EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
   private final PasswordEncoder passwordEncoder;
   private final UserDetailsServiceImp userDetailsService;
