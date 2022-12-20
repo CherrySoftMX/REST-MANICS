@@ -1,4 +1,4 @@
-package com.cherrysoft.manics.config.jwt;
+package com.cherrysoft.manics.config.lagacy.jwt;
 
 
 import com.cherrysoft.manics.web.legacy.request.user.UserRequest;

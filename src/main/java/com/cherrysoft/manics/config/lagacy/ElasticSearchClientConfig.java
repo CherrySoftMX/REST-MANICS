@@ -1,4 +1,4 @@
-package com.cherrysoft.manics.config;
+package com.cherrysoft.manics.config.lagacy;
 
 import org.elasticsearch.client.RestHighLevelClient;
 import org.springframework.context.annotation.Bean;

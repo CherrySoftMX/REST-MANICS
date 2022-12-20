@@ -1,14 +1,15 @@
 package com.cherrysoft.manics.web.v2.controller.users;
 
-import com.cherrysoft.manics.web.v2.dto.users.ManicUserDTO;
-import com.cherrysoft.manics.web.v2.dto.users.ManicUserRoleSetDTO;
-import com.cherrysoft.manics.web.v2.mapper.v2.ManicUserMapper;
 import com.cherrysoft.manics.model.v2.auth.ManicUser;
 import com.cherrysoft.manics.model.v2.auth.ManicUserRole;
 import com.cherrysoft.manics.model.v2.specs.UpdateUserRolesSpec;
 import com.cherrysoft.manics.service.v2.users.ManicUserRoleService;
+import com.cherrysoft.manics.web.v2.dto.users.ManicUserDTO;
+import com.cherrysoft.manics.web.v2.dto.users.ManicUserRoleSetDTO;
+import com.cherrysoft.manics.web.v2.mapper.v2.ManicUserMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -17,6 +18,7 @@ import java.util.Set;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping(ManicUserController.BASE_URL)
+@PreAuthorize("hasRole('ROLE_ADMIN')")
 public class ManicUserRoleController {
   private final ManicUserRoleService roleService;
   private final ManicUserMapper mapper;

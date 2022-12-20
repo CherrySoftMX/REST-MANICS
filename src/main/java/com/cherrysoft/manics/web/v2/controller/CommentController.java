@@ -1,14 +1,17 @@
 package com.cherrysoft.manics.web.v2.controller;
 
-import com.cherrysoft.manics.web.v2.dto.CommentDTO;
-import com.cherrysoft.manics.web.v2.dto.validation.OnCreate;
-import com.cherrysoft.manics.web.v2.mapper.v2.CommentMapperV2;
 import com.cherrysoft.manics.model.v2.CommentV2;
 import com.cherrysoft.manics.model.v2.specs.CommentFilterSpec;
 import com.cherrysoft.manics.model.v2.specs.CreateCommentSpec;
+import com.cherrysoft.manics.security.SecurityManicUser;
 import com.cherrysoft.manics.service.v2.CommentServiceV2;
+import com.cherrysoft.manics.web.v2.dto.CommentDTO;
+import com.cherrysoft.manics.web.v2.dto.validation.OnCreate;
+import com.cherrysoft.manics.web.v2.mapper.v2.CommentMapperV2;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,7 +38,9 @@ public class CommentController {
 
   @PostMapping
   @Validated(OnCreate.class)
+  @PreAuthorize("#loggedUser.id == #userId")
   public ResponseEntity<CommentDTO> createComment(
+      @AuthenticationPrincipal SecurityManicUser loggedUser,
       @RequestParam Long cartoonId,
       @RequestParam Long userId,
       @RequestBody @Valid CommentDTO commentDto
@@ -47,8 +52,11 @@ public class CommentController {
   }
 
   @PatchMapping("/{id}")
+  @PreAuthorize("#loggedUser.id == #userId")
   public ResponseEntity<CommentDTO> updateComment(
+      @AuthenticationPrincipal SecurityManicUser loggedUser,
       @PathVariable Long id,
+      @RequestParam Long userId,
       @RequestBody @Valid CommentDTO commentDto
   ) {
     CommentV2 updatedComment = mapper.toComment(commentDto);
@@ -57,6 +65,7 @@ public class CommentController {
   }
 
   @DeleteMapping("/{id}")
+  @PreAuthorize("hasRole('ROLE_ADMIN')")
   public ResponseEntity<CommentDTO> deleteComment(@PathVariable Long id) {
     CommentV2 result = commentService.deleteComment(id);
     return ResponseEntity.ok(mapper.toDto(result));

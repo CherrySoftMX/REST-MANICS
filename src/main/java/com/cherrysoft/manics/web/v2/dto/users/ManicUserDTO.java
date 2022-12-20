@@ -20,19 +20,19 @@ public class ManicUserDTO extends RepresentationModel<ManicUserDTO> {
   private final Long id;
 
   @Username
-  @NotBlank(groups = {OnCreate.class}, message = "A username is required.")
+  @NotBlank(message = "A username is required.", groups = OnCreate.class)
   private final String username;
-
-  @Email
-  @NotBlank(groups = OnCreate.class, message = "An email is required.")
-  private final String email;
 
   @Size(
       min = 6,
       max = 16,
       message = "Password must be between {min} and {max} chars."
   )
-  @NotBlank(groups = {OnCreate.class}, message = "A password is required.")
+  @NotBlank(message = "A password is required.", groups = OnCreate.class)
   @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
   private final String password;
+
+  @Email
+  @NotBlank(message = "An email is required.", groups = OnCreate.class)
+  private final String email;
 }

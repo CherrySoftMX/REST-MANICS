@@ -1,12 +1,12 @@
 package com.cherrysoft.manics.web.v2.hateoas.processors;
 
+import com.cherrysoft.manics.service.v2.BookmarkService;
+import com.cherrysoft.manics.service.v2.LikeService;
 import com.cherrysoft.manics.web.v2.controller.BookmarkController;
 import com.cherrysoft.manics.web.v2.controller.CommentController;
 import com.cherrysoft.manics.web.v2.controller.LikeController;
 import com.cherrysoft.manics.web.v2.controller.SuggestionController;
 import com.cherrysoft.manics.web.v2.dto.users.ManicUserDTO;
-import com.cherrysoft.manics.service.v2.BookmarkService;
-import com.cherrysoft.manics.service.v2.LikeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.server.RepresentationModelProcessor;
@@ -42,13 +42,13 @@ public class ManicUserModelProcessor implements RepresentationModelProcessor<Man
 
   private Link selfLikesLink() {
     return WebMvcLinkBuilder.linkTo(methodOn(LikeController.class)
-        .getLikes(userModel.getId()))
+            .getLikes(userModel.getId()))
         .withRel("selfLikes");
   }
 
   private Link likeLink() {
     return linkTo(methodOn(LikeController.class)
-        .like(null, userModel.getId())).withRel("like");
+        .like(null, null, userModel.getId())).withRel("like");
   }
 
   private Link selfBookmarksLink() {
@@ -58,17 +58,17 @@ public class ManicUserModelProcessor implements RepresentationModelProcessor<Man
 
   private Link bookmarkLink() {
     return linkTo(methodOn(BookmarkController.class)
-        .bookmark(null, userModel.getId())).withRel("bookmark");
+        .bookmark(null, null, userModel.getId())).withRel("bookmark");
   }
 
   private Link commentLink() {
     return linkTo(methodOn(CommentController.class)
-        .createComment(null, userModel.getId(), null)).withRel("comment");
+        .createComment(null, null, userModel.getId(), null)).withRel("comment");
   }
 
   private Link suggestLink() {
     return WebMvcLinkBuilder.linkTo(methodOn(SuggestionController.class)
-        .createSuggestion(userModel.getId(), null)).withRel("suggest");
+        .createSuggestion(null, userModel.getId(), null)).withRel("suggest");
   }
 
 }

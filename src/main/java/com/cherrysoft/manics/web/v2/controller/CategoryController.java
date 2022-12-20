@@ -1,12 +1,13 @@
 package com.cherrysoft.manics.web.v2.controller;
 
+import com.cherrysoft.manics.model.v2.CategoryV2;
+import com.cherrysoft.manics.service.v2.CategoryServiceV2;
 import com.cherrysoft.manics.web.v2.dto.CategoryDTO;
 import com.cherrysoft.manics.web.v2.dto.validation.OnCreate;
 import com.cherrysoft.manics.web.v2.mapper.v2.CategoryMapperV2;
-import com.cherrysoft.manics.model.v2.CategoryV2;
-import com.cherrysoft.manics.service.v2.CategoryServiceV2;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,6 +29,7 @@ public class CategoryController {
 
   @PostMapping
   @Validated(OnCreate.class)
+  @PreAuthorize("hasRole('ROLE_ADMIN')")
   public ResponseEntity<CategoryDTO> createCategory(@RequestBody @Valid CategoryDTO categoryDto) {
     CategoryV2 newCategory = mapper.toCategory(categoryDto);
     CategoryV2 result = categoryService.createCategory(newCategory);
@@ -35,6 +37,7 @@ public class CategoryController {
   }
 
   @PatchMapping("/{id}")
+  @PreAuthorize("hasRole('ROLE_ADMIN')")
   public ResponseEntity<CategoryDTO> updateCategory(
       @PathVariable Long id,
       @RequestBody @Valid CategoryDTO categoryDto
@@ -45,6 +48,7 @@ public class CategoryController {
   }
 
   @DeleteMapping("/{id}")
+  @PreAuthorize("hasRole('ROLE_ADMIN')")
   public ResponseEntity<CategoryDTO> deleteCategory(@PathVariable Long id) {
     CategoryV2 result = categoryService.deleteCategory(id);
     return ResponseEntity.ok(mapper.toDto(result));

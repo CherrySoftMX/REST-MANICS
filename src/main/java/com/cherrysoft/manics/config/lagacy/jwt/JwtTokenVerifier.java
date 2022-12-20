@@ -1,4 +1,4 @@
-package com.cherrysoft.manics.config.jwt;
+package com.cherrysoft.manics.config.lagacy.jwt;
 
 import com.google.common.base.Strings;
 import com.cherrysoft.manics.exception.legacy.InvalidJwtTokenException;
