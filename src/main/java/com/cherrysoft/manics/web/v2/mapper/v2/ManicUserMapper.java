@@ -1,7 +1,7 @@
 package com.cherrysoft.manics.web.v2.mapper.v2;
 
-import com.cherrysoft.manics.web.v2.dto.users.ManicUserDTO;
 import com.cherrysoft.manics.model.v2.auth.ManicUser;
+import com.cherrysoft.manics.web.v2.dto.users.ManicUserDTO;
 import org.mapstruct.Mapper;
 
 import java.util.List;
