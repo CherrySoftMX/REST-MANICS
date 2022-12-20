@@ -1,9 +1,9 @@
 package com.cherrysoft.manics.web.v2.hateoas.assemblers;
 
-import com.cherrysoft.manics.web.v2.dto.users.ManicUserDTO;
-import com.cherrysoft.manics.web.v2.controller.users.ManicUserController;
-import com.cherrysoft.manics.web.v2.mapper.v2.ManicUserMapper;
 import com.cherrysoft.manics.model.v2.auth.ManicUser;
+import com.cherrysoft.manics.web.v2.controller.users.ManicUserController;
+import com.cherrysoft.manics.web.v2.dto.users.ManicUserDTO;
+import com.cherrysoft.manics.web.v2.mapper.v2.ManicUserMapper;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.mediatype.Affordances;
 import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSupport;
@@ -52,7 +52,7 @@ public class ManicUserModelAssembler
   public Link selfByUsernameLink() {
     return withUpdateAndDeleteAffordances(
         linkTo(methodOn(ManicUserController.class)
-            .getUserByUsername(entity.getUsername())).withSelfRel()
+            .getUserByUsername(null, entity.getUsername())).withSelfRel()
     );
   }
 
@@ -69,12 +69,12 @@ public class ManicUserModelAssembler
 
   public Link selfUpdateLink() {
     return linkTo(methodOn(ManicUserController.class)
-        .updateUser(entity.getId(), null)).withRel("selfUpdate");
+        .updateUser(null, entity.getId(), null)).withRel("selfUpdate");
   }
 
   public Link selfDeleteLink() {
     return linkTo(methodOn(ManicUserController.class)
-        .deleteUser(entity.getId())).withRel("selfDelete");
+        .deleteUser(null, entity.getId())).withRel("selfDelete");
   }
 
 }

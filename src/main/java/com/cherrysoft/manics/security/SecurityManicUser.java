@@ -3,23 +3,28 @@ package com.cherrysoft.manics.security;
 import com.cherrysoft.manics.model.v2.auth.ManicUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
-import java.util.Collections;
+
+import static java.util.stream.Collectors.toList;
 
 @RequiredArgsConstructor
 public class SecurityManicUser implements UserDetails {
   private final ManicUser manicUser;
 
-  public SecurityManicUser(String username) {
-    this.manicUser = new ManicUser();
-    this.manicUser.setUsername(username);
-  }
-
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
-    return Collections.emptyList();
+    return manicUser.getRoles().stream()
+        .map(Enum::name)
+        .map(role -> "ROLE_" + role)
+        .map(SimpleGrantedAuthority::new)
+        .collect(toList());
+  }
+
+  public Long getId() {
+    return manicUser.getId();
   }
 
   @Override

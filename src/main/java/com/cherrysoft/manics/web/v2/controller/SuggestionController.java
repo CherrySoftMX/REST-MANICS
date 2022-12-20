@@ -1,11 +1,14 @@
 package com.cherrysoft.manics.web.v2.controller;
 
+import com.cherrysoft.manics.model.v2.SuggestionV2;
+import com.cherrysoft.manics.security.SecurityManicUser;
+import com.cherrysoft.manics.service.v2.SuggestionServiceV2;
 import com.cherrysoft.manics.web.v2.dto.SuggestionDTO;
 import com.cherrysoft.manics.web.v2.mapper.v2.SuggestionMapper;
-import com.cherrysoft.manics.model.v2.SuggestionV2;
-import com.cherrysoft.manics.service.v2.SuggestionServiceV2;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -20,19 +23,30 @@ public class SuggestionController {
   private final SuggestionMapper mapper;
 
   @GetMapping
-  public ResponseEntity<List<SuggestionDTO>> getSuggestionOfUser(@RequestParam Long userId) {
+  @PreAuthorize("hasRole('ROLE_ADMIN') or #loggedUser.id == #userId")
+  public ResponseEntity<List<SuggestionDTO>> getSuggestionOfUser(
+      @AuthenticationPrincipal SecurityManicUser loggedUser,
+      @RequestParam Long userId
+  ) {
     List<SuggestionV2> result = suggestionService.getSuggestionsOfUsers(userId);
     return ResponseEntity.ok(mapper.toDtoList(result));
   }
 
   @GetMapping("/{id}")
-  public ResponseEntity<SuggestionDTO> getSuggestion(@PathVariable Long id) {
+  @PreAuthorize("hasRole('ROLE_ADMIN') or #loggedUser.id == #userId")
+  public ResponseEntity<SuggestionDTO> getSuggestion(
+      @AuthenticationPrincipal SecurityManicUser loggedUser,
+      @PathVariable Long id,
+      @RequestParam Long userId
+  ) {
     SuggestionV2 suggestion = suggestionService.getSuggestion(id);
     return ResponseEntity.ok(mapper.toDto(suggestion));
   }
 
   @PostMapping
+  @PreAuthorize("#loggedUser.id == #userId")
   public ResponseEntity<SuggestionDTO> createSuggestion(
+      @AuthenticationPrincipal SecurityManicUser loggedUser,
       @RequestParam Long userId,
       @RequestBody @Valid SuggestionDTO suggestionDto
   ) {
@@ -42,8 +56,11 @@ public class SuggestionController {
   }
 
   @PatchMapping("/{id}")
+  @PreAuthorize("#loggedUser.id == #userId")
   public ResponseEntity<SuggestionDTO> updateSuggestion(
+      @AuthenticationPrincipal SecurityManicUser loggedUser,
       @PathVariable Long id,
+      @RequestParam Long userId,
       @RequestBody @Valid SuggestionDTO suggestionDto
   ) {
     SuggestionV2 updatedSuggestion = mapper.toSuggestion(suggestionDto);
@@ -52,7 +69,12 @@ public class SuggestionController {
   }
 
   @DeleteMapping("/{id}")
-  public ResponseEntity<SuggestionDTO> deleteSuggestion(@PathVariable Long id) {
+  @PreAuthorize("hasRole('ROLE_ADMIN') or #loggedUser.id == #userId")
+  public ResponseEntity<SuggestionDTO> deleteSuggestion(
+      @AuthenticationPrincipal SecurityManicUser loggedUser,
+      @PathVariable Long id,
+      @RequestParam Long userId
+  ) {
     SuggestionV2 suggestion = suggestionService.deleteSuggestion(id);
     return ResponseEntity.ok(mapper.toDto(suggestion));
   }

@@ -1,12 +1,13 @@
 package com.cherrysoft.manics.web.v2.controller;
 
+import com.cherrysoft.manics.model.v2.PageV2;
+import com.cherrysoft.manics.service.v2.PageServiceV2;
 import com.cherrysoft.manics.web.v2.dto.pages.PageDTO;
 import com.cherrysoft.manics.web.v2.dto.validation.OnCreate;
 import com.cherrysoft.manics.web.v2.mapper.v2.PageMapperV2;
-import com.cherrysoft.manics.model.v2.PageV2;
-import com.cherrysoft.manics.service.v2.PageServiceV2;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -37,6 +38,7 @@ public class PageController {
 
   @PostMapping
   @Validated(OnCreate.class)
+  @PreAuthorize("hasRole('ROLE_ADMIN')")
   public ResponseEntity<PageDTO> createPage(
       @RequestParam Long chapterId,
       @RequestBody @Valid PageDTO pageDto
@@ -47,6 +49,7 @@ public class PageController {
   }
 
   @PatchMapping("/{id}")
+  @PreAuthorize("hasRole('ROLE_ADMIN')")
   public ResponseEntity<PageDTO> updatePage(
       @PathVariable Long id,
       @RequestBody @Valid PageDTO pageDto
@@ -57,6 +60,7 @@ public class PageController {
   }
 
   @DeleteMapping("/{id}")
+  @PreAuthorize("hasRole('ROLE_ADMIN')")
   public ResponseEntity<PageDTO> deletePage(
       @PathVariable Long id
   ) {

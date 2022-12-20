@@ -1,15 +1,18 @@
 package com.cherrysoft.manics.web.v2.controller;
 
+import com.cherrysoft.manics.model.v2.BookmarkedResult;
+import com.cherrysoft.manics.model.v2.Cartoon;
+import com.cherrysoft.manics.model.v2.specs.BookmarkSpec;
+import com.cherrysoft.manics.security.SecurityManicUser;
+import com.cherrysoft.manics.service.v2.BookmarkService;
 import com.cherrysoft.manics.web.v2.dto.BookmarkedResultDTO;
 import com.cherrysoft.manics.web.v2.dto.cartoons.CartoonResponseDTO;
 import com.cherrysoft.manics.web.v2.mapper.v2.BookmarkedResultMapper;
 import com.cherrysoft.manics.web.v2.mapper.v2.CartoonMapper;
-import com.cherrysoft.manics.model.v2.BookmarkedResult;
-import com.cherrysoft.manics.model.v2.Cartoon;
-import com.cherrysoft.manics.model.v2.specs.BookmarkSpec;
-import com.cherrysoft.manics.service.v2.BookmarkService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -32,7 +35,9 @@ public class BookmarkController {
   }
 
   @PostMapping
+  @PreAuthorize("#loggedUser.id == #userId")
   public ResponseEntity<BookmarkedResultDTO> bookmark(
+      @AuthenticationPrincipal SecurityManicUser loggedUser,
       @RequestParam Long cartoonId,
       @RequestParam Long userId
   ) {
