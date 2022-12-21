@@ -1,5 +1,7 @@
 package com.cherrysoft.manics.security;
 
+import com.cherrysoft.manics.security.logging.BearerTokenAccessDeniedLoggingHandler;
+import com.cherrysoft.manics.security.logging.BearerTokenAuthenticationLoggingEntryPoint;
 import com.cherrysoft.manics.security.service.ManicUserDetailsService;
 import com.cherrysoft.manics.security.utils.KeyUtils;
 import com.nimbusds.jose.jwk.JWK;
@@ -23,8 +25,6 @@ import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationProvider;
-import org.springframework.security.oauth2.server.resource.web.BearerTokenAuthenticationEntryPoint;
-import org.springframework.security.oauth2.server.resource.web.access.BearerTokenAccessDeniedHandler;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
@@ -65,8 +65,8 @@ public class SecurityConfig {
             oauth2.jwt(jwt -> jwt.jwtAuthenticationConverter(jwtToUserConverter))
         )
         .exceptionHandling((exceptions) -> exceptions
-            .authenticationEntryPoint(new BearerTokenAuthenticationEntryPoint())
-            .accessDeniedHandler(new BearerTokenAccessDeniedHandler())
+            .authenticationEntryPoint(new BearerTokenAuthenticationLoggingEntryPoint())
+            .accessDeniedHandler(new BearerTokenAccessDeniedLoggingHandler())
         )
         .build();
   }

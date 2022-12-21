@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.springframework.hateoas.RepresentationModel;
+import org.springframework.lang.NonNull;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -35,4 +36,16 @@ public class ManicUserDTO extends RepresentationModel<ManicUserDTO> {
   @Email
   @NotBlank(message = "An email is required.", groups = OnCreate.class)
   private final String email;
+
+  @Override
+  @NonNull
+  public String toString() {
+    return "ManicUserDTO{" +
+        "id=" + id +
+        ", username='" + username + '\'' +
+        ", password='" + "*******" + '\'' +
+        ", email='" + email + '\'' +
+        '}';
+  }
+
 }
