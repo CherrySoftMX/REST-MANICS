@@ -1,4 +1,6 @@
 HELP.md
+logs/
+access-refresh-token-keys/
 target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
