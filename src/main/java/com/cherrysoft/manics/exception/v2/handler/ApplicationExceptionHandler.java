@@ -59,6 +59,11 @@ public class ApplicationExceptionHandler {
     return throwCustomException(e, HttpStatus.BAD_REQUEST);
   }
 
+  @ExceptionHandler(SuggestionNotFoundException.class)
+  public ResponseEntity<Object> appExceptionHandler(final SuggestionNotFoundException e) {
+    return throwCustomException(e, HttpStatus.NOT_FOUND);
+  }
+
   private ResponseEntity<Object> throwCustomException(final RuntimeException e, final HttpStatus status) {
     return new ResponseEntity<>(new ErrorResponse(e, status), status);
   }
