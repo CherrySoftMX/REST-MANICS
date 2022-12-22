@@ -2,6 +2,7 @@ package com.cherrysoft.manics.repository.v2;
 
 import com.cherrysoft.manics.model.v2.Cartoon;
 import com.cherrysoft.manics.model.v2.CartoonType;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -32,6 +33,6 @@ public interface CartoonRepository extends JpaRepository<Cartoon, Long> {
   List<Cartoon> getLikes(Long userId);
 
   @Query("FROM Cartoon c JOIN c.bookmarkedBy user WHERE user.id = :userId")
-  List<Cartoon> getBookmarks(Long userId);
+  List<Cartoon> getBookmarks(Long userId, Pageable pageable);
 
 }

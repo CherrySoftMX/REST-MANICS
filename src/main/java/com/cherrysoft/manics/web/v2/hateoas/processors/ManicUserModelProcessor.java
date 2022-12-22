@@ -53,7 +53,7 @@ public class ManicUserModelProcessor implements RepresentationModelProcessor<Man
 
   private Link selfBookmarksLink() {
     return WebMvcLinkBuilder.linkTo(methodOn(BookmarkController.class)
-        .getBookmarks(userModel.getId())).withRel("selfBookmarks");
+        .getBookmarks(userModel.getId(), null)).withRel("selfBookmarks");
   }
 
   private Link bookmarkLink() {

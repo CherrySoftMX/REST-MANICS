@@ -10,6 +10,8 @@ import com.cherrysoft.manics.web.v2.dto.cartoons.CartoonResponseDTO;
 import com.cherrysoft.manics.web.v2.mapper.v2.BookmarkedResultMapper;
 import com.cherrysoft.manics.web.v2.mapper.v2.CartoonMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -28,9 +30,10 @@ public class BookmarkController {
 
   @GetMapping("/user")
   public ResponseEntity<List<CartoonResponseDTO>> getBookmarks(
-      @RequestParam Long userId
+      @RequestParam Long userId,
+      @PageableDefault Pageable pageable
   ) {
-    List<Cartoon> result = bookmarkService.getBookmarks(userId);
+    List<Cartoon> result = bookmarkService.getBookmarks(userId, pageable);
     return ResponseEntity.ok(cartoonMapper.toReponseDtoList(result));
   }
 
