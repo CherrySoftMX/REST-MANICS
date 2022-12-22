@@ -7,6 +7,7 @@ import com.cherrysoft.manics.model.v2.specs.BookmarkSpec;
 import com.cherrysoft.manics.repository.v2.CartoonRepository;
 import com.cherrysoft.manics.service.v2.users.ManicUserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,8 +20,8 @@ public class BookmarkService {
   private final CartoonService cartoonService;
   private final CartoonRepository cartoonRepository;
 
-  public List<Cartoon> getBookmarks(Long userId) {
-    return cartoonRepository.getBookmarks(userId);
+  public List<Cartoon> getBookmarks(Long userId, Pageable pageable) {
+    return cartoonRepository.getBookmarks(userId, pageable);
   }
 
   public boolean userHasBookmarkedAnyCartoon(Long userId) {

@@ -7,6 +7,9 @@ import com.cherrysoft.manics.web.v2.dto.chapters.ChapterResponseDTO;
 import com.cherrysoft.manics.web.v2.dto.validation.OnCreate;
 import com.cherrysoft.manics.web.v2.mapper.v2.ChapterMapperV2;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.data.web.SortDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
@@ -31,9 +34,10 @@ public class ChapterController {
 
   @GetMapping
   public ResponseEntity<List<ChapterResponseDTO>> getCartoonChapters(
-      @RequestParam Long cartoonId
+      @RequestParam Long cartoonId,
+      @PageableDefault @SortDefault(sort = "publicationDate") Pageable pageable
   ) {
-    List<ChapterV2> result = chapterService.getCartoonChapters(cartoonId);
+    List<ChapterV2> result = chapterService.getCartoonChapters(cartoonId, pageable);
     return ResponseEntity.ok(mapper.toResponseListDto(result));
   }
 

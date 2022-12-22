@@ -6,6 +6,7 @@ import com.cherrysoft.manics.model.v2.auth.ManicUser;
 import com.cherrysoft.manics.repository.v2.SuggestionRepositoryV2;
 import com.cherrysoft.manics.repository.v2.users.ManicUserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -22,8 +23,8 @@ public class SuggestionServiceV2 {
         .orElseThrow(() -> new SuggestionNotFoundException(id));
   }
 
-  public List<SuggestionV2> getSuggestionsOfUsers(Long userId) {
-    return suggestionRepository.findAllSuggestionsOfUser(userId);
+  public List<SuggestionV2> getSuggestionsOfUser(Long userId, Pageable pageable) {
+    return suggestionRepository.findAllSuggestionsOfUser(userId, pageable);
   }
 
   public SuggestionV2 createSuggestion(Long userId, SuggestionV2 newSuggestion) {

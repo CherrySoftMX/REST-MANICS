@@ -7,6 +7,7 @@ import com.cherrysoft.manics.model.v2.specs.CartoonSpec;
 import com.cherrysoft.manics.repository.v2.CartoonRepository;
 import com.cherrysoft.manics.util.BeanUtils;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -34,8 +35,8 @@ public class CartoonService {
         .orElseThrow(() -> new CartoonNotFoundException(id, type));
   }
 
-  public List<Cartoon> getCartoons(CartoonType cartoonType) {
-    return cartoonRepository.findCartoonsByType(cartoonType);
+  public List<Cartoon> getCartoons(CartoonType cartoonType, Pageable pageable) {
+    return cartoonRepository.findCartoonsByType(cartoonType, pageable);
   }
 
   public Cartoon createCartoon(CartoonSpec spec) {

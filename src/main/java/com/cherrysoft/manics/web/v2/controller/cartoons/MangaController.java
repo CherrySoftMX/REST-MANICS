@@ -9,6 +9,9 @@ import com.cherrysoft.manics.web.v2.dto.cartoons.CartoonDTO;
 import com.cherrysoft.manics.web.v2.dto.cartoons.CartoonResponseDTO;
 import com.cherrysoft.manics.web.v2.dto.validation.OnCreate;
 import com.cherrysoft.manics.web.v2.mapper.v2.CartoonMapper;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.data.web.SortDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
@@ -27,8 +30,10 @@ public class MangaController extends CartoonController {
   }
 
   @GetMapping
-  public ResponseEntity<List<CartoonResponseDTO>> getMangas() {
-    return super.getCartoons(CartoonType.MANGA);
+  public ResponseEntity<List<CartoonResponseDTO>> getMangas(
+      @PageableDefault @SortDefault(sort = "name") Pageable pageable
+  ) {
+    return super.getCartoons(CartoonType.MANGA, pageable);
   }
 
   @PostMapping

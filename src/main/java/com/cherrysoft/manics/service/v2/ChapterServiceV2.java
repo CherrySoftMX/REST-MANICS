@@ -6,6 +6,7 @@ import com.cherrysoft.manics.model.v2.ChapterV2;
 import com.cherrysoft.manics.repository.v2.ChapterRepositoryV2;
 import com.cherrysoft.manics.util.BeanUtils;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -26,8 +27,8 @@ public class ChapterServiceV2 {
     return chapterRepository.getReferenceById(id);
   }
 
-  public List<ChapterV2> getCartoonChapters(Long cartoonId) {
-    return chapterRepository.findChapterV2sByCartoon_Id(cartoonId);
+  public List<ChapterV2> getCartoonChapters(Long cartoonId, Pageable pageable) {
+    return chapterRepository.findChapterV2sByCartoon_Id(cartoonId, pageable);
   }
 
   public ChapterV2 createChapter(Long cartoonId, ChapterV2 newChapter) {

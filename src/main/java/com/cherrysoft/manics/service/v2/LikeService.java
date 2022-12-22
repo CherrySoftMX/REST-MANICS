@@ -8,6 +8,7 @@ import com.cherrysoft.manics.repository.v2.CartoonRepository;
 import com.cherrysoft.manics.repository.v2.users.ManicUserRepository;
 import com.cherrysoft.manics.service.v2.users.ManicUserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,12 +22,12 @@ public class LikeService {
   private final CartoonService cartoonService;
   private final CartoonRepository cartoonRepository;
 
-  public List<ManicUser> getLikedBy(Long cartoonId) {
-    return userRepository.getLikedBy(cartoonId);
+  public List<ManicUser> getLikedBy(Long cartoonId, Pageable pageable) {
+    return userRepository.getLikedBy(cartoonId, pageable);
   }
 
-  public List<Cartoon> getLikes(Long userId) {
-    return cartoonRepository.getLikes(userId);
+  public List<Cartoon> getLikes(Long userId, Pageable pageable) {
+    return cartoonRepository.getLikes(userId, pageable);
   }
 
   public boolean userHasLikedAnyCartoon(Long userId) {
