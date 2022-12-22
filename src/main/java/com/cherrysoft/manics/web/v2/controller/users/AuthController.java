@@ -1,6 +1,7 @@
 package com.cherrysoft.manics.web.v2.controller.users;
 
 import com.cherrysoft.manics.model.v2.auth.ManicUser;
+import com.cherrysoft.manics.security.SecurityManicUser;
 import com.cherrysoft.manics.security.TokenGenerator;
 import com.cherrysoft.manics.service.v2.users.ManicUserService;
 import com.cherrysoft.manics.web.v2.dto.auth.LoginDTO;
@@ -20,7 +21,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
-import java.util.Collections;
 
 @RestController
 public class AuthController {
@@ -54,8 +54,9 @@ public class AuthController {
   @PostMapping("/register_v2")
   public ResponseEntity<TokenDTO> register(@RequestBody @Valid ManicUserDTO userDto) {
     ManicUser newUser = userMapper.toManicUser(userDto);
-    userService.createUser(newUser);
-    Authentication authentication = UsernamePasswordAuthenticationToken.authenticated(newUser, userDto.getPassword(), Collections.emptyList());
+    ManicUser result = userService.createUser(newUser);
+    SecurityManicUser securityUser = new SecurityManicUser(result);
+    Authentication authentication = UsernamePasswordAuthenticationToken.authenticated(securityUser, userDto.getPassword(), securityUser.getAuthorities());
     return ResponseEntity.ok(tokenGenerator.issueToken(authentication));
   }
 
