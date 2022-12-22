@@ -6,6 +6,7 @@ import com.cherrysoft.manics.model.v2.PageV2;
 import com.cherrysoft.manics.repository.v2.PageRepositoryV2;
 import com.cherrysoft.manics.util.BeanUtils;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,8 +23,8 @@ public class PageServiceV2 {
         .orElseThrow(() -> new PageNotFoundException(id));
   }
 
-  public List<PageV2> getChapterPages(Long chapterId) {
-    return pageRepository.findPageV2sByChapter_Id(chapterId);
+  public List<PageV2> getChapterPages(Long chapterId, Pageable pageable) {
+    return pageRepository.findPageV2sByChapter_Id(chapterId, pageable);
   }
 
   public PageV2 createPage(Long chapterId, PageV2 newPage) {
