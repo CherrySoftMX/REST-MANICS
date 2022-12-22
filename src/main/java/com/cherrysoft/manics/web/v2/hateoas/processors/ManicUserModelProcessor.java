@@ -42,7 +42,7 @@ public class ManicUserModelProcessor implements RepresentationModelProcessor<Man
 
   private Link selfLikesLink() {
     return WebMvcLinkBuilder.linkTo(methodOn(LikeController.class)
-            .getLikes(userModel.getId()))
+            .getLikes(userModel.getId(), null))
         .withRel("selfLikes");
   }
 

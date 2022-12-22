@@ -1,6 +1,7 @@
 package com.cherrysoft.manics.repository.v2.users;
 
 import com.cherrysoft.manics.model.v2.auth.ManicUser;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -16,6 +17,6 @@ public interface ManicUserRepository extends JpaRepository<ManicUser, Long> {
   boolean existsByUsername(String username);
 
   @Query("FROM ManicUser m JOIN m.likes cartoon WHERE cartoon.id = :cartoonId")
-  List<ManicUser> getLikedBy(Long cartoonId);
+  List<ManicUser> getLikedBy(Long cartoonId, Pageable pageable);
 
 }

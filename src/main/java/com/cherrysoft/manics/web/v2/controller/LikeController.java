@@ -13,6 +13,8 @@ import com.cherrysoft.manics.web.v2.mapper.v2.CartoonMapper;
 import com.cherrysoft.manics.web.v2.mapper.v2.LikedResultMapper;
 import com.cherrysoft.manics.web.v2.mapper.v2.ManicUserMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -32,17 +34,19 @@ public class LikeController {
 
   @GetMapping("/cartoon")
   public ResponseEntity<List<ManicUserDTO>> getLikedBy(
-      @RequestParam Long cartoonId
+      @RequestParam Long cartoonId,
+      @PageableDefault Pageable pageable
   ) {
-    List<ManicUser> result = likeService.getLikedBy(cartoonId);
+    List<ManicUser> result = likeService.getLikedBy(cartoonId, pageable);
     return ResponseEntity.ok(userMapper.toDtoList(result));
   }
 
   @GetMapping("/user")
   public ResponseEntity<List<CartoonResponseDTO>> getLikes(
-      @RequestParam Long userId
+      @RequestParam Long userId,
+      @PageableDefault Pageable pageable
   ) {
-    List<Cartoon> result = likeService.getLikes(userId);
+    List<Cartoon> result = likeService.getLikes(userId, pageable);
     return ResponseEntity.ok(cartoonMapper.toReponseDtoList(result));
   }
 

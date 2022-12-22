@@ -30,7 +30,7 @@ public interface CartoonRepository extends JpaRepository<Cartoon, Long> {
   boolean hasUserBookmarkedAnyCartoon(Long userId);
 
   @Query("FROM Cartoon c JOIN c.likedBy user WHERE user.id = :userId")
-  List<Cartoon> getLikes(Long userId);
+  List<Cartoon> getLikes(Long userId, Pageable pageable);
 
   @Query("FROM Cartoon c JOIN c.bookmarkedBy user WHERE user.id = :userId")
   List<Cartoon> getBookmarks(Long userId, Pageable pageable);
