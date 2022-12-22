@@ -15,7 +15,7 @@ public interface CartoonRepository extends JpaRepository<Cartoon, Long> {
 
   Optional<Cartoon> findCartoonByIdAndType(Long id, CartoonType type);
 
-  List<Cartoon> findCartoonsByType(CartoonType type);
+  List<Cartoon> findCartoonsByType(CartoonType type, Pageable pageable);
 
   @Query("SELECT COUNT(c) > 0 FROM Cartoon c JOIN c.likedBy user WHERE c.id = :cartoonId AND user.id = :userId")
   boolean isCartoonLikedBy(Long cartoonId, Long userId);
