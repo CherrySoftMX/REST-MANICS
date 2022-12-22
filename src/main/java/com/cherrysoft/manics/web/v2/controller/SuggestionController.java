@@ -6,6 +6,10 @@ import com.cherrysoft.manics.service.v2.SuggestionServiceV2;
 import com.cherrysoft.manics.web.v2.dto.SuggestionDTO;
 import com.cherrysoft.manics.web.v2.mapper.v2.SuggestionMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.data.web.SortDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -24,11 +28,12 @@ public class SuggestionController {
 
   @GetMapping
   @PreAuthorize("hasRole('ROLE_ADMIN') or #loggedUser.id == #userId")
-  public ResponseEntity<List<SuggestionDTO>> getSuggestionOfUser(
+  public ResponseEntity<List<SuggestionDTO>> getSuggestionsOfUser(
       @AuthenticationPrincipal SecurityManicUser loggedUser,
-      @RequestParam Long userId
+      @RequestParam Long userId,
+      @PageableDefault @SortDefault(sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable
   ) {
-    List<SuggestionV2> result = suggestionService.getSuggestionsOfUsers(userId);
+    List<SuggestionV2> result = suggestionService.getSuggestionsOfUser(userId, pageable);
     return ResponseEntity.ok(mapper.toDtoList(result));
   }
 

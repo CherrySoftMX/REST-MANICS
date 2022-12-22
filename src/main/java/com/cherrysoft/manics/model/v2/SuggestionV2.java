@@ -30,7 +30,7 @@ public class SuggestionV2 {
   @Column(nullable = false, updatable = false)
   @CreationTimestamp
   @Temporal(TemporalType.TIMESTAMP)
-  private Calendar creationDate;
+  private Calendar createdAt;
 
   @Override
   public boolean equals(Object o) {
