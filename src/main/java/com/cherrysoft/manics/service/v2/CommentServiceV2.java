@@ -33,20 +33,20 @@ public class CommentServiceV2 {
       throw new AmbiguousFilterException("Either userId or cartoonId (NOT both) MUST be provided.");
     }
     if (filterSpec.filterByUserComments()) {
-      return getUserComments(filterSpec.getUserId());
+      return getUserComments(filterSpec);
     }
     if (filterSpec.filterByCartoonComments()) {
-      return getCartoonComments(filterSpec.getCartoonId());
+      return getCartoonComments(filterSpec);
     }
     return List.of();
   }
 
-  public List<CommentV2> getCartoonComments(Long cartoonId) {
-    return commentRepository.findCommentV2sByCartoon_Id(cartoonId);
+  public List<CommentV2> getCartoonComments(CommentFilterSpec spec) {
+    return commentRepository.findCommentV2sByCartoon_Id(spec.getCartoonId(), spec.getPageable());
   }
 
-  public List<CommentV2> getUserComments(Long userId) {
-    return commentRepository.findCommentV2sByUser_Id(userId);
+  public List<CommentV2> getUserComments(CommentFilterSpec spec) {
+    return commentRepository.findCommentV2sByUser_Id(spec.getUserId(), spec.getPageable());
   }
 
   public CommentV2 createComment(CreateCommentSpec spec) {

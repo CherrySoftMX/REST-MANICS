@@ -9,6 +9,10 @@ import com.cherrysoft.manics.web.v2.dto.CommentDTO;
 import com.cherrysoft.manics.web.v2.dto.validation.OnCreate;
 import com.cherrysoft.manics.web.v2.mapper.v2.CommentMapperV2;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.data.web.SortDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -29,9 +33,11 @@ public class CommentController {
 
   @GetMapping
   public ResponseEntity<List<CommentDTO>> getComments(
-      @RequestParam Map<String, String> params
+      @RequestParam Map<String, String> params,
+      @PageableDefault @SortDefault(sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable
   ) {
-    var filterSpec = new CommentFilterSpec(params);
+    System.out.println(pageable);
+    var filterSpec = new CommentFilterSpec(params, pageable);
     List<CommentV2> result = commentService.getComments(filterSpec);
     return ResponseEntity.ok(mapper.toDtoList(result));
   }

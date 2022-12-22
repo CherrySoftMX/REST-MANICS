@@ -1,6 +1,7 @@
 package com.cherrysoft.manics.model.v2.specs;
 
 import lombok.Data;
+import org.springframework.data.domain.Pageable;
 
 import java.util.Map;
 
@@ -9,6 +10,7 @@ import static java.util.Objects.nonNull;
 @Data
 public class CommentFilterSpec {
   private final Map<String, String> params;
+  private final Pageable pageable;
 
   public boolean ambiguousFiltering() {
     boolean bothFiltersSpecified = filterByCartoonComments() && filterByUserComments();
