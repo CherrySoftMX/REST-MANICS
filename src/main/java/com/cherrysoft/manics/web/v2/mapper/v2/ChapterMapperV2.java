@@ -1,8 +1,8 @@
 package com.cherrysoft.manics.web.v2.mapper.v2;
 
+import com.cherrysoft.manics.model.v2.ChapterV2;
 import com.cherrysoft.manics.web.v2.dto.chapters.ChapterDTO;
 import com.cherrysoft.manics.web.v2.dto.chapters.ChapterResponseDTO;
-import com.cherrysoft.manics.model.v2.ChapterV2;
 import org.mapstruct.InheritInverseConfiguration;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -14,6 +14,7 @@ import java.util.List;
 public interface ChapterMapperV2 {
 
   @Mappings({
+      @Mapping(target = "baseChapterFields.id", source = "id"),
       @Mapping(target = "baseChapterFields.name", source = "name"),
       @Mapping(target = "baseChapterFields.chapterNumber", source = "chapterNumber"),
       @Mapping(target = "baseChapterFields.totalPages", source = "totalPages"),
@@ -22,6 +23,7 @@ public interface ChapterMapperV2 {
   ChapterDTO toDto(ChapterV2 chapter);
 
   @Mappings({
+      @Mapping(target = "baseChapterFields.id", source = "id"),
       @Mapping(target = "baseChapterFields.name", source = "name"),
       @Mapping(target = "baseChapterFields.chapterNumber", source = "chapterNumber"),
       @Mapping(target = "baseChapterFields.totalPages", source = "totalPages"),
