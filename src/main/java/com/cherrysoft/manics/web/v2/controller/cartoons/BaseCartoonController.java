@@ -14,7 +14,7 @@ import org.springframework.http.ResponseEntity;
 import java.util.List;
 
 @RequiredArgsConstructor
-public abstract class CartoonController {
+public abstract class BaseCartoonController {
   protected final CartoonService cartoonService;
   protected final CartoonMapper mapper;
 
