@@ -37,8 +37,12 @@ public class ManicUserService {
         .orElseThrow(() -> new UserNotFoundException(username));
   }
 
+  public boolean userExistsByUsername(String username) {
+    return userRepository.existsByUsername(username);
+  }
+
   public void ensureUserExistByUsername(String username) {
-    if (!userRepository.existsByUsername(username)) {
+    if (!userExistsByUsername(username)) {
       throw new UserNotFoundException(username);
     }
   }
