@@ -10,8 +10,8 @@ import java.util.Arrays;
 
 public class ImageAnalysisUtils {
 
-  public static Double[] convertImgUrlToVector(String urlImage) throws IOException {
-    URL imageUrl = new URL(urlImage);
+  public static Double[] convertImgUrlToVector(String imgUrl) throws IOException {
+    URL imageUrl = new URL(imgUrl);
     MultidimensionalHistogram histogram;
     HistogramModel model = new HistogramModel(20);
     model.estimateModel(ImageUtilities.readMBF(imageUrl));
