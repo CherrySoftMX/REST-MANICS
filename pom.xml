@@ -21,7 +21,8 @@
   </description>
 
   <properties>
-    <java.version>11</java.version>
+    <java.version>17</java.version>
+    <maven.compiler.release>17</maven.compiler.release>
     <io.jsonwebtoken.version>0.11.5</io.jsonwebtoken.version>
     <guava.version>31.1-jre</guava.version>
     <org.mapstruct.version>1.5.3.Final</org.mapstruct.version>
