@@ -1,9 +1,9 @@
 package com.cherrysoft.manics.bootstrap;
 
-import com.cherrysoft.manics.exception.v2.user.UsernameAlreadyTakenException;
-import com.cherrysoft.manics.model.v2.auth.ManicUser;
-import com.cherrysoft.manics.model.v2.auth.ManicUserRole;
-import com.cherrysoft.manics.service.v2.users.ManicUserService;
+import com.cherrysoft.manics.exception.user.UsernameAlreadyTakenException;
+import com.cherrysoft.manics.model.auth.ManicUser;
+import com.cherrysoft.manics.model.auth.ManicUserRole;
+import com.cherrysoft.manics.service.users.ManicUserService;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.springframework.boot.ApplicationArguments;

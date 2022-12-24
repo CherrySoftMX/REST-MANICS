@@ -1,6 +1,6 @@
 package com.cherrysoft.manics.util;
 
-import com.cherrysoft.manics.exception.v2.ApplicationException;
+import com.cherrysoft.manics.exception.ApplicationException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.util.DefaultIndenter;
 import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;

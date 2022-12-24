@@ -1,6 +1,6 @@
 package com.cherrysoft.manics.config;
 
-import com.cherrysoft.manics.model.v2.ChapterV2;
+import com.cherrysoft.manics.model.Chapter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
@@ -19,7 +19,7 @@ public class JacksonConfig {
   @Bean
   public Jackson2ObjectMapperBuilderCustomizer jsonCustomizer() {
     return mapperBuilder -> {
-      var localDateFormatter = DateTimeFormatter.ofPattern(ChapterV2.MONTH_DAY_YEAR_PATTERN);
+      var localDateFormatter = DateTimeFormatter.ofPattern(Chapter.MONTH_DAY_YEAR_PATTERN);
       mapperBuilder.serializerByType(LocalDate.class, new LocalDateSerializer(localDateFormatter));
       mapperBuilder.deserializerByType(LocalDate.class, new LocalDateDeserializer(localDateFormatter));
     };
