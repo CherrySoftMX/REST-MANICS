@@ -1,6 +1,6 @@
 package com.cherrysoft.manics.security;
 
-import com.cherrysoft.manics.web.v2.dto.auth.TokenDTO;
+import com.cherrysoft.manics.web.dto.auth.TokenDTO;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;

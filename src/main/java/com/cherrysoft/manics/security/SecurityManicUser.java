@@ -1,6 +1,6 @@
 package com.cherrysoft.manics.security;
 
-import com.cherrysoft.manics.model.v2.auth.ManicUser;
+import com.cherrysoft.manics.model.auth.ManicUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

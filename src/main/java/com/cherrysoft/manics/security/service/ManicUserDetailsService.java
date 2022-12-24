@@ -1,8 +1,8 @@
 package com.cherrysoft.manics.security.service;
 
-import com.cherrysoft.manics.model.v2.auth.ManicUser;
+import com.cherrysoft.manics.model.auth.ManicUser;
 import com.cherrysoft.manics.security.SecurityManicUser;
-import com.cherrysoft.manics.service.v2.users.ManicUserService;
+import com.cherrysoft.manics.service.users.ManicUserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UserDetails;
