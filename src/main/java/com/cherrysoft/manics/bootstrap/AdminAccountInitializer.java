@@ -10,6 +10,7 @@ import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 
 import java.util.Set;
 
@@ -17,6 +18,7 @@ import java.util.Set;
 @ConfigurationProperties(prefix = "application.admin")
 @Setter
 @RequiredArgsConstructor
+@Profile("dev")
 public class AdminAccountInitializer implements ApplicationRunner {
   private final ManicUserService userService;
   private String defaultUsername;
