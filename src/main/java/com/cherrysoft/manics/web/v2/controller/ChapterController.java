@@ -26,6 +26,15 @@ public class ChapterController {
   private final ChapterServiceV2 chapterService;
   private final ChapterMapperV2 mapper;
 
+  @GetMapping("/search")
+  public ResponseEntity<List<ChapterResponseDTO>> searchChaptersByName(
+      @RequestParam String name,
+      @PageableDefault Pageable pageable
+  ) {
+    List<ChapterV2> searchResult = chapterService.searchChapterByName(name, pageable);
+    return ResponseEntity.ok(mapper.toResponseListDto(searchResult));
+  }
+
   @GetMapping("/{id}")
   public ResponseEntity<ChapterResponseDTO> getChapterById(@PathVariable Long id) {
     ChapterV2 result = chapterService.getChapterById(id);

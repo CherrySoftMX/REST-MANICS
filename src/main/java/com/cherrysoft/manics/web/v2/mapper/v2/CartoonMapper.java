@@ -1,8 +1,8 @@
 package com.cherrysoft.manics.web.v2.mapper.v2;
 
+import com.cherrysoft.manics.model.v2.Cartoon;
 import com.cherrysoft.manics.web.v2.dto.cartoons.CartoonDTO;
 import com.cherrysoft.manics.web.v2.dto.cartoons.CartoonResponseDTO;
-import com.cherrysoft.manics.model.v2.Cartoon;
 import org.mapstruct.InheritInverseConfiguration;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -17,7 +17,6 @@ import java.util.List;
 public interface CartoonMapper {
 
   @Mappings({
-      @Mapping(target = "baseCartoonFields.id", source = "id"),
       @Mapping(target = "baseCartoonFields.name", source = "name"),
       @Mapping(target = "baseCartoonFields.author", source = "author"),
       @Mapping(target = "baseCartoonFields.availableChapters", source = "availableChapters"),
@@ -26,7 +25,6 @@ public interface CartoonMapper {
   CartoonDTO toDto(Cartoon cartoon);
 
   @Mappings({
-      @Mapping(target = "baseCartoonFields.id", source = "id"),
       @Mapping(target = "baseCartoonFields.name", source = "name"),
       @Mapping(target = "baseCartoonFields.author", source = "author"),
       @Mapping(target = "baseCartoonFields.availableChapters", source = "availableChapters"),

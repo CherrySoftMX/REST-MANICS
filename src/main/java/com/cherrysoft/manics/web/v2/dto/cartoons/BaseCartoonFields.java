@@ -1,7 +1,6 @@
 package com.cherrysoft.manics.web.v2.dto.cartoons;
 
 import com.cherrysoft.manics.web.v2.dto.validation.OnCreate;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
@@ -10,9 +9,6 @@ import java.time.Year;
 
 @Data
 public class BaseCartoonFields {
-  @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-  private final Long id;
-
   @NotBlank(
       message = "The name of the cartoon MUST be provided.",
       groups = OnCreate.class

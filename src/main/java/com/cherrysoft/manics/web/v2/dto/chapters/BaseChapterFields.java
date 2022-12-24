@@ -1,7 +1,7 @@
 package com.cherrysoft.manics.web.v2.dto.chapters;
 
-import com.cherrysoft.manics.web.v2.dto.validation.OnCreate;
 import com.cherrysoft.manics.model.v2.ChapterV2;
+import com.cherrysoft.manics.web.v2.dto.validation.OnCreate;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 

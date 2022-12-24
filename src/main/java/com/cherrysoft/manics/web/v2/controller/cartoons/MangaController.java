@@ -22,7 +22,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(MangaController.BASE_URL)
-public class MangaController extends CartoonController {
+public class MangaController extends BaseCartoonController {
   public static final String BASE_URL = "/mangas_v2";
 
   public MangaController(CartoonService cartoonService, CartoonMapper mapper) {

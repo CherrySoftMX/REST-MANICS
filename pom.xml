@@ -21,12 +21,14 @@
   </description>
 
   <properties>
-    <java.version>11</java.version>
+    <java.version>17</java.version>
+    <maven.compiler.release>17</maven.compiler.release>
     <io.jsonwebtoken.version>0.11.5</io.jsonwebtoken.version>
     <guava.version>31.1-jre</guava.version>
     <org.mapstruct.version>1.5.3.Final</org.mapstruct.version>
     <lombok.version>1.18.24</lombok.version>
     <mysql-connector-java.version>8.0.31</mysql-connector-java.version>
+    <jakarta.json-api.version>2.1.1</jakarta.json-api.version>
   </properties>
 
   <dependencies>
@@ -43,6 +45,12 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-hateoas</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>jakarta.json</groupId>
+      <artifactId>jakarta.json-api</artifactId>
+      <version>${jakarta.json-api.version}</version>
     </dependency>
 
     <!-- Validations-->

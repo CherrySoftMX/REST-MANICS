@@ -97,6 +97,14 @@ public class Cartoon {
     }
   }
 
+  public void removeBookmarks() {
+    for (Iterator<ManicUser> iterator = getBookmarkedBy().iterator(); iterator.hasNext(); ) {
+      ManicUser user = iterator.next();
+      iterator.remove();
+      user.getBookmarks().remove(this);
+    }
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) {
