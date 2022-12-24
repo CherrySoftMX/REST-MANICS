@@ -1,24 +1,28 @@
 package com.cherrysoft.manics.config;
 
-import org.elasticsearch.client.RestHighLevelClient;
+import co.elastic.clients.elasticsearch.ElasticsearchClient;
+import co.elastic.clients.json.jackson.JacksonJsonpMapper;
+import co.elastic.clients.transport.ElasticsearchTransport;
+import co.elastic.clients.transport.rest_client.RestClientTransport;
+import org.apache.http.HttpHost;
+import org.elasticsearch.client.RestClient;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.elasticsearch.client.ClientConfiguration;
-import org.springframework.data.elasticsearch.client.RestClients;
-import org.springframework.data.elasticsearch.config.AbstractElasticsearchConfiguration;
 
 @Configuration
-public class ElasticSearchClientConfig extends AbstractElasticsearchConfiguration {
+public class ElasticSearchClientConfig {
+  @Value("${elastic.host}")
+  private String elasticHost;
+
+  @Value("${elastic.port}")
+  private int elasticPort;
 
   @Bean
-  @Override
-  public RestHighLevelClient elasticsearchClient() {
-    final ClientConfiguration clientConfiguration = ClientConfiguration
-        .builder()
-        .connectedTo("localhost:9200")
-        .build();
-
-    return RestClients.create(clientConfiguration).rest();
+  public ElasticsearchClient elasticClient() {
+    RestClient restClient = RestClient.builder(new HttpHost(elasticHost, elasticPort)).build();
+    ElasticsearchTransport transport = new RestClientTransport(restClient, new JacksonJsonpMapper());
+    return new ElasticsearchClient(transport);
   }
 
 }
