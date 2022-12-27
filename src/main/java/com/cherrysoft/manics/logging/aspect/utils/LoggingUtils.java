@@ -11,27 +11,30 @@ import org.springframework.util.StopWatch;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.cherrysoft.manics.util.ToStringUtils.toJsonString;
+
 @Slf4j
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class LoggingUtils {
 
-  public static Object logMethodAround(final ProceedingJoinPoint joinPoint) throws Throwable {
+  public static Object logMethodAround(ProceedingJoinPoint joinPoint) throws Throwable {
     StopWatch timer = new StopWatch();
     timer.start();
     Object proceed = joinPoint.proceed();
     timer.stop();
     String methodWithClassName = getMethodWithClassName(joinPoint);
-    Map<String, String> argsWithNames = getArgsWithNames(joinPoint);
+    var argsWithNames = getArgsWithNames(joinPoint);
     long totalTimeMillis = timer.getTotalTimeMillis();
-    log.debug("Method: {} | Arguments: {} | Execution time: {} ms", methodWithClassName, argsWithNames, totalTimeMillis);
+    var toLog = Map.of("method", methodWithClassName, "args", argsWithNames, "executionTime", totalTimeMillis);
+    log.debug(toJsonString(toLog));
     return proceed;
   }
 
-  public static void logAfterThrowing(final JoinPoint joinPoint, final Throwable exception) {
+  public static void logAfterThrowing(JoinPoint joinPoint, Throwable exception) {
     String methodWithClassName = getMethodWithClassName(joinPoint);
     Map<String, String> argsWithNames = getArgsWithNames(joinPoint);
-    String exceptionDescription = exception.getClass().getSimpleName() + ": " + exception.getMessage();
-    log.error("Method: {} | Arguments: {} | Exception: {}", methodWithClassName, argsWithNames, exceptionDescription);
+    var entriesToLog = Map.of("method", methodWithClassName, "args", argsWithNames);
+    log.error(toJsonString(entriesToLog), exception);
   }
 
   private static String getMethodWithClassName(JoinPoint joinPoint) {
@@ -40,7 +43,7 @@ public class LoggingUtils {
     return String.format("%s.%s", className, methodName);
   }
 
-  private static Map<String, String> getArgsWithNames(final JoinPoint joinPoint) {
+  private static Map<String, String> getArgsWithNames(JoinPoint joinPoint) {
     MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();
     String[] paramNames = methodSignature.getParameterNames();
     Object[] args = joinPoint.getArgs();
