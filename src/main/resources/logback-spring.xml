@@ -45,6 +45,45 @@
     </rollingPolicy>
   </appender>
 
+  <appender name="Stash"
+            class="net.logstash.logback.appender.LogstashTcpSocketAppender">
+    >
+    <destination>localhost:4570</destination>
+
+    <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+      <jsonGeneratorDecorator class="net.logstash.logback.mask.MaskingJsonGeneratorDecorator">
+        <pathMask>
+          <path>message/headers/authorization</path>
+          <mask>Bearer [masked]</mask>
+        </pathMask>
+      </jsonGeneratorDecorator>
+      <providers>
+        <timestamp/>
+        <version/> <!-- Logstash json format version, the @version field in the output-->
+        <context/> <!--Outputs entries from logback's context -->
+        <logLevel/>
+        <pattern> <!-- we can add some custom fields to be sent with all the log entries. make filtering easier in Logstash-->
+          <pattern>
+            {
+            "appName": "rest-manics",
+            "message": "%m",
+            "json_message": "#asJson{%m}"
+            }
+          </pattern>
+        </pattern>
+        <threadName/>
+        <stackTrace>
+          <throwableConverter class="net.logstash.logback.stacktrace.ShortenedThrowableConverter">
+            <maxDepthPerThrowable>30</maxDepthPerThrowable>
+            <maxLength>2048</maxLength>
+            <shortenedClassNameLength>20</shortenedClassNameLength>
+            <rootCauseFirst>true</rootCauseFirst>
+          </throwableConverter>
+        </stackTrace>
+      </providers>
+    </encoder>
+  </appender>
+
   <!-- LOG everything to the console at INFO level -->
   <root level="info">
     <appender-ref ref="Console"/>
@@ -54,6 +93,7 @@
   <logger name="com.cherrysoft.manics" level="trace" additivity="false">
     <appender-ref ref="RollingFile-App"/>
     <appender-ref ref="Console"/>
+    <appender-ref ref="Stash"/>
   </logger>
 
   <!-- LOG "org.springframework*" at INFO level -->
