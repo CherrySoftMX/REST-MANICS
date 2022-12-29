@@ -5,11 +5,11 @@ import com.cherrysoft.manics.model.Cartoon;
 import com.cherrysoft.manics.model.auth.ManicUser;
 import com.cherrysoft.manics.model.specs.BookmarkSpec;
 import com.cherrysoft.manics.repository.CartoonRepository;
+import com.cherrysoft.manics.repository.users.ManicUserRepository;
 import com.cherrysoft.manics.service.users.ManicUserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -17,6 +17,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class BookmarkService {
   private final ManicUserService userService;
+  private final ManicUserRepository userRepository;
   private final CartoonService cartoonService;
   private final CartoonRepository cartoonRepository;
 
@@ -28,7 +29,6 @@ public class BookmarkService {
     return cartoonRepository.hasUserBookmarkedAnyCartoon(userId);
   }
 
-  @Transactional
   public BookmarkedResult bookmark(BookmarkSpec spec) {
     boolean wasBookmarked = isCartoonBookmarked(spec);
     Cartoon cartoon = getCartoon(spec.getCartoonId());
@@ -38,6 +38,7 @@ public class BookmarkService {
     } else {
       user.addBookmark(cartoon);
     }
+    userRepository.saveAndFlush(user);
     return new BookmarkedResult(wasBookmarked, !wasBookmarked);
   }
 

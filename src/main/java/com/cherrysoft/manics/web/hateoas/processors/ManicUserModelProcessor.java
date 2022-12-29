@@ -14,6 +14,7 @@ import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 
+import java.net.URISyntaxException;
 import java.util.List;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
@@ -62,13 +63,21 @@ public class ManicUserModelProcessor implements RepresentationModelProcessor<Man
   }
 
   private Link commentLink() {
-    return WebMvcLinkBuilder.linkTo(methodOn(CommentController.class)
-        .createComment(null, null, userModel.getId(), null)).withRel("comment");
+    try {
+      return WebMvcLinkBuilder.linkTo(methodOn(CommentController.class)
+          .createComment(null, null, userModel.getId(), null)).withRel("comment");
+    } catch (URISyntaxException e) {
+      throw new RuntimeException(e);
+    }
   }
 
   private Link suggestLink() {
-    return WebMvcLinkBuilder.linkTo(methodOn(SuggestionController.class)
-        .createSuggestion(null, userModel.getId(), null)).withRel("suggest");
+    try {
+      return WebMvcLinkBuilder.linkTo(methodOn(SuggestionController.class)
+          .createSuggestion(null, userModel.getId(), null)).withRel("suggest");
+    } catch (URISyntaxException e) {
+      throw new RuntimeException(e);
+    }
   }
 
 }

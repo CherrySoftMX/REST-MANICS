@@ -35,6 +35,14 @@ public class SecurityConfig {
   private final JwtToSecurityUserConverter jwtToUserConverter;
   private final KeyUtils keyUtils;
   private final PasswordEncoder passwordEncoder;
+  private static final String[] AUTH_WHITELIST = {
+      "/login",
+      "/register",
+      "/refresh-token",
+      "/swagger-ui/**",
+      "/swagger-resources/**",
+      "/v3/api-docs/**"
+  };
 
   @Bean
   @Qualifier("jwtRefreshTokenAuthProvider")
@@ -57,7 +65,7 @@ public class SecurityConfig {
     return http
         .csrf(AbstractHttpConfigurer::disable)
         .authorizeRequests(auth -> auth
-            .antMatchers("/login", "/register", "/refresh-token").permitAll()
+            .antMatchers(AUTH_WHITELIST).permitAll()
             .anyRequest().authenticated()
         )
         .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

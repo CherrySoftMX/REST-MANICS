@@ -12,7 +12,15 @@ import com.cherrysoft.manics.web.dto.users.ManicUserDTO;
 import com.cherrysoft.manics.web.mapper.CartoonMapper;
 import com.cherrysoft.manics.web.mapper.LikedResultMapper;
 import com.cherrysoft.manics.web.mapper.ManicUserMapper;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springdoc.api.annotations.ParameterObject;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
@@ -22,9 +30,18 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import static com.cherrysoft.manics.util.ApiDocsConstants.*;
+
 @RequiredArgsConstructor
 @RestController
 @RequestMapping(LikeController.BASE_URL)
+@Tag(name = "Likes", description = "Manage likes for a cartoon")
+@ApiResponses({
+    @ApiResponse(ref = BAD_REQUEST_RESPONSE_REF, responseCode = "400"),
+    @ApiResponse(ref = UNAUTHORIZED_RESPONSE_REF, responseCode = "401"),
+    @ApiResponse(ref = NOT_FOUND_RESPONSE_REF, responseCode = "404"),
+    @ApiResponse(description = "Internal server error", responseCode = "500", content = @Content)
+})
 public class LikeController {
   public static final String BASE_URL = "/likes";
   private final LikeService likeService;
@@ -32,24 +49,39 @@ public class LikeController {
   private final CartoonMapper cartoonMapper;
   private final ManicUserMapper userMapper;
 
+  @Operation(summary = "Returns the users who like the given cartoon")
+  @ApiResponse(responseCode = "200", description = "OK", content = {
+      @Content(array = @ArraySchema(schema = @Schema(implementation = ManicUserDTO.class)))
+  })
   @GetMapping("/cartoon")
   public ResponseEntity<List<ManicUserDTO>> getLikedBy(
       @RequestParam Long cartoonId,
-      @PageableDefault Pageable pageable
+      @PageableDefault @ParameterObject Pageable pageable
   ) {
     List<ManicUser> result = likeService.getLikedBy(cartoonId, pageable);
     return ResponseEntity.ok(userMapper.toDtoList(result));
   }
 
+  @Operation(summary = "Returns the liked cartoons by the given user")
+  @ApiResponse(responseCode = "200", description = "OK", content = {
+      @Content(array = @ArraySchema(schema = @Schema(implementation = CartoonResponseDTO.class)))
+  })
   @GetMapping("/user")
   public ResponseEntity<List<CartoonResponseDTO>> getLikes(
       @RequestParam Long userId,
-      @PageableDefault Pageable pageable
+      @PageableDefault @ParameterObject Pageable pageable
   ) {
     List<Cartoon> result = likeService.getLikes(userId, pageable);
     return ResponseEntity.ok(cartoonMapper.toReponseDtoList(result));
   }
 
+  @Operation(summary = "Like the given cartoon")
+  @ApiResponses({
+      @ApiResponse(responseCode = "200", description = "OK", content = {
+          @Content(schema = @Schema(implementation = LikedResultDTO.class))
+      }),
+      @ApiResponse(ref = FORBIDDEN_RESPONSE_REF, responseCode = "403")
+  })
   @PostMapping
   @PreAuthorize("#loggedUser.id == #userId")
   public ResponseEntity<LikedResultDTO> like(

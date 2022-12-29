@@ -8,6 +8,10 @@ import com.cherrysoft.manics.web.dto.auth.LoginDTO;
 import com.cherrysoft.manics.web.dto.auth.TokenDTO;
 import com.cherrysoft.manics.web.dto.users.ManicUserDTO;
 import com.cherrysoft.manics.web.mapper.ManicUserMapper;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -22,7 +26,16 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 
+import static com.cherrysoft.manics.util.ApiDocsConstants.BAD_REQUEST_RESPONSE_REF;
+import static com.cherrysoft.manics.util.ApiDocsConstants.NOT_FOUND_RESPONSE_REF;
+
 @RestController
+@Tag(name = "Auth")
+@ApiResponses({
+    @ApiResponse(ref = BAD_REQUEST_RESPONSE_REF, responseCode = "400"),
+    @ApiResponse(ref = NOT_FOUND_RESPONSE_REF, responseCode = "404"),
+    @ApiResponse(description = "Internal server error", responseCode = "500", content = @Content)
+})
 public class AuthController {
   private final ManicUserService userService;
   private final ManicUserMapper userMapper;
