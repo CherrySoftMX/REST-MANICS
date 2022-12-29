@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class ControllerLoggingAspect {
 
-  @Around("execution(* com.cherrysoft.manics.web.v2.controller..*.*(..))")
+  @Around("execution(* com.cherrysoft.manics.web.controller..*.*(..))")
   public Object logAroundMethods(final ProceedingJoinPoint joinPoint) throws Throwable {
     return LoggingUtils.logMethodAround(joinPoint);
   }

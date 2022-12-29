@@ -21,13 +21,49 @@
   </description>
 
   <properties>
-    <java.version>11</java.version>
+    <java.version>17</java.version>
+    <maven.compiler.release>17</maven.compiler.release>
     <io.jsonwebtoken.version>0.11.5</io.jsonwebtoken.version>
     <guava.version>31.1-jre</guava.version>
     <org.mapstruct.version>1.5.3.Final</org.mapstruct.version>
     <lombok.version>1.18.24</lombok.version>
     <mysql-connector-java.version>8.0.31</mysql-connector-java.version>
+    <jakarta.json-api.version>2.1.1</jakarta.json-api.version>
+    <logback.version>1.2.11</logback.version>
+    <logstash-logback-encoder.version>7.2</logstash-logback-encoder.version>
+    <slf4j-api.version>1.7.36</slf4j-api.version>
   </properties>
+
+  <repositories>
+    <repository>
+      <id>OpenIMAJ maven releases repository</id>
+      <url>https://maven.openimaj.org</url>
+    </repository>
+    <repository>
+      <id>OpenIMAJ maven snapshots repository</id>
+      <url>https://snapshots.openimaj.org</url>
+    </repository>
+  </repositories>
+
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>ch.qos.logback</groupId>
+        <artifactId>logback-core</artifactId>
+        <version>${logback.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>ch.qos.logback</groupId>
+        <artifactId>logback-classic</artifactId>
+        <version>${logback.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-api</artifactId>
+        <version>${slf4j-api.version}</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
 
   <dependencies>
     <dependency>
@@ -52,12 +88,6 @@
     </dependency>
 
     <!-- Utils-->
-    <dependency>
-      <groupId>com.google.guava</groupId>
-      <artifactId>guava</artifactId>
-      <version>${guava.version}</version>
-    </dependency>
-
     <dependency>
       <groupId>org.projectlombok</groupId>
       <artifactId>lombok</artifactId>
@@ -91,6 +121,19 @@
     <dependency>
       <groupId>org.springframework.data</groupId>
       <artifactId>spring-data-elasticsearch</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>jakarta.json</groupId>
+      <artifactId>jakarta.json-api</artifactId>
+      <version>${jakarta.json-api.version}</version>
+    </dependency>
+
+    <!-- Logging -->
+    <dependency>
+      <groupId>net.logstash.logback</groupId>
+      <artifactId>logstash-logback-encoder</artifactId>
+      <version>${logstash-logback-encoder.version}</version>
     </dependency>
 
     <!-- Mysql-->
@@ -152,17 +195,6 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
-
-  <repositories>
-    <repository>
-      <id>OpenIMAJ maven releases repository</id>
-      <url>https://maven.openimaj.org</url>
-    </repository>
-    <repository>
-      <id>OpenIMAJ maven snapshots repository</id>
-      <url>https://snapshots.openimaj.org</url>
-    </repository>
-  </repositories>
 
   <build>
     <plugins>

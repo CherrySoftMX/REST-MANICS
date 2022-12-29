@@ -18,10 +18,33 @@ services:
       MYSQL_ROOT_PASSWORD: password
 
   elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:8.3.2
+    container_name: elasticsearch
+    image: docker.elastic.co/elasticsearch/elasticsearch:${ELK_VERSION}
     ports:
       - '9200:9200'
     environment:
       ES_JAVA_OPTS: '-Xms1g -Xmx1g'
       discovery.type: single-node
+      http.cors.enabled: true
+      http.cors.allow-origin: '"*"'
+      http.cors.allow-headers: Authorization
       xpack.security.enabled: false
+
+  logstash:
+    container_name: logstash
+    image: docker.elastic.co/logstash/logstash:${ELK_VERSION}
+    command: logstash -e 'input { tcp { port => 4570 codec => json } } output { elasticsearch { hosts => [ "http://elasticsearch:9200" ] index => "manics-%{+YYYY.MM.dd}" } }'
+    ports:
+      - '4570:4570'
+      - '5044:5044'
+    environment:
+      ES_JAVA_OPTS: '-Xms1g -Xmx1g'
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:${ELK_VERSION}
+    ports:
+      - '5601:5601'
+    environment:
+      ELASTICSEARCH_HOSTS: '["http://elasticsearch:9200"]'
+    depends_on:
+      - elasticsearch

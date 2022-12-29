@@ -1,6 +1,7 @@
 package com.cherrysoft.manics.security.logging;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -9,6 +10,9 @@ import org.springframework.security.web.access.AccessDeniedHandler;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Map;
+
+import static com.cherrysoft.manics.util.ToStringUtils.toJsonString;
 
 @Slf4j
 public class BearerTokenAccessDeniedLoggingHandler implements AccessDeniedHandler {
@@ -21,9 +25,12 @@ public class BearerTokenAccessDeniedLoggingHandler implements AccessDeniedHandle
       AccessDeniedException accessDeniedException
   ) {
     Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+    String hint = "Attempted access to a protected resource";
+    int statusCode = HttpStatus.FORBIDDEN.value();
     String username = auth.getName();
     String uri = request.getRequestURI();
-    log.warn("The user with username {} attempted to access the protected URL: {}", username, uri);
+    var entriesToLog = Map.of("hint", hint, "statusCode", statusCode, "username", username, "uri", uri);
+    log.warn(toJsonString(entriesToLog));
     deniedHandler.handle(request, response, accessDeniedException);
   }
 

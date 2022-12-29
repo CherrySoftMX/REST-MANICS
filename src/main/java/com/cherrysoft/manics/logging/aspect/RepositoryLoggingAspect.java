@@ -12,13 +12,13 @@ import org.springframework.stereotype.Component;
 @Component
 public class RepositoryLoggingAspect {
 
-  @Around("execution(* com.cherrysoft.manics.repository.v2..*.*(..))")
+  @Around("execution(* com.cherrysoft.manics.repository..*.*(..))")
   public Object logAroundMethods(final ProceedingJoinPoint joinPoint) throws Throwable {
     return LoggingUtils.logMethodAround(joinPoint);
   }
 
   @AfterThrowing(
-      pointcut = "execution(* com.cherrysoft.manics.repository.v2..*.*(..))",
+      pointcut = "execution(* com.cherrysoft.manics.repository..*.*(..))",
       throwing = "exception"
   )
   public void logAfterThrowing(final JoinPoint joinPoint, final Throwable exception) {

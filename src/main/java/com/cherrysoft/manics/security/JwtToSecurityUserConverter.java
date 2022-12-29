@@ -1,7 +1,7 @@
 package com.cherrysoft.manics.security;
 
-import com.cherrysoft.manics.model.v2.auth.ManicUser;
-import com.cherrysoft.manics.service.v2.users.ManicUserService;
+import com.cherrysoft.manics.model.auth.ManicUser;
+import com.cherrysoft.manics.service.users.ManicUserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
