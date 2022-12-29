@@ -32,6 +32,8 @@
     <logback.version>1.2.11</logback.version>
     <logstash-logback-encoder.version>7.2</logstash-logback-encoder.version>
     <slf4j-api.version>1.7.36</slf4j-api.version>
+    <springdoc-openapi-ui.version>1.6.14</springdoc-openapi-ui.version>
+    <spring-boot-devtools.version>2.7.7</spring-boot-devtools.version>
   </properties>
 
   <repositories>
@@ -81,6 +83,24 @@
       <artifactId>spring-boot-starter-hateoas</artifactId>
     </dependency>
 
+    <dependency>
+      <groupId>org.springdoc</groupId>
+      <artifactId>springdoc-openapi-ui</artifactId>
+      <version>${springdoc-openapi-ui.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.springdoc</groupId>
+      <artifactId>springdoc-openapi-security</artifactId>
+      <version>${springdoc-openapi-ui.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.springdoc</groupId>
+      <artifactId>springdoc-openapi-hateoas</artifactId>
+      <version>${springdoc-openapi-ui.version}</version>
+    </dependency>
+
     <!-- Validations-->
     <dependency>
       <groupId>org.springframework.boot</groupId>
@@ -101,10 +121,22 @@
       <version>${org.mapstruct.version}</version>
     </dependency>
 
-    <!--Starter data-->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-devtools</artifactId>
+      <version>${spring-boot-devtools.version}</version>
+    </dependency>
+
+    <!-- Database -->
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-data-jpa</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>mysql</groupId>
+      <artifactId>mysql-connector-java</artifactId>
+      <version>${mysql-connector-java.version}</version>
     </dependency>
 
     <!-- Elasticsearch -->
@@ -124,13 +156,6 @@
       <groupId>net.logstash.logback</groupId>
       <artifactId>logstash-logback-encoder</artifactId>
       <version>${logstash-logback-encoder.version}</version>
-    </dependency>
-
-    <!-- Mysql-->
-    <dependency>
-      <groupId>mysql</groupId>
-      <artifactId>mysql-connector-java</artifactId>
-      <version>${mysql-connector-java.version}</version>
     </dependency>
 
     <!--Security-->
