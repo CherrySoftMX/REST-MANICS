@@ -11,12 +11,15 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.List;
 
 @RequiredArgsConstructor
 public abstract class BaseCartoonController {
   protected final CartoonService cartoonService;
   protected final CartoonMapper mapper;
+  private final String baseUrl;
 
   protected final ResponseEntity<List<CartoonResponseDTO>> getCartoons(CartoonType type, Pageable pageable) {
     List<Cartoon> result = cartoonService.getCartoons(type, pageable);
@@ -26,7 +29,13 @@ public abstract class BaseCartoonController {
   protected final ResponseEntity<CartoonResponseDTO> createCartoon(CartoonDTO cartoonDto) {
     var cartoonSpec = createCartoonSpec(cartoonDto);
     Cartoon result = cartoonService.createCartoon(cartoonSpec);
-    return ResponseEntity.ok(mapper.toResponseDto(result));
+    try {
+      return ResponseEntity
+          .created(new URI(String.format("%s/%s", baseUrl, result.getId())))
+          .body(mapper.toResponseDto(result));
+    } catch (URISyntaxException e) {
+      throw new RuntimeException(e);
+    }
   }
 
   protected final ResponseEntity<CartoonResponseDTO> updateCartoon(Long id, CartoonDTO cartoonDto) {

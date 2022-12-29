@@ -10,7 +10,6 @@ import com.cherrysoft.manics.service.users.ManicUserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -34,7 +33,6 @@ public class LikeService {
     return cartoonRepository.hasUserLikedAnyCartoon(userId);
   }
 
-  @Transactional
   public LikedResult like(LikeSpec spec) {
     boolean wasLiked = isCartoonLiked(spec);
     Cartoon cartoon = getCartoon(spec.getCartoonId());
@@ -44,6 +42,7 @@ public class LikeService {
     } else {
       user.addLike(cartoon);
     }
+    userRepository.saveAndFlush(user);
     return new LikedResult(wasLiked, !wasLiked);
   }
 
