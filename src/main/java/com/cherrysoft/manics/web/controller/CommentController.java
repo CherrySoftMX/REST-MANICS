@@ -7,6 +7,7 @@ import com.cherrysoft.manics.security.SecurityManicUser;
 import com.cherrysoft.manics.service.CommentService;
 import com.cherrysoft.manics.web.dto.CommentDTO;
 import com.cherrysoft.manics.web.dto.validation.OnCreate;
+import com.cherrysoft.manics.web.hateoas.assemblers.CommentModelAssembler;
 import com.cherrysoft.manics.web.mapper.CommentMapper;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -18,10 +19,13 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.api.annotations.ParameterObject;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.data.web.SortDefault;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -31,10 +35,10 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.List;
 import java.util.Map;
 
 import static com.cherrysoft.manics.util.ApiDocsConstants.*;
+import static com.cherrysoft.manics.util.MediaTypeUtils.APPLICATION_HAL_JSON_VALUE;
 
 @RequiredArgsConstructor
 @RestController
@@ -50,6 +54,8 @@ public class CommentController {
   public static final String BASE_URL = "/comments";
   private final CommentService commentService;
   private final CommentMapper mapper;
+  private final CommentModelAssembler commentModelAssembler;
+  private final PagedResourcesAssembler<Comment> commentPagedResourcesAssembler;
 
   @Operation(summary = "Returns the comments for the given user OR cartoon")
   @ApiResponse(responseCode = "200", description = "OK", content = {
@@ -65,8 +71,8 @@ public class CommentController {
       description = "The ID of the cartoon that the comments belong to",
       schema = @Schema(type = "number")
   )
-  @GetMapping
-  public ResponseEntity<List<CommentDTO>> getComments(
+  @GetMapping(produces = APPLICATION_HAL_JSON_VALUE)
+  public PagedModel<CommentDTO> getComments(
       @Parameter(hidden = true) @RequestParam Map<String, String> params,
       @PageableDefault
       @SortDefault(sort = "createdAt", direction = Sort.Direction.DESC)
@@ -74,8 +80,18 @@ public class CommentController {
       Pageable pageable
   ) {
     var filterSpec = new CommentFilterSpec(params, pageable);
-    List<Comment> result = commentService.getComments(filterSpec);
-    return ResponseEntity.ok(mapper.toDtoList(result));
+    Page<Comment> result = commentService.getComments(filterSpec);
+    return commentPagedResourcesAssembler.toModel(result, commentModelAssembler).withFallbackType(CommentDTO.class);
+  }
+
+  @Operation(summary = "Returns the comment with the given ID")
+  @ApiResponse(responseCode = "200", description = "OK", content = {
+      @Content(schema = @Schema(implementation = CommentDTO.class))
+  })
+  @GetMapping(value = "/{id}", produces = APPLICATION_HAL_JSON_VALUE)
+  public CommentDTO getCommentById(@PathVariable Long id) {
+    Comment result = commentService.getCommentById(id);
+    return commentModelAssembler.toModel(result);
   }
 
   @Operation(summary = "Creates a new comment for the given user and cartoon")
@@ -85,7 +101,7 @@ public class CommentController {
       }),
       @ApiResponse(ref = FORBIDDEN_RESPONSE_REF, responseCode = "403")
   })
-  @PostMapping
+  @PostMapping(produces = APPLICATION_HAL_JSON_VALUE)
   @Validated(OnCreate.class)
   @PreAuthorize("#loggedUser.id == #userId")
   public ResponseEntity<CommentDTO> createComment(
@@ -99,7 +115,7 @@ public class CommentController {
     Comment result = commentService.createComment(createCommentSpec);
     return ResponseEntity
         .created(new URI(String.format("%s/%s", BASE_URL, result.getId())))
-        .body(mapper.toDto(result));
+        .body(commentModelAssembler.toModel(result));
   }
 
   @Operation(summary = "Partially updates a comment with the given payload")
@@ -109,7 +125,7 @@ public class CommentController {
       }),
       @ApiResponse(ref = FORBIDDEN_RESPONSE_REF, responseCode = "403")
   })
-  @PatchMapping("/{id}")
+  @PatchMapping(value = "/{id}", produces = APPLICATION_HAL_JSON_VALUE)
   @PreAuthorize("#loggedUser.id == #userId")
   public ResponseEntity<CommentDTO> updateComment(
       @AuthenticationPrincipal SecurityManicUser loggedUser,
@@ -119,7 +135,7 @@ public class CommentController {
   ) {
     Comment updatedComment = mapper.toComment(payload);
     Comment result = commentService.updateComment(id, updatedComment);
-    return ResponseEntity.ok(mapper.toDto(result));
+    return ResponseEntity.ok(commentModelAssembler.toModel(result));
   }
 
   @Operation(summary = "Deletes a comment with the given ID")
