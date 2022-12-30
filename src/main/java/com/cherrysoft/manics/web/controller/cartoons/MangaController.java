@@ -8,6 +8,7 @@ import com.cherrysoft.manics.service.CartoonService;
 import com.cherrysoft.manics.web.dto.cartoons.CartoonDTO;
 import com.cherrysoft.manics.web.dto.cartoons.CartoonResponseDTO;
 import com.cherrysoft.manics.web.dto.validation.OnCreate;
+import com.cherrysoft.manics.web.hateoas.assemblers.CartoonModelAssembler;
 import com.cherrysoft.manics.web.mapper.CartoonMapper;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -19,16 +20,18 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springdoc.api.annotations.ParameterObject;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.data.web.SortDefault;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
 
 import static com.cherrysoft.manics.util.ApiDocsConstants.*;
+import static com.cherrysoft.manics.util.MediaTypeUtils.APPLICATION_HAL_JSON_VALUE;
 
 @RestController
 @RequestMapping(MangaController.BASE_URL)
@@ -41,17 +44,34 @@ import static com.cherrysoft.manics.util.ApiDocsConstants.*;
 })
 public class MangaController extends BaseCartoonController {
   public static final String BASE_URL = "/mangas";
+  private final CartoonModelAssembler cartoonModelAssembler;
 
-  public MangaController(CartoonService cartoonService, CartoonMapper mapper) {
-    super(cartoonService, mapper, BASE_URL);
+  public MangaController(
+      CartoonService cartoonService,
+      CartoonMapper mapper,
+      CartoonModelAssembler cartoonModelAssembler,
+      PagedResourcesAssembler<Cartoon> cartoonPagedResourcesAssembler
+  ) {
+    super(cartoonService, mapper, cartoonModelAssembler, cartoonPagedResourcesAssembler, BASE_URL);
+    this.cartoonModelAssembler = cartoonModelAssembler;
+  }
+
+  @Operation(summary = "Returns the manga with the given ID")
+  @ApiResponse(responseCode = "200", description = "Manga found", content = {
+      @Content(schema = @Schema(implementation = CartoonResponseDTO.class))
+  })
+  @GetMapping(value = "/{id}", produces = APPLICATION_HAL_JSON_VALUE)
+  public CartoonResponseDTO getMangaById(@PathVariable Long id) {
+    Cartoon result = cartoonService.getCartoonByIdAndType(id, CartoonType.MANGA);
+    return cartoonModelAssembler.toModel(result);
   }
 
   @Operation(summary = "Returns all the available mangas")
   @ApiResponse(responseCode = "200", description = "OK", content = {
       @Content(array = @ArraySchema(schema = @Schema(implementation = CartoonResponseDTO.class)))
   })
-  @GetMapping
-  public ResponseEntity<List<CartoonResponseDTO>> getMangas(
+  @GetMapping(produces = APPLICATION_HAL_JSON_VALUE)
+  public PagedModel<CartoonResponseDTO> getMangas(
       @PageableDefault
       @SortDefault(sort = "name")
       @ParameterObject
@@ -67,7 +87,7 @@ public class MangaController extends BaseCartoonController {
       }),
       @ApiResponse(ref = FORBIDDEN_RESPONSE_REF, responseCode = "403")
   })
-  @PostMapping
+  @PostMapping(produces = APPLICATION_HAL_JSON_VALUE)
   @Validated(OnCreate.class)
   @PreAuthorize("hasRole('ROLE_ADMIN')")
   public ResponseEntity<CartoonResponseDTO> createManga(@RequestBody @Valid CartoonDTO payload) {
@@ -81,9 +101,9 @@ public class MangaController extends BaseCartoonController {
       }),
       @ApiResponse(ref = FORBIDDEN_RESPONSE_REF, responseCode = "403")
   })
-  @PatchMapping("/{id}")
+  @PatchMapping(value = "/{id}", produces = APPLICATION_HAL_JSON_VALUE)
   @PreAuthorize("hasRole('ROLE_ADMIN')")
-  public ResponseEntity<CartoonResponseDTO> updateManga(
+  public CartoonResponseDTO updateManga(
       @PathVariable Long id,
       @RequestBody @Valid CartoonDTO payload
   ) {
@@ -97,9 +117,9 @@ public class MangaController extends BaseCartoonController {
       }),
       @ApiResponse(ref = FORBIDDEN_RESPONSE_REF, responseCode = "403")
   })
-  @DeleteMapping("/{id}")
+  @DeleteMapping(value = "/{id}", produces = APPLICATION_HAL_JSON_VALUE)
   @PreAuthorize("hasRole('ROLE_ADMIN')")
-  public ResponseEntity<CartoonResponseDTO> deleteManga(@PathVariable Long id) {
+  public CartoonResponseDTO deleteManga(@PathVariable Long id) {
     return super.deleteCartoon(id, CartoonType.MANGA);
   }
 
