@@ -27,10 +27,7 @@ public interface CartoonRepository extends JpaRepository<Cartoon, Long> {
   @Query("SELECT c FROM Cartoon c JOIN c.likedBy user WHERE user.id = :userId")
   Page<Cartoon> getLikes(Long userId, Pageable pageable);
 
-  @Query("FROM Cartoon c JOIN c.likedBy user WHERE user.id = :userId")
-  List<Cartoon> getLikes(Long userId, Pageable pageable);
-
-  @Query("FROM Cartoon c JOIN c.bookmarkedBy user WHERE user.id = :userId")
-  List<Cartoon> getBookmarks(Long userId, Pageable pageable);
+  @Query("SELECT c FROM Cartoon c JOIN c.bookmarkedBy user WHERE user.id = :userId")
+  Page<Cartoon> getBookmarks(Long userId, Pageable pageable);
 
 }

@@ -7,8 +7,8 @@ import com.cherrysoft.manics.security.SecurityManicUser;
 import com.cherrysoft.manics.service.BookmarkService;
 import com.cherrysoft.manics.web.dto.BookmarkedResultDTO;
 import com.cherrysoft.manics.web.dto.cartoons.CartoonResponseDTO;
+import com.cherrysoft.manics.web.hateoas.assemblers.CartoonModelAssembler;
 import com.cherrysoft.manics.web.mapper.BookmarkedResultMapper;
-import com.cherrysoft.manics.web.mapper.CartoonMapper;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -18,14 +18,15 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.api.annotations.ParameterObject;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 import static com.cherrysoft.manics.util.ApiDocsConstants.*;
 
@@ -43,19 +44,20 @@ public class BookmarkController {
   public static final String BASE_URL = "/bookmarks";
   private final BookmarkService bookmarkService;
   private final BookmarkedResultMapper bookmarkMapper;
-  private final CartoonMapper cartoonMapper;
+  private final CartoonModelAssembler cartoonModelAssembler;
+  private final PagedResourcesAssembler<Cartoon> cartoonPagedResourcesAssembler;
 
   @Operation(summary = "Returns the bookmarked cartoons liked by the given user")
   @ApiResponse(responseCode = "200", description = "OK", content = {
       @Content(array = @ArraySchema(schema = @Schema(implementation = CartoonResponseDTO.class)))
   })
   @GetMapping("/user")
-  public ResponseEntity<List<CartoonResponseDTO>> getBookmarks(
+  public PagedModel<CartoonResponseDTO> getBookmarks(
       @RequestParam Long userId,
       @PageableDefault @ParameterObject Pageable pageable
   ) {
-    List<Cartoon> result = bookmarkService.getBookmarks(userId, pageable);
-    return ResponseEntity.ok(cartoonMapper.toReponseDtoList(result));
+    Page<Cartoon> result = bookmarkService.getBookmarks(userId, pageable);
+    return cartoonPagedResourcesAssembler.toModel(result, cartoonModelAssembler);
   }
 
   @Operation(summary = "Bookmark the given cartoon")
