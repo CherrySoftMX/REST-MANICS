@@ -8,6 +8,7 @@ import com.cherrysoft.manics.repository.ChapterRepository;
 import com.cherrysoft.manics.service.search.SearchingChapterService;
 import com.cherrysoft.manics.util.BeanUtils;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,7 +37,7 @@ public class ChapterService {
     return chapterRepository.getReferenceById(id);
   }
 
-  public List<Chapter> getCartoonChapters(Long cartoonId, Pageable pageable) {
+  public Page<Chapter> getCartoonChapters(Long cartoonId, Pageable pageable) {
     return chapterRepository.findChaptersByCartoon_Id(cartoonId, pageable);
   }
 
