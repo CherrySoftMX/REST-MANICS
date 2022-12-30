@@ -1,7 +1,7 @@
 package com.cherrysoft.manics.model.search;
 
+import com.cherrysoft.manics.model.CartoonPage;
 import com.cherrysoft.manics.model.Chapter;
-import com.cherrysoft.manics.model.Page;
 import lombok.Data;
 
 import java.util.ArrayList;
@@ -24,10 +24,10 @@ public class SearchByImageResult {
   public static class MatchingPage {
     private final Long cartoonId;
     private final Long chapterId;
-    private final Page page;
+    private final CartoonPage page;
     private final double score;
 
-    public MatchingPage(Page page, double score) {
+    public MatchingPage(CartoonPage page, double score) {
       this.page = page;
       this.score = score;
       Chapter chapter = page.getChapter();

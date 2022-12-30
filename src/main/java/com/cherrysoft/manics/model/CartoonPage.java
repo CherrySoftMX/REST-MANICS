@@ -13,7 +13,7 @@ import java.util.Objects;
 @ToString
 @Entity
 @Table(name = "pages")
-public class Page {
+public class CartoonPage {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "page_id")
@@ -38,8 +38,8 @@ public class Page {
     if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) {
       return false;
     }
-    Page pageV2 = (Page) o;
-    return id != null && Objects.equals(id, pageV2.id);
+    CartoonPage page = (CartoonPage) o;
+    return id != null && Objects.equals(id, page.id);
   }
 
   @Override

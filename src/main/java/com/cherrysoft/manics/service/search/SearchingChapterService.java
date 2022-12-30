@@ -1,7 +1,7 @@
 package com.cherrysoft.manics.service.search;
 
 import com.cherrysoft.manics.model.Chapter;
-import com.cherrysoft.manics.model.Page;
+import com.cherrysoft.manics.model.CartoonPage;
 import com.cherrysoft.manics.model.search.SearchChapterResult;
 import com.cherrysoft.manics.model.search.SearchingChapter;
 import com.cherrysoft.manics.repository.search.SearchingChapterRepository;
@@ -63,7 +63,7 @@ public class SearchingChapterService {
     log.debug("Deleted chapter document: {}", searchingChapter);
   }
 
-  private List<Page> extractAllPages(List<Chapter> chapters) {
+  private List<CartoonPage> extractAllPages(List<Chapter> chapters) {
     return chapters.stream()
         .map(Chapter::getPages)
         .flatMap(Collection::stream)

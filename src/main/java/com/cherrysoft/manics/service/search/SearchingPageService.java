@@ -1,6 +1,6 @@
 package com.cherrysoft.manics.service.search;
 
-import com.cherrysoft.manics.model.Page;
+import com.cherrysoft.manics.model.CartoonPage;
 import com.cherrysoft.manics.model.search.SearchingPage;
 import com.cherrysoft.manics.repository.search.SearchingPageRepository;
 import com.cherrysoft.manics.service.search.mapper.SearchingPageMapper;
@@ -19,11 +19,11 @@ public class SearchingPageService {
   private final SearchingPageMapper searchingPageMapper;
   private final SearchingPageRepository searchingPageRepository;
 
-  public void indexPagesForSearching(List<Page> pages) {
+  public void indexPagesForSearching(List<CartoonPage> pages) {
     pages.forEach(this::indexPageForSearching);
   }
 
-  public void indexPageForSearching(Page page) {
+  public void indexPageForSearching(CartoonPage page) {
     SearchingPage searchingPage = searchingPageMapper.toSearchingPage(page);
     try {
       tryIndexPageForSearching(page, searchingPage);
@@ -32,7 +32,7 @@ public class SearchingPageService {
     }
   }
 
-  public void updateIndexedPage(Page page) {
+  public void updateIndexedPage(CartoonPage page) {
     SearchingPage searchingPage = searchingPageMapper.toSearchingPage(page);
     try {
       tryIndexPageForSearching(page, searchingPage);
@@ -41,17 +41,17 @@ public class SearchingPageService {
     }
   }
 
-  private void tryIndexPageForSearching(Page page, SearchingPage searchingPage) throws IOException {
+  private void tryIndexPageForSearching(CartoonPage page, SearchingPage searchingPage) throws IOException {
     searchingPage.setImgVector(ImageAnalysisUtils.convertImgUrlToVector(page.getImageUrl()));
     searchingPageRepository.save(searchingPage);
   }
 
-  public void deleteIndexedPages(List<Page> pages) {
+  public void deleteIndexedPages(List<CartoonPage> pages) {
     List<SearchingPage> searchingPages = searchingPageMapper.toList(pages);
     searchingPageRepository.deleteAll(searchingPages);
   }
 
-  public void deleteIndexedPage(Page page) {
+  public void deleteIndexedPage(CartoonPage page) {
     SearchingPage searchingPage = searchingPageMapper.toSearchingPage(page);
     searchingPageRepository.delete(searchingPage);
   }

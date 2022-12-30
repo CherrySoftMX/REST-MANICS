@@ -5,7 +5,7 @@ import co.elastic.clients.elasticsearch.core.SearchTemplateResponse;
 import co.elastic.clients.elasticsearch.core.search.Hit;
 import co.elastic.clients.json.JsonData;
 import com.cherrysoft.manics.exception.ApplicationException;
-import com.cherrysoft.manics.model.Page;
+import com.cherrysoft.manics.model.CartoonPage;
 import com.cherrysoft.manics.model.search.SearchByImageResult;
 import com.cherrysoft.manics.model.search.SearchingPage;
 import com.cherrysoft.manics.service.PageService;
@@ -61,7 +61,7 @@ public class SearchByImageService {
     SearchByImageResult result = new SearchByImageResult();
     for (Hit<SearchingPage> hit : searchResponse.hits().hits()) {
       double score = requireNonNullElse(hit.score(), 0.0);
-      Page page = pageService.getPageById(hit.source().getId());
+      CartoonPage page = pageService.getPageById(hit.source().getId());
       result.addMatchingPage(new SearchByImageResult.MatchingPage(page, score));
     }
     return result;

@@ -1,6 +1,6 @@
 package com.cherrysoft.manics.web.dto.search;
 
-import com.cherrysoft.manics.web.dto.pages.PageDTO;
+import com.cherrysoft.manics.web.dto.pages.CartoonPageDTO;
 import lombok.Data;
 
 import java.util.List;
@@ -13,7 +13,7 @@ public class SearchByImageResultDTO {
   public static class MatchingPageDTO {
     private Long cartoonId;
     private Long chapterId;
-    private PageDTO page;
+    private CartoonPageDTO page;
     private double score;
   }
 
