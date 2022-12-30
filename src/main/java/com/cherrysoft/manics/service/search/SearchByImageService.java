@@ -3,19 +3,24 @@ package com.cherrysoft.manics.service.search;
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
 import co.elastic.clients.elasticsearch.core.SearchTemplateResponse;
 import co.elastic.clients.elasticsearch.core.search.Hit;
+import co.elastic.clients.elasticsearch.core.search.HitsMetadata;
 import co.elastic.clients.json.JsonData;
 import com.cherrysoft.manics.exception.ApplicationException;
 import com.cherrysoft.manics.model.CartoonPage;
-import com.cherrysoft.manics.model.search.SearchByImageResult;
+import com.cherrysoft.manics.model.search.MatchingPage;
 import com.cherrysoft.manics.model.search.SearchingPage;
 import com.cherrysoft.manics.service.PageService;
 import com.cherrysoft.manics.service.search.utils.ImageAnalysisUtils;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import static java.util.Objects.requireNonNullElse;
 
@@ -25,11 +30,11 @@ public class SearchByImageService {
   private final ElasticsearchClient client;
   private final PageService pageService;
 
-  public SearchByImageResult searchPagesByImage(String imgUrl, Pageable pageable) {
+  public Page<MatchingPage> searchPagesByImage(String imgUrl, Pageable pageable) {
     try {
       tryPrepareSearchClient();
       SearchTemplateResponse<SearchingPage> searchResponse = trySearchPagesByImage(imgUrl, pageable);
-      return parseSearchResult(searchResponse);
+      return parseSearchResult(searchResponse, pageable);
     } catch (IOException e) {
       throw new ApplicationException(e);
     }
@@ -57,14 +62,16 @@ public class SearchByImageService {
     );
   }
 
-  private SearchByImageResult parseSearchResult(SearchTemplateResponse<SearchingPage> searchResponse) {
-    SearchByImageResult result = new SearchByImageResult();
-    for (Hit<SearchingPage> hit : searchResponse.hits().hits()) {
+  private Page<MatchingPage> parseSearchResult(SearchTemplateResponse<SearchingPage> searchResponse, Pageable pageable) {
+    List<MatchingPage> matchingPages = new ArrayList<>();
+    HitsMetadata<SearchingPage> hitMetadata = searchResponse.hits();
+    for (Hit<SearchingPage> hit : hitMetadata.hits()) {
       double score = requireNonNullElse(hit.score(), 0.0);
       CartoonPage page = pageService.getPageById(hit.source().getId());
-      result.addMatchingPage(new SearchByImageResult.MatchingPage(page, score));
+      matchingPages.add(new MatchingPage(page, score));
     }
-    return result;
+    long totalMatches = hitMetadata.total().value();
+    return new PageImpl<>(matchingPages, pageable, totalMatches);
   }
 
   private String getQueryTemplate() {
