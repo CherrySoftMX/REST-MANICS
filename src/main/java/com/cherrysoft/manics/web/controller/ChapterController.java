@@ -4,8 +4,9 @@ import com.cherrysoft.manics.model.Chapter;
 import com.cherrysoft.manics.service.ChapterService;
 import com.cherrysoft.manics.web.dto.chapters.ChapterDTO;
 import com.cherrysoft.manics.web.dto.chapters.ChapterResponseDTO;
-import com.cherrysoft.manics.web.dto.pages.PageDTO;
+import com.cherrysoft.manics.web.dto.pages.CartoonPageDTO;
 import com.cherrysoft.manics.web.dto.validation.OnCreate;
+import com.cherrysoft.manics.web.hateoas.assemblers.ChapterModelAssembler;
 import com.cherrysoft.manics.web.mapper.ChapterMapper;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -16,9 +17,12 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.api.annotations.ParameterObject;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.data.web.SortDefault;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
@@ -30,6 +34,7 @@ import java.net.URISyntaxException;
 import java.util.List;
 
 import static com.cherrysoft.manics.util.ApiDocsConstants.*;
+import static com.cherrysoft.manics.util.MediaTypeUtils.APPLICATION_HAL_JSON_VALUE;
 
 @RequiredArgsConstructor
 @RestController
@@ -45,51 +50,53 @@ public class ChapterController {
   public static final String BASE_URL = "/chapters";
   private final ChapterService chapterService;
   private final ChapterMapper mapper;
+  private final ChapterModelAssembler chapterModelAssembler;
+  private final PagedResourcesAssembler<Chapter> chapterPagedResourcesAssembler;
 
   @Operation(summary = "Returns the chapters in which its name matches with the given name")
   @ApiResponse(responseCode = "200", description = "OK", content = {
       @Content(array = @ArraySchema(schema = @Schema(implementation = ChapterResponseDTO.class)))
   })
   @GetMapping("/search")
-  public ResponseEntity<List<ChapterResponseDTO>> searchChaptersByName(
+  public List<ChapterResponseDTO> searchChaptersByName(
       @RequestParam String name,
       @PageableDefault @ParameterObject Pageable pageable
   ) {
     List<Chapter> searchResult = chapterService.searchChapterByName(name, pageable);
-    return ResponseEntity.ok(mapper.toResponseListDto(searchResult));
+    return mapper.toResponseListDto(searchResult);
   }
 
   @Operation(summary = "Returns the chapter with the given ID")
   @ApiResponse(responseCode = "200", description = "OK", content = {
       @Content(schema = @Schema(implementation = ChapterResponseDTO.class))
   })
-  @GetMapping("/{id}")
-  public ResponseEntity<ChapterResponseDTO> getChapterById(@PathVariable Long id) {
+  @GetMapping(value = "/{id}", produces = APPLICATION_HAL_JSON_VALUE)
+  public ChapterResponseDTO getChapterById(@PathVariable Long id) {
     Chapter result = chapterService.getChapterById(id);
-    return ResponseEntity.ok(mapper.toResponseDto(result));
+    return chapterModelAssembler.toModel(result);
   }
 
   @Operation(summary = "Returns the chapter associated with the given cartoon")
   @ApiResponse(responseCode = "200", description = "OK", content = {
       @Content(array = @ArraySchema(schema = @Schema(implementation = ChapterResponseDTO.class)))
   })
-  @GetMapping
-  public ResponseEntity<List<ChapterResponseDTO>> getCartoonChapters(
+  @GetMapping(produces = APPLICATION_HAL_JSON_VALUE)
+  public PagedModel<ChapterResponseDTO> getCartoonChapters(
       @RequestParam Long cartoonId,
       @PageableDefault @SortDefault(sort = "publicationDate") Pageable pageable
   ) {
-    List<Chapter> result = chapterService.getCartoonChapters(cartoonId, pageable);
-    return ResponseEntity.ok(mapper.toResponseListDto(result));
+    Page<Chapter> result = chapterService.getCartoonChapters(cartoonId, pageable);
+    return chapterPagedResourcesAssembler.toModel(result, chapterModelAssembler);
   }
 
   @Operation(summary = "Creates a new chapter for the given chapter")
   @ApiResponses({
       @ApiResponse(responseCode = "201", description = "Chapter created", content = {
-          @Content(schema = @Schema(implementation = PageDTO.class))
+          @Content(schema = @Schema(implementation = CartoonPageDTO.class))
       }),
       @ApiResponse(ref = FORBIDDEN_RESPONSE_REF, responseCode = "403")
   })
-  @PostMapping
+  @PostMapping(produces = APPLICATION_HAL_JSON_VALUE)
   @Validated(OnCreate.class)
   @PreAuthorize("hasRole('ROLE_ADMIN')")
   public ResponseEntity<ChapterResponseDTO> createChapter(
@@ -100,7 +107,7 @@ public class ChapterController {
     Chapter result = chapterService.createChapter(cartoonId, newChapter);
     return ResponseEntity
         .created(new URI(String.format("%s/%s", BASE_URL, result.getId())))
-        .body(mapper.toResponseDto(result));
+        .body(chapterModelAssembler.toModel(result));
   }
 
   @Operation(summary = "Partially updates a chapter with the given payload")
@@ -110,15 +117,15 @@ public class ChapterController {
       }),
       @ApiResponse(ref = FORBIDDEN_RESPONSE_REF, responseCode = "403")
   })
-  @PatchMapping("/{id}")
+  @PatchMapping(value = "/{id}", produces = APPLICATION_HAL_JSON_VALUE)
   @PreAuthorize("hasRole('ROLE_ADMIN')")
-  public ResponseEntity<ChapterResponseDTO> updateChapter(
+  public ChapterResponseDTO updateChapter(
       @PathVariable Long id,
       @RequestBody @Valid ChapterDTO payload
   ) {
     Chapter updatedChapter = mapper.toChapter(payload);
     Chapter result = chapterService.updateChapter(id, updatedChapter);
-    return ResponseEntity.ok(mapper.toResponseDto(result));
+    return chapterModelAssembler.toModel(result);
   }
 
   @Operation(summary = "Deletes a chapter with the given ID")
@@ -130,9 +137,9 @@ public class ChapterController {
   })
   @DeleteMapping("/{id}")
   @PreAuthorize("hasRole('ROLE_ADMIN')")
-  public ResponseEntity<ChapterResponseDTO> deleteChapter(@PathVariable Long id) {
+  public ChapterResponseDTO deleteChapter(@PathVariable Long id) {
     Chapter result = chapterService.deleteChapter(id);
-    return ResponseEntity.ok(mapper.toResponseDto(result));
+    return mapper.toResponseDto(result);
   }
 
 }

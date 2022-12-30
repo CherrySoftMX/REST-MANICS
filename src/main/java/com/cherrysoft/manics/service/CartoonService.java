@@ -9,11 +9,11 @@ import com.cherrysoft.manics.repository.CartoonRepository;
 import com.cherrysoft.manics.service.search.SearchingCartoonService;
 import com.cherrysoft.manics.util.BeanUtils;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Set;
 
 @Service
@@ -23,12 +23,12 @@ public class CartoonService {
   private final SearchingCartoonService searchingCartoonService;
   private final CartoonRepository cartoonRepository;
 
-  public List<Cartoon> searchCartoonByName(String name, Pageable pageable) {
+  public Page<Cartoon> searchCartoonByName(String name, Pageable pageable) {
     SearchCartoonResult searchResult = searchingCartoonService.searchByCartoonName(name, pageable);
-    return cartoonRepository.findAllById(searchResult.getMatchingCartoonIds());
+    return cartoonRepository.findAllByIdIn(searchResult.getMatchingCartoonIds(), pageable);
   }
 
-  public List<Cartoon> getCartoons(CartoonType cartoonType, Pageable pageable) {
+  public Page<Cartoon> getCartoons(CartoonType cartoonType, Pageable pageable) {
     return cartoonRepository.findCartoonsByType(cartoonType, pageable);
   }
 

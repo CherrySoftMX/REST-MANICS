@@ -1,18 +1,14 @@
 package com.cherrysoft.manics.web.mapper;
 
-import com.cherrysoft.manics.web.dto.pages.PageDTO;
-import com.cherrysoft.manics.model.Page;
+import com.cherrysoft.manics.model.CartoonPage;
+import com.cherrysoft.manics.web.dto.pages.CartoonPageDTO;
 import org.mapstruct.Mapper;
-
-import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface PageMapper {
 
-  PageDTO toDto(Page page);
+  CartoonPageDTO toDto(CartoonPage page);
 
-  List<PageDTO> toDtoList(List<Page> page);
-
-  Page toPage(PageDTO pageDto);
+  CartoonPage toPage(CartoonPageDTO pageDto);
 
 }

@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.springframework.hateoas.RepresentationModel;
+import org.springframework.hateoas.server.core.Relation;
 import org.springframework.lang.NonNull;
 
 import javax.validation.constraints.Email;
@@ -15,6 +16,7 @@ import javax.validation.constraints.Size;
 
 @Data
 @EqualsAndHashCode(callSuper = false)
+@Relation(collectionRelation = "users", itemRelation = "user")
 public class ManicUserDTO extends RepresentationModel<ManicUserDTO> {
   @Null
   @JsonProperty(access = JsonProperty.Access.READ_ONLY)

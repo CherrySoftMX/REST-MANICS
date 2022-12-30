@@ -11,9 +11,8 @@ import com.cherrysoft.manics.repository.CommentRepository;
 import com.cherrysoft.manics.service.users.ManicUserService;
 import com.cherrysoft.manics.util.BeanUtils;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -28,7 +27,7 @@ public class CommentService {
         .orElseThrow(() -> new CommentNotFoundException(id));
   }
 
-  public List<Comment> getComments(CommentFilterSpec filterSpec) {
+  public Page<Comment> getComments(CommentFilterSpec filterSpec) {
     if (filterSpec.ambiguousFiltering()) {
       throw new AmbiguousFilterException("Either userId or cartoonId (NOT both) MUST be provided.");
     }
@@ -38,14 +37,14 @@ public class CommentService {
     if (filterSpec.filterByCartoonComments()) {
       return getCartoonComments(filterSpec);
     }
-    return List.of();
+    return Page.empty();
   }
 
-  public List<Comment> getCartoonComments(CommentFilterSpec spec) {
+  public Page<Comment> getCartoonComments(CommentFilterSpec spec) {
     return commentRepository.findCommentsByCartoon_Id(spec.getCartoonId(), spec.getPageable());
   }
 
-  public List<Comment> getUserComments(CommentFilterSpec spec) {
+  public Page<Comment> getUserComments(CommentFilterSpec spec) {
     return commentRepository.findCommentsByUser_Id(spec.getUserId(), spec.getPageable());
   }
 

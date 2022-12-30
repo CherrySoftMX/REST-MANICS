@@ -3,12 +3,17 @@ package com.cherrysoft.manics.web.dto;
 import com.cherrysoft.manics.web.dto.validation.OnCreate;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import org.springframework.hateoas.RepresentationModel;
+import org.springframework.hateoas.server.core.Relation;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 @Data
-public class CategoryDTO {
+@EqualsAndHashCode(callSuper = true)
+@Relation(collectionRelation = "categories", itemRelation = "category")
+public class CategoryDTO extends RepresentationModel<CategoryDTO> {
   @JsonProperty(access = JsonProperty.Access.READ_ONLY)
   private final Long id;
 

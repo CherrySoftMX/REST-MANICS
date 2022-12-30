@@ -6,7 +6,7 @@ import com.cherrysoft.manics.web.dto.users.ManicUserDTO;
 import com.cherrysoft.manics.web.mapper.ManicUserMapper;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.mediatype.Affordances;
-import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSupport;
+import org.springframework.hateoas.server.RepresentationModelAssembler;
 import org.springframework.http.HttpMethod;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
@@ -18,12 +18,11 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @Component
 public class ManicUserModelAssembler
-    extends RepresentationModelAssemblerSupport<ManicUser, ManicUserDTO> {
+    implements RepresentationModelAssembler<ManicUser, ManicUserDTO> {
   private final ManicUserMapper userMapper;
   private ManicUser entity;
 
   public ManicUserModelAssembler(ManicUserMapper userMapper) {
-    super(ManicUserController.class, ManicUserDTO.class);
     this.userMapper = userMapper;
   }
 
@@ -32,12 +31,7 @@ public class ManicUserModelAssembler
   public ManicUserDTO toModel(@NonNull ManicUser entity) {
     this.entity = entity;
     ManicUserDTO userModel = userMapper.toDto(entity);
-    userModel.add(List.of(
-        selfByIdLink(),
-        selfByUsernameLink(),
-        selfUpdateLink(),
-        selfDeleteLink())
-    );
+    userModel.add(List.of(selfByIdLink(), selfByUsernameLink()));
     return userModel;
   }
 
@@ -62,19 +56,9 @@ public class ManicUserModelAssembler
         .withInputAndOutput(ManicUserDTO.class)
         .withName("updateUser")
         .andAfford(HttpMethod.DELETE)
-        .withName("deleteUser")
         .withOutput(ManicUserDTO.class)
+        .withName("deleteUser")
         .toLink();
-  }
-
-  public Link selfUpdateLink() {
-    return linkTo(methodOn(ManicUserController.class)
-        .updateUser(null, entity.getId(), null)).withRel("selfUpdate");
-  }
-
-  public Link selfDeleteLink() {
-    return linkTo(methodOn(ManicUserController.class)
-        .deleteUser(null, entity.getId())).withRel("selfDelete");
   }
 
 }

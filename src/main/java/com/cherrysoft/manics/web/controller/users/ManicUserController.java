@@ -51,12 +51,12 @@ public class ManicUserController {
   })
   @GetMapping(value = "/{id}", produces = APPLICATION_HAL_JSON_VALUE)
   @PreAuthorize("#loggedUser.id == #id")
-  public ResponseEntity<ManicUserDTO> getUserById(
+  public ManicUserDTO getUserById(
       @AuthenticationPrincipal SecurityManicUser loggedUser,
       @PathVariable Long id
   ) {
     ManicUser user = userService.getUserById(id);
-    return ResponseEntity.ok(userModelAssembler.toModel(user));
+    return userModelAssembler.toModel(user);
   }
 
   @Operation(summary = "Returns the user with the given username")
@@ -65,12 +65,12 @@ public class ManicUserController {
   })
   @GetMapping(produces = APPLICATION_HAL_JSON_VALUE)
   @PreAuthorize("#loggedUser.username == #username")
-  public ResponseEntity<ManicUserDTO> getUserByUsername(
+  public ManicUserDTO getUserByUsername(
       @AuthenticationPrincipal SecurityManicUser loggedUser,
       @RequestParam String username
   ) {
     ManicUser user = userService.getUserByUsername(username);
-    return ResponseEntity.ok(userModelAssembler.toModel(user));
+    return userModelAssembler.toModel(user);
   }
 
   @Operation(summary = "Creates a new user with the given payload")
@@ -94,14 +94,14 @@ public class ManicUserController {
   })
   @PatchMapping(value = "/{id}", produces = APPLICATION_HAL_JSON_VALUE)
   @PreAuthorize("#loggedUser.id == #id")
-  public ResponseEntity<ManicUserDTO> updateUser(
+  public ManicUserDTO updateUser(
       @AuthenticationPrincipal SecurityManicUser loggedUser,
       @PathVariable Long id,
       @RequestBody @Valid ManicUserDTO payload
   ) {
     ManicUser updatedUser = mapper.toManicUser(payload);
     ManicUser result = userService.updateUser(id, updatedUser);
-    return ResponseEntity.ok(userModelAssembler.toModel(result));
+    return userModelAssembler.toModel(result);
   }
 
   @Operation(summary = "Deletes a user with the given ID")
@@ -110,12 +110,12 @@ public class ManicUserController {
   })
   @DeleteMapping("/{id}")
   @PreAuthorize("hasRole('ROLE_ADMIN') or #loggedUser.id == #id")
-  public ResponseEntity<ManicUserDTO> deleteUser(
+  public ManicUserDTO deleteUser(
       @AuthenticationPrincipal SecurityManicUser loggedUser,
       @PathVariable Long id
   ) {
     ManicUser result = userService.deleteUser(id);
-    return ResponseEntity.ok(mapper.toDto(result));
+    return mapper.toDto(result);
   }
 
 }

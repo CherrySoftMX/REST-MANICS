@@ -48,9 +48,9 @@ public class Chapter {
       fetch = FetchType.LAZY
   )
   @ToString.Exclude
-  private List<Page> pages;
+  private List<CartoonPage> pages;
 
-  public void setPages(List<Page> pages) {
+  public void setPages(List<CartoonPage> pages) {
     if (isNull(pages)) {
       return;
     }

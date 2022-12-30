@@ -4,6 +4,7 @@ import com.cherrysoft.manics.model.Suggestion;
 import com.cherrysoft.manics.security.SecurityManicUser;
 import com.cherrysoft.manics.service.SuggestionService;
 import com.cherrysoft.manics.web.dto.SuggestionDTO;
+import com.cherrysoft.manics.web.hateoas.assemblers.SuggestionModelAssembler;
 import com.cherrysoft.manics.web.mapper.SuggestionMapper;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -14,10 +15,13 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.api.annotations.ParameterObject;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.data.web.SortDefault;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -26,9 +30,9 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.List;
 
 import static com.cherrysoft.manics.util.ApiDocsConstants.*;
+import static com.cherrysoft.manics.util.MediaTypeUtils.APPLICATION_HAL_JSON_VALUE;
 
 @RequiredArgsConstructor
 @RestController
@@ -45,6 +49,8 @@ public class SuggestionController {
   public static final String BASE_URL = "/suggestions";
   private final SuggestionService suggestionService;
   private final SuggestionMapper mapper;
+  private final SuggestionModelAssembler suggestionModelAssembler;
+  private final PagedResourcesAssembler<Suggestion> suggestionPagedResourcesAssembler;
 
   @Operation(summary = "Returns the suggestion of the given user")
   @ApiResponse(responseCode = "200", description = "OK", content = {
@@ -52,7 +58,7 @@ public class SuggestionController {
   })
   @GetMapping
   @PreAuthorize("hasRole('ROLE_ADMIN') or #loggedUser.id == #userId")
-  public ResponseEntity<List<SuggestionDTO>> getSuggestionsOfUser(
+  public PagedModel<SuggestionDTO> getSuggestionsOfUser(
       @AuthenticationPrincipal SecurityManicUser loggedUser,
       @RequestParam Long userId,
       @PageableDefault
@@ -60,30 +66,30 @@ public class SuggestionController {
       @ParameterObject
       Pageable pageable
   ) {
-    List<Suggestion> result = suggestionService.getSuggestionsOfUser(userId, pageable);
-    return ResponseEntity.ok(mapper.toDtoList(result));
+    Page<Suggestion> result = suggestionService.getSuggestionsOfUser(userId, pageable);
+    return suggestionPagedResourcesAssembler.toModel(result, suggestionModelAssembler).withFallbackType(SuggestionDTO.class);
   }
 
   @Operation(summary = "Returns the suggestion with the given ID")
   @ApiResponse(responseCode = "200", description = "Suggestion found", content = {
       @Content(schema = @Schema(implementation = SuggestionDTO.class))
   })
-  @GetMapping("/{id}")
+  @GetMapping(value = "/{id}", produces = APPLICATION_HAL_JSON_VALUE)
   @PreAuthorize("hasRole('ROLE_ADMIN') or #loggedUser.id == #userId")
-  public ResponseEntity<SuggestionDTO> getSuggestion(
+  public SuggestionDTO getSuggestion(
       @AuthenticationPrincipal SecurityManicUser loggedUser,
       @PathVariable Long id,
       @RequestParam Long userId
   ) {
-    Suggestion suggestion = suggestionService.getSuggestion(id);
-    return ResponseEntity.ok(mapper.toDto(suggestion));
+    Suggestion result = suggestionService.getSuggestion(id);
+    return suggestionModelAssembler.toModel(result);
   }
 
   @Operation(summary = "Creates a new suggestion for the given user")
   @ApiResponse(responseCode = "201", description = "Suggestion created", content = {
       @Content(schema = @Schema(implementation = SuggestionDTO.class))
   })
-  @PostMapping
+  @PostMapping(produces = APPLICATION_HAL_JSON_VALUE)
   @PreAuthorize("#loggedUser.id == #userId")
   public ResponseEntity<SuggestionDTO> createSuggestion(
       @AuthenticationPrincipal SecurityManicUser loggedUser,
@@ -94,16 +100,16 @@ public class SuggestionController {
     Suggestion result = suggestionService.createSuggestion(userId, suggestion);
     return ResponseEntity
         .created(new URI(String.format("%s/%s", BASE_URL, result.getId())))
-        .body(mapper.toDto(result));
+        .body(suggestionModelAssembler.toModel(result));
   }
 
   @Operation(summary = "Partially updates a suggestion with the given payload")
   @ApiResponse(responseCode = "200", description = "Suggestion updated", content = {
       @Content(schema = @Schema(implementation = SuggestionDTO.class))
   })
-  @PatchMapping("/{id}")
+  @PatchMapping(value = "/{id}", produces = APPLICATION_HAL_JSON_VALUE)
   @PreAuthorize("#loggedUser.id == #userId")
-  public ResponseEntity<SuggestionDTO> updateSuggestion(
+  public SuggestionDTO updateSuggestion(
       @AuthenticationPrincipal SecurityManicUser loggedUser,
       @PathVariable Long id,
       @RequestParam Long userId,
@@ -111,7 +117,7 @@ public class SuggestionController {
   ) {
     Suggestion updatedSuggestion = mapper.toSuggestion(payload);
     Suggestion result = suggestionService.updateSuggestion(id, updatedSuggestion);
-    return ResponseEntity.ok(mapper.toDto(result));
+    return suggestionModelAssembler.toModel(result);
   }
 
   @Operation(summary = "Deletes a suggestion with the given ID")
@@ -120,13 +126,13 @@ public class SuggestionController {
   })
   @DeleteMapping("/{id}")
   @PreAuthorize("hasRole('ROLE_ADMIN') or #loggedUser.id == #userId")
-  public ResponseEntity<SuggestionDTO> deleteSuggestion(
+  public SuggestionDTO deleteSuggestion(
       @AuthenticationPrincipal SecurityManicUser loggedUser,
       @PathVariable Long id,
       @RequestParam Long userId
   ) {
     Suggestion suggestion = suggestionService.deleteSuggestion(id);
-    return ResponseEntity.ok(mapper.toDto(suggestion));
+    return mapper.toDto(suggestion);
   }
 
 }

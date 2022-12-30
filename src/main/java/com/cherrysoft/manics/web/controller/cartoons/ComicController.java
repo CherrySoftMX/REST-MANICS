@@ -8,6 +8,7 @@ import com.cherrysoft.manics.service.CartoonService;
 import com.cherrysoft.manics.web.dto.cartoons.CartoonDTO;
 import com.cherrysoft.manics.web.dto.cartoons.CartoonResponseDTO;
 import com.cherrysoft.manics.web.dto.validation.OnCreate;
+import com.cherrysoft.manics.web.hateoas.assemblers.CartoonModelAssembler;
 import com.cherrysoft.manics.web.mapper.CartoonMapper;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -19,16 +20,18 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springdoc.api.annotations.ParameterObject;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.data.web.SortDefault;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
 
 import static com.cherrysoft.manics.util.ApiDocsConstants.*;
+import static com.cherrysoft.manics.util.MediaTypeUtils.APPLICATION_HAL_JSON_VALUE;
 
 @RestController
 @Validated
@@ -42,17 +45,34 @@ import static com.cherrysoft.manics.util.ApiDocsConstants.*;
 })
 public class ComicController extends BaseCartoonController {
   public static final String BASE_URL = "/comics";
+  private final CartoonModelAssembler cartoonModelAssembler;
 
-  public ComicController(CartoonService cartoonService, CartoonMapper mapper) {
-    super(cartoonService, mapper, BASE_URL);
+  public ComicController(
+      CartoonService cartoonService,
+      CartoonMapper mapper,
+      CartoonModelAssembler cartoonModelAssembler,
+      PagedResourcesAssembler<Cartoon> cartoonPagedResourcesAssembler
+  ) {
+    super(cartoonService, mapper, cartoonModelAssembler, cartoonPagedResourcesAssembler, BASE_URL);
+    this.cartoonModelAssembler = cartoonModelAssembler;
+  }
+
+  @Operation(summary = "Returns the comic with the given ID")
+  @ApiResponse(responseCode = "200", description = "Comic found", content = {
+      @Content(schema = @Schema(implementation = CartoonResponseDTO.class))
+  })
+  @GetMapping(value = "/{id}", produces = APPLICATION_HAL_JSON_VALUE)
+  public CartoonResponseDTO getComicById(@PathVariable Long id) {
+    Cartoon result = cartoonService.getCartoonByIdAndType(id, CartoonType.COMIC);
+    return cartoonModelAssembler.toModel(result);
   }
 
   @Operation(summary = "Returns all the available comics")
   @ApiResponse(responseCode = "200", description = "OK", content = {
       @Content(array = @ArraySchema(schema = @Schema(implementation = CartoonResponseDTO.class)))
   })
-  @GetMapping
-  public ResponseEntity<List<CartoonResponseDTO>> getComics(
+  @GetMapping(produces = APPLICATION_HAL_JSON_VALUE)
+  public PagedModel<CartoonResponseDTO> getComics(
       @PageableDefault
       @SortDefault(sort = "name")
       @ParameterObject
@@ -68,7 +88,7 @@ public class ComicController extends BaseCartoonController {
       }),
       @ApiResponse(ref = FORBIDDEN_RESPONSE_REF, responseCode = "403")
   })
-  @PostMapping
+  @PostMapping(produces = APPLICATION_HAL_JSON_VALUE)
   @Validated(OnCreate.class)
   @PreAuthorize("hasRole('ROLE_ADMIN')")
   public ResponseEntity<CartoonResponseDTO> createComic(@RequestBody @Valid CartoonDTO payload) {
@@ -82,9 +102,9 @@ public class ComicController extends BaseCartoonController {
       }),
       @ApiResponse(ref = FORBIDDEN_RESPONSE_REF, responseCode = "403")
   })
-  @PatchMapping("/{id}")
+  @PatchMapping(value = "/{id}", produces = APPLICATION_HAL_JSON_VALUE)
   @PreAuthorize("hasRole('ROLE_ADMIN')")
-  public ResponseEntity<CartoonResponseDTO> updateComic(
+  public CartoonResponseDTO updateComic(
       @PathVariable Long id,
       @RequestBody @Valid CartoonDTO payload
   ) {
@@ -100,7 +120,7 @@ public class ComicController extends BaseCartoonController {
   })
   @DeleteMapping("/{id}")
   @PreAuthorize("hasRole('ROLE_ADMIN')")
-  public ResponseEntity<CartoonResponseDTO> deleteComic(@PathVariable Long id) {
+  public CartoonResponseDTO deleteComic(@PathVariable Long id) {
     return super.deleteCartoon(id, CartoonType.COMIC);
   }
 

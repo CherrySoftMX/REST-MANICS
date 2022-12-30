@@ -4,9 +4,14 @@ import com.cherrysoft.manics.model.CartoonType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import org.springframework.hateoas.RepresentationModel;
+import org.springframework.hateoas.server.core.Relation;
 
 @Data
-public class CartoonResponseDTO {
+@EqualsAndHashCode(callSuper = true)
+@Relation(collectionRelation = "cartoons", itemRelation = "cartoon")
+public class CartoonResponseDTO extends RepresentationModel<CartoonResponseDTO> {
   @JsonProperty(access = JsonProperty.Access.READ_ONLY)
   private final Long id;
 
