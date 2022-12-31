@@ -1,15 +1,11 @@
 package com.cherrysoft.manics.repository.search;
 
-import com.cherrysoft.manics.model.search.SearchingChapter;
+import com.cherrysoft.manics.model.Chapter;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
-import org.springframework.stereotype.Repository;
 
-import java.util.List;
+public interface SearchingChapterRepository {
 
-@Repository
-public interface SearchingChapterRepository extends ElasticsearchRepository<SearchingChapter, Long> {
-
-  List<SearchingChapter> findByNameLike(String name, Pageable pageable);
+  Page<Chapter> searchChapterByName(String name, Pageable pageable);
 
 }
