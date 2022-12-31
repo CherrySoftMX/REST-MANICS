@@ -12,6 +12,7 @@ import com.cherrysoft.manics.service.users.ManicUserService;
 import com.cherrysoft.manics.util.BeanUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -20,6 +21,10 @@ public class CommentService {
   private final ManicUserService userService;
   private final CartoonService cartoonService;
   private final CommentRepository commentRepository;
+
+  public Page<Comment> searchCommentsByContent(String content, Pageable pageable) {
+    return commentRepository.searchCommentByContent(content, pageable);
+  }
 
   public Comment getCommentById(Long id) {
     return commentRepository

@@ -57,6 +57,24 @@ public class CommentController {
   private final CommentModelAssembler commentModelAssembler;
   private final PagedResourcesAssembler<Comment> commentPagedResourcesAssembler;
 
+  @Operation(summary = "Returns the comments with the content that match with the given content")
+  @ApiResponse(responseCode = "200", description = "OK", content = {
+      @Content(array = @ArraySchema(schema = @Schema(implementation = CommentDTO.class)))
+  })
+  @Parameter(
+      name = "content",
+      description = "The content to search for",
+      schema = @Schema(type = "string")
+  )
+  @GetMapping(value = "/search", produces = APPLICATION_HAL_JSON_VALUE)
+  public PagedModel<CommentDTO> searchCommentsByContent(
+      @RequestParam String content,
+      @PageableDefault Pageable pageable
+  ) {
+    Page<Comment> result = commentService.searchCommentsByContent(content, pageable);
+    return commentPagedResourcesAssembler.toModel(result, commentModelAssembler);
+  }
+
   @Operation(summary = "Returns the comments for the given user OR cartoon")
   @ApiResponse(responseCode = "200", description = "OK", content = {
       @Content(array = @ArraySchema(schema = @Schema(implementation = CommentDTO.class)))
