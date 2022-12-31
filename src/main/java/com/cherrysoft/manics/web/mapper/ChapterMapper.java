@@ -8,8 +8,6 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
 
-import java.util.List;
-
 @Mapper(componentModel = "spring")
 public interface ChapterMapper {
 
@@ -30,8 +28,6 @@ public interface ChapterMapper {
       @Mapping(target = "baseChapterFields.publicationDate", source = "publicationDate"),
   })
   ChapterResponseDTO toResponseDto(Chapter chapter);
-
-  List<ChapterResponseDTO> toResponseListDto(List<Chapter> chapter);
 
   @InheritInverseConfiguration
   Chapter toChapter(ChapterDTO chapterDto);
