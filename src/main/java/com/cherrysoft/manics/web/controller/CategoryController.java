@@ -7,6 +7,8 @@ import com.cherrysoft.manics.web.dto.validation.OnCreate;
 import com.cherrysoft.manics.web.hateoas.assemblers.CategoryModelAssembler;
 import com.cherrysoft.manics.web.mapper.CategoryMapper;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -47,6 +49,24 @@ public class CategoryController {
   private final CategoryMapper mapper;
   private final CategoryModelAssembler categoryModelAssembler;
   private final PagedResourcesAssembler<Category> categoryPagedResourcesAssembler;
+
+  @Operation(summary = "Returns the categories that contains the provided query")
+  @ApiResponse(responseCode = "200", description = "OK", content = {
+      @Content(array = @ArraySchema(schema = @Schema(implementation = CategoryDTO.class)))
+  })
+  @Parameter(
+      name = "query",
+      description = "The query to search for",
+      schema = @Schema(type = "string")
+  )
+  @GetMapping(value = "/search", produces = APPLICATION_HAL_JSON_VALUE)
+  public PagedModel<CategoryDTO> searchCategories(
+      @RequestParam String query,
+      @PageableDefault Pageable pageable
+  ) {
+    Page<Category> result = categoryService.searchCategories(query, pageable);
+    return categoryPagedResourcesAssembler.toModel(result, categoryModelAssembler);
+  }
 
   @Operation(summary = "Returns the categories of the given cartoon")
   @ApiResponse(responseCode = "200", description = "OK", content = {
