@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.Hibernate;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.FullTextField;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.Indexed;
 
 import javax.persistence.*;
 import java.util.Calendar;
@@ -14,6 +16,7 @@ import java.util.Objects;
 @Setter
 @Entity
 @Table(name = "suggestions")
+@Indexed(index = "suggestions")
 public class Suggestion {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,6 +28,7 @@ public class Suggestion {
   private ManicUser user;
 
   @Column
+  @FullTextField
   private String content;
 
   @Column(nullable = false, updatable = false)

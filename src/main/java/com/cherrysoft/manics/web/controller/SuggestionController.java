@@ -52,11 +52,24 @@ public class SuggestionController {
   private final SuggestionModelAssembler suggestionModelAssembler;
   private final PagedResourcesAssembler<Suggestion> suggestionPagedResourcesAssembler;
 
+  @Operation(summary = "Returns the suggestion with the content that matches with the given content")
+  @ApiResponse(responseCode = "200", description = "OK", content = {
+      @Content(array = @ArraySchema(schema = @Schema(implementation = SuggestionDTO.class)))
+  })
+  @GetMapping(value = "/search", produces = APPLICATION_HAL_JSON_VALUE)
+  public PagedModel<SuggestionDTO> searchSuggestion(
+      @RequestParam String content,
+      @PageableDefault Pageable pageable
+  ) {
+    Page<Suggestion> searchResult = suggestionService.searchSuggestionByContent(content, pageable);
+    return suggestionPagedResourcesAssembler.toModel(searchResult, suggestionModelAssembler);
+  }
+
   @Operation(summary = "Returns the suggestion of the given user")
   @ApiResponse(responseCode = "200", description = "OK", content = {
       @Content(array = @ArraySchema(schema = @Schema(implementation = SuggestionDTO.class)))
   })
-  @GetMapping
+  @GetMapping(produces = APPLICATION_HAL_JSON_VALUE)
   @PreAuthorize("hasRole('ROLE_ADMIN') or #loggedUser.id == #userId")
   public PagedModel<SuggestionDTO> getSuggestionsOfUser(
       @AuthenticationPrincipal SecurityManicUser loggedUser,
