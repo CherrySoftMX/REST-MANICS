@@ -6,6 +6,9 @@ import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.Hibernate;
 import org.hibernate.annotations.SortNatural;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.FullTextField;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.Indexed;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.IndexedEmbedded;
 
 import javax.persistence.*;
 import java.time.Year;
@@ -18,6 +21,7 @@ import static java.util.Objects.isNull;
 @ToString
 @Entity
 @Table(name = "cartoons")
+@Indexed(index = "cartoons")
 public class Cartoon {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,12 +29,14 @@ public class Cartoon {
   protected Long id;
 
   @Column
+  @FullTextField
   private String name;
 
   @Enumerated(EnumType.ORDINAL)
   private CartoonType type;
 
   @Column
+  @FullTextField
   private String author;
 
   @Column
@@ -46,6 +52,7 @@ public class Cartoon {
       orphanRemoval = true
   )
   @ToString.Exclude
+  @IndexedEmbedded
   private List<Chapter> chapters;
 
   @OneToMany(
