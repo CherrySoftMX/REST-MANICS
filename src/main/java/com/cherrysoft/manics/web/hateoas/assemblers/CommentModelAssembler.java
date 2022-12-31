@@ -2,10 +2,10 @@ package com.cherrysoft.manics.web.hateoas.assemblers;
 
 import com.cherrysoft.manics.model.Cartoon;
 import com.cherrysoft.manics.model.Comment;
+import com.cherrysoft.manics.web.controller.CartoonController;
 import com.cherrysoft.manics.web.controller.CommentController;
 import com.cherrysoft.manics.web.controller.users.ManicUserController;
 import com.cherrysoft.manics.web.dto.CommentDTO;
-import com.cherrysoft.manics.web.hateoas.utils.CartoonLinkUtils;
 import com.cherrysoft.manics.web.mapper.CommentMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.hateoas.Link;
@@ -51,7 +51,9 @@ public class CommentModelAssembler implements RepresentationModelAssembler<Comme
 
   private Link cartoonLink() {
     Cartoon cartoon = entity.getCartoon();
-    return CartoonLinkUtils.getCartoonLink(cartoon);
+    return linkTo(methodOn(CartoonController.class)
+        .getCartoonById(cartoon.getId()))
+        .withRel("cartoon");
   }
 
   private Link withUpdateAndDeleteAffordances(Link link) {

@@ -1,10 +1,10 @@
 package com.cherrysoft.manics.web.hateoas.assemblers;
 
 import com.cherrysoft.manics.model.Cartoon;
+import com.cherrysoft.manics.web.controller.CartoonController;
 import com.cherrysoft.manics.web.controller.ChapterController;
 import com.cherrysoft.manics.web.dto.cartoons.CartoonDTO;
 import com.cherrysoft.manics.web.dto.cartoons.CartoonResponseDTO;
-import com.cherrysoft.manics.web.hateoas.utils.CartoonLinkUtils;
 import com.cherrysoft.manics.web.mapper.CartoonMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.hateoas.Link;
@@ -36,7 +36,9 @@ public class CartoonModelAssembler implements RepresentationModelAssembler<Carto
 
   private Link selfLink() {
     return withUpdateAndDeleteAffordances(
-        CartoonLinkUtils.getCartoonLink(entity)
+        linkTo(methodOn(CartoonController.class)
+            .getCartoonById(entity.getId()))
+            .withSelfRel()
     );
   }
 
