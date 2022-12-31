@@ -2,19 +2,17 @@ package com.cherrysoft.manics.repository;
 
 import com.cherrysoft.manics.model.Cartoon;
 import com.cherrysoft.manics.model.CartoonType;
+import com.cherrysoft.manics.repository.search.SearchingCartoonRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import java.util.Collection;
 import java.util.Optional;
 
 @Repository
-public interface CartoonRepository extends JpaRepository<Cartoon, Long> {
-
-  Page<Cartoon> findAllByIdIn(Collection<Long> ids, Pageable pageable);
+public interface CartoonRepository extends JpaRepository<Cartoon, Long>, SearchingCartoonRepository {
 
   Optional<Cartoon> findCartoonByIdAndType(Long id, CartoonType type);
 

@@ -31,7 +31,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.List;
 
 import static com.cherrysoft.manics.util.ApiDocsConstants.*;
 import static com.cherrysoft.manics.util.MediaTypeUtils.APPLICATION_HAL_JSON_VALUE;
@@ -57,13 +56,13 @@ public class ChapterController {
   @ApiResponse(responseCode = "200", description = "OK", content = {
       @Content(array = @ArraySchema(schema = @Schema(implementation = ChapterResponseDTO.class)))
   })
-  @GetMapping("/search")
-  public List<ChapterResponseDTO> searchChaptersByName(
+  @GetMapping(value = "/search", produces = APPLICATION_HAL_JSON_VALUE)
+  public PagedModel<ChapterResponseDTO> searchChaptersByName(
       @RequestParam String name,
       @PageableDefault @ParameterObject Pageable pageable
   ) {
-    List<Chapter> searchResult = chapterService.searchChapterByName(name, pageable);
-    return mapper.toResponseListDto(searchResult);
+    Page<Chapter> searchResult = chapterService.searchChapterByName(name, pageable);
+    return chapterPagedResourcesAssembler.toModel(searchResult, chapterModelAssembler);
   }
 
   @Operation(summary = "Returns the chapter with the given ID")

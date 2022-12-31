@@ -54,10 +54,10 @@ public class SearchCartoonController {
   })
   @GetMapping("/search")
   public PagedModel<CartoonResponseDTO> searchCartoons(
-      @RequestParam String name,
+      @RequestParam String query,
       @PageableDefault @ParameterObject Pageable pageable
   ) {
-    Page<Cartoon> result = cartoonService.searchCartoonByName(name, pageable);
+    Page<Cartoon> result = cartoonService.searchCartoon(query, pageable);
     return cartoonPagedResourcesAssembler.toModel(result, cartoonModelAssembler);
   }
 

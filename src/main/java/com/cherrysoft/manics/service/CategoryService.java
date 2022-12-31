@@ -17,6 +17,10 @@ import java.util.Set;
 public class CategoryService {
   private final CategoryRepository categoryRepository;
 
+  public Page<Category> searchCategories(String query, Pageable pageable) {
+    return categoryRepository.searchCategory(query, pageable);
+  }
+
   public Category getCategory(Long id) {
     return categoryRepository
         .findById(id)

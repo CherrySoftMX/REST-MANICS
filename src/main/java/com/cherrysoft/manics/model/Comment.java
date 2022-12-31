@@ -6,6 +6,8 @@ import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.Hibernate;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.FullTextField;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.Indexed;
 
 import javax.persistence.*;
 import java.util.Calendar;
@@ -16,6 +18,7 @@ import java.util.Objects;
 @ToString
 @Entity
 @Table(name = "comments")
+@Indexed(index = "comments")
 public class Comment {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,6 +36,7 @@ public class Comment {
   private Cartoon cartoon;
 
   @Column
+  @FullTextField
   private String content;
 
   @Column(nullable = false, updatable = false)

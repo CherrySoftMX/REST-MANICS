@@ -16,6 +16,10 @@ public class SuggestionService {
   private final SuggestionRepository suggestionRepository;
   private final ManicUserRepository userRepository;
 
+  public Page<Suggestion> searchSuggestionByContent(String content, Pageable pageable) {
+    return suggestionRepository.searchSuggestionsByContent(content, pageable);
+  }
+
   public Suggestion getSuggestion(Long id) {
     return suggestionRepository
         .findById(id)
