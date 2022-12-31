@@ -27,6 +27,12 @@ public class ApplicationExceptionHandler {
     return throwCustomException(e, HttpStatus.NOT_FOUND);
   }
 
+  @ExceptionHandler(InvalidCartoonTypeException.class)
+  @ResponseStatus(HttpStatus.BAD_REQUEST)
+  public ResponseEntity<Object> appExceptionHandler(final InvalidCartoonTypeException e) {
+    return throwCustomException(e, HttpStatus.BAD_REQUEST);
+  }
+
   @ExceptionHandler(CategoryNotFoundException.class)
   @ResponseStatus(HttpStatus.NOT_FOUND)
   public ResponseEntity<Object> appExceptionHandler(final CategoryNotFoundException e) {
