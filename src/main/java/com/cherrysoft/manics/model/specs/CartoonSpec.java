@@ -9,9 +9,9 @@ import java.util.Set;
 import static java.util.Objects.isNull;
 
 @Data
-public abstract class CartoonSpec {
-  protected final Cartoon cartoon;
-  protected Set<Long> categoryIds;
+public class CartoonSpec {
+  private final Cartoon cartoon;
+  private Set<Long> categoryIds;
 
   public CartoonSpec(Cartoon cartoon, CartoonType cartoonType, Set<Long> categoryIds) {
     this.cartoon = cartoon;

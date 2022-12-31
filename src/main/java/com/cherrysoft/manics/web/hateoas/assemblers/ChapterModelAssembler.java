@@ -2,11 +2,11 @@ package com.cherrysoft.manics.web.hateoas.assemblers;
 
 import com.cherrysoft.manics.model.Cartoon;
 import com.cherrysoft.manics.model.Chapter;
+import com.cherrysoft.manics.web.controller.CartoonController;
 import com.cherrysoft.manics.web.controller.ChapterController;
 import com.cherrysoft.manics.web.controller.PageController;
 import com.cherrysoft.manics.web.dto.chapters.ChapterDTO;
 import com.cherrysoft.manics.web.dto.chapters.ChapterResponseDTO;
-import com.cherrysoft.manics.web.hateoas.utils.CartoonLinkUtils;
 import com.cherrysoft.manics.web.mapper.ChapterMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.hateoas.Link;
@@ -52,7 +52,9 @@ public class ChapterModelAssembler implements RepresentationModelAssembler<Chapt
 
   private Link cartoonLink() {
     Cartoon cartoon = entity.getCartoon();
-    return CartoonLinkUtils.getCartoonLink(cartoon);
+    return linkTo(methodOn(CartoonController.class)
+        .getCartoonById(cartoon.getId()))
+        .withRel("cartoon");
   }
 
   private Link withUpdateAndDeleteAffordances(Link link) {

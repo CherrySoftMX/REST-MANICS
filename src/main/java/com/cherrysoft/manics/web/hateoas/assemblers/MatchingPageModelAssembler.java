@@ -2,8 +2,8 @@ package com.cherrysoft.manics.web.hateoas.assemblers;
 
 import com.cherrysoft.manics.model.Chapter;
 import com.cherrysoft.manics.model.search.MatchingPage;
+import com.cherrysoft.manics.web.controller.CartoonController;
 import com.cherrysoft.manics.web.dto.search.MatchingPageDTO;
-import com.cherrysoft.manics.web.hateoas.utils.CartoonLinkUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.server.RepresentationModelAssembler;
@@ -11,6 +11,9 @@ import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @Component
 @RequiredArgsConstructor
@@ -32,7 +35,9 @@ public class MatchingPageModelAssembler
 
   private Link cartoonLink() {
     Chapter chapter = entity.getPage().getChapter();
-    return CartoonLinkUtils.getCartoonLink(chapter.getCartoon());
+    return linkTo(methodOn(CartoonController.class)
+        .getCartoonById(chapter.getCartoon().getId()))
+        .withRel("cartoon");
   }
 
 }
