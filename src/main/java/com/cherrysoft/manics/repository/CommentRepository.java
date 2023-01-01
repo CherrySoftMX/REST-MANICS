@@ -1,17 +1,19 @@
 package com.cherrysoft.manics.repository;
 
 import com.cherrysoft.manics.model.Comment;
+import com.cherrysoft.manics.repository.search.SearchingCommentRepository;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
-
 @Repository
-public interface CommentRepository extends JpaRepository<Comment, Long> {
+public interface CommentRepository extends JpaRepository<Comment, Long>, SearchingCommentRepository {
 
-  List<Comment> findCommentsByCartoon_Id(Long cartoonId, Pageable pageable);
+  Page<Comment> findCommentsByCartoon_Id(Long cartoonId, Pageable pageable);
 
-  List<Comment> findCommentsByUser_Id(Long userId, Pageable pageable);
+  Page<Comment> findCommentsByUser_Id(Long userId, Pageable pageable);
+
+  Page<Comment> findCommentsByParent_Id(Long parentId, Pageable pageable);
 
 }

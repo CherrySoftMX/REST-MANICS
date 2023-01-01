@@ -2,11 +2,14 @@ package com.cherrysoft.manics.web.hateoas.assemblers;
 
 import com.cherrysoft.manics.model.auth.ManicUser;
 import com.cherrysoft.manics.web.controller.users.ManicUserController;
+import com.cherrysoft.manics.web.controller.users.ManicUserRoleController;
 import com.cherrysoft.manics.web.dto.users.ManicUserDTO;
+import com.cherrysoft.manics.web.dto.users.ManicUserRoleSetDTO;
 import com.cherrysoft.manics.web.mapper.ManicUserMapper;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.mediatype.Affordances;
-import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSupport;
+import org.springframework.hateoas.mediatype.ConfigurableAffordance;
+import org.springframework.hateoas.server.RepresentationModelAssembler;
 import org.springframework.http.HttpMethod;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
@@ -18,12 +21,11 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @Component
 public class ManicUserModelAssembler
-    extends RepresentationModelAssemblerSupport<ManicUser, ManicUserDTO> {
+    implements RepresentationModelAssembler<ManicUser, ManicUserDTO> {
   private final ManicUserMapper userMapper;
   private ManicUser entity;
 
   public ManicUserModelAssembler(ManicUserMapper userMapper) {
-    super(ManicUserController.class, ManicUserDTO.class);
     this.userMapper = userMapper;
   }
 
@@ -32,49 +34,62 @@ public class ManicUserModelAssembler
   public ManicUserDTO toModel(@NonNull ManicUser entity) {
     this.entity = entity;
     ManicUserDTO userModel = userMapper.toDto(entity);
-    userModel.add(List.of(
-        selfByIdLink(),
-        selfByUsernameLink(),
-        selfUpdateLink(),
-        selfDeleteLink())
-    );
+    userModel.add(List.of(selfByIdLink(), selfByUsernameLink()));
     return userModel;
   }
 
-  public Link selfByIdLink() {
-    return withUpdateAndDeleteAffordances(
+  private Link selfByIdLink() {
+    return withUserAffordances(
         linkTo(ManicUserController.class)
             .slash(entity.getId())
             .withSelfRel()
     );
   }
 
-  public Link selfByUsernameLink() {
-    return withUpdateAndDeleteAffordances(
-        linkTo(methodOn(ManicUserController.class)
-            .getUserByUsername(null, entity.getUsername())).withSelfRel()
-    );
+  private Link selfByUsernameLink() {
+    return linkTo(methodOn(ManicUserController.class)
+        .getUserByUsername(null, entity.getUsername()))
+        .withSelfRel();
   }
 
-  public Link withUpdateAndDeleteAffordances(Link link) {
-    return Affordances.of(link)
+  private Link withUserAffordances(Link link) {
+    ConfigurableAffordance configurableAffordance = Affordances.of(link)
         .afford(HttpMethod.PATCH)
-        .withInputAndOutput(ManicUserDTO.class)
         .withName("updateUser")
+        .withInputAndOutput(ManicUserDTO.class)
         .andAfford(HttpMethod.DELETE)
         .withName("deleteUser")
-        .withOutput(ManicUserDTO.class)
-        .toLink();
-  }
+        .withOutput(ManicUserDTO.class);
 
-  public Link selfUpdateLink() {
-    return linkTo(methodOn(ManicUserController.class)
-        .updateUser(null, entity.getId(), null)).withRel("selfUpdate");
-  }
+    if (entity.isAdmin()) {
+      configurableAffordance = configurableAffordance
+          .andAfford(HttpMethod.POST)
+          .withInputAndOutput(ManicUserDTO.class)
+          .withTarget(linkTo(ManicUserController.class).withSelfRel())
+          .withName("createUser")
 
-  public Link selfDeleteLink() {
-    return linkTo(methodOn(ManicUserController.class)
-        .deleteUser(null, entity.getId())).withRel("selfDelete");
+          .andAfford(HttpMethod.PUT)
+          .withName("addUserRoles")
+          .withInput(ManicUserRoleSetDTO.class)
+          .withOutput(ManicUserDTO.class)
+          .withTarget(
+              linkTo(methodOn(ManicUserRoleController.class)
+                  .removeUserRoles(entity.getId(), null))
+                  .withSelfRel()
+          )
+
+          .andAfford(HttpMethod.DELETE)
+          .withName("removeUserRoles")
+          .withInput(ManicUserRoleSetDTO.class)
+          .withOutput(ManicUserDTO.class)
+          .withTarget(
+              linkTo(methodOn(ManicUserRoleController.class)
+                  .addUserRoles(entity.getId(), null))
+                  .withSelfRel()
+          );
+    }
+
+    return configurableAffordance.toLink();
   }
 
 }

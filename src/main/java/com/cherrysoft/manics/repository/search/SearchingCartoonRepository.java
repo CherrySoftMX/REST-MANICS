@@ -1,15 +1,11 @@
 package com.cherrysoft.manics.repository.search;
 
-import com.cherrysoft.manics.model.search.SearchingCartoon;
+import com.cherrysoft.manics.model.Cartoon;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
-import org.springframework.stereotype.Repository;
 
-import java.util.List;
+public interface SearchingCartoonRepository {
 
-@Repository
-public interface SearchingCartoonRepository extends ElasticsearchRepository<SearchingCartoon, Long> {
-
-  List<SearchingCartoon> findByNameLike(String name, Pageable pageable);
+  Page<Cartoon> searchCartoons(String query, Pageable pageable);
 
 }

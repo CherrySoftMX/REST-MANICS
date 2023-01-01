@@ -11,9 +11,9 @@ import com.cherrysoft.manics.repository.CommentRepository;
 import com.cherrysoft.manics.service.users.ManicUserService;
 import com.cherrysoft.manics.util.BeanUtils;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -22,39 +22,54 @@ public class CommentService {
   private final CartoonService cartoonService;
   private final CommentRepository commentRepository;
 
+  public Page<Comment> searchCommentsByContent(String content, Pageable pageable) {
+    return commentRepository.searchCommentByContent(content, pageable);
+  }
+
   public Comment getCommentById(Long id) {
     return commentRepository
         .findById(id)
         .orElseThrow(() -> new CommentNotFoundException(id));
   }
 
-  public List<Comment> getComments(CommentFilterSpec filterSpec) {
+  public Page<Comment> getComments(CommentFilterSpec filterSpec) {
     if (filterSpec.ambiguousFiltering()) {
       throw new AmbiguousFilterException("Either userId or cartoonId (NOT both) MUST be provided.");
     }
-    if (filterSpec.filterByUserComments()) {
-      return getUserComments(filterSpec);
+    if (filterSpec.filterByCommentsOfUser()) {
+      return getCommentsOfUser(filterSpec);
     }
-    if (filterSpec.filterByCartoonComments()) {
-      return getCartoonComments(filterSpec);
+    if (filterSpec.filterByCommentsOfCartoon()) {
+      return getCommentsOfCartoon(filterSpec);
     }
-    return List.of();
+    if (filterSpec.filterByCommentsOfComment()) {
+      return getCommentsOfComment(filterSpec);
+    }
+    return Page.empty();
   }
 
-  public List<Comment> getCartoonComments(CommentFilterSpec spec) {
+  public Page<Comment> getCommentsOfCartoon(CommentFilterSpec spec) {
     return commentRepository.findCommentsByCartoon_Id(spec.getCartoonId(), spec.getPageable());
   }
 
-  public List<Comment> getUserComments(CommentFilterSpec spec) {
+  public Page<Comment> getCommentsOfUser(CommentFilterSpec spec) {
     return commentRepository.findCommentsByUser_Id(spec.getUserId(), spec.getPageable());
   }
 
+  public Page<Comment> getCommentsOfComment(CommentFilterSpec spec) {
+    return commentRepository.findCommentsByParent_Id(spec.getCommentId(), spec.getPageable());
+  }
+
   public Comment createComment(CreateCommentSpec spec) {
-    ManicUser userReference = userService.getUserReferenceById(spec.getUserId());
-    Cartoon cartoonReference = cartoonService.getCartonReferenceById(spec.getCartoonId());
+    ManicUser userRef = userService.getUserReferenceById(spec.getUserId());
+    Cartoon cartoonRef = cartoonService.getCartonReferenceById(spec.getCartoonId());
     Comment newComment = spec.getNewComment();
-    newComment.setUser(userReference);
-    newComment.setCartoon(cartoonReference);
+    newComment.setUser(userRef);
+    newComment.setCartoon(cartoonRef);
+    if (spec.parentIdProvided()) {
+      Comment parentCommentRef = commentRepository.getReferenceById(spec.getParentId());
+      newComment.setParent(parentCommentRef);
+    }
     return commentRepository.save(newComment);
   }
 

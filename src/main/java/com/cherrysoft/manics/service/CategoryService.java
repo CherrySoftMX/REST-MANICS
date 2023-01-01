@@ -5,6 +5,8 @@ import com.cherrysoft.manics.model.Category;
 import com.cherrysoft.manics.repository.CategoryRepository;
 import com.cherrysoft.manics.util.BeanUtils;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
@@ -15,10 +17,18 @@ import java.util.Set;
 public class CategoryService {
   private final CategoryRepository categoryRepository;
 
+  public Page<Category> searchCategories(String query, Pageable pageable) {
+    return categoryRepository.searchCategory(query, pageable);
+  }
+
   public Category getCategory(Long id) {
     return categoryRepository
         .findById(id)
         .orElseThrow(() -> new CategoryNotFoundException(id));
+  }
+
+  public Page<Category> getCategoriesOfCartoon(Long cartoonId, Pageable pageable) {
+    return categoryRepository.findAllOfCartoon(cartoonId, pageable);
   }
 
   Set<Category> getCategoriesById(Set<Long> ids) {

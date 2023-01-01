@@ -4,6 +4,8 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.Hibernate;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.FullTextField;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.Indexed;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -17,6 +19,7 @@ import static java.util.Objects.isNull;
 @ToString
 @Entity
 @Table(name = "chapters")
+@Indexed(index = "chapters")
 public class Chapter {
   public static final String MONTH_DAY_YEAR_PATTERN = "MM-dd-yyyy";
 
@@ -29,6 +32,7 @@ public class Chapter {
   private Integer chapterNumber;
 
   @Column
+  @FullTextField
   private String name;
 
   @Column
@@ -48,9 +52,9 @@ public class Chapter {
       fetch = FetchType.LAZY
   )
   @ToString.Exclude
-  private List<Page> pages;
+  private List<CartoonPage> pages;
 
-  public void setPages(List<Page> pages) {
+  public void setPages(List<CartoonPage> pages) {
     if (isNull(pages)) {
       return;
     }

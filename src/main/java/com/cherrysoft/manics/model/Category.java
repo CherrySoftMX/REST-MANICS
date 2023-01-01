@@ -4,6 +4,10 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.Hibernate;
+import org.hibernate.search.engine.backend.types.Sortable;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.FullTextField;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.Indexed;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.KeywordField;
 
 import javax.persistence.*;
 import java.util.Objects;
@@ -14,6 +18,7 @@ import java.util.Set;
 @ToString
 @Entity
 @Table(name = "categories")
+@Indexed(index = "categories")
 public class Category implements Comparable<Category> {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,9 +26,11 @@ public class Category implements Comparable<Category> {
   private Long id;
 
   @Column(nullable = false)
+  @KeywordField(sortable = Sortable.YES)
   private String name;
 
   @Column(nullable = false)
+  @FullTextField
   private String description;
 
   @ManyToMany(mappedBy = "categories")

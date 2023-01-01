@@ -13,17 +13,21 @@ public class CommentFilterSpec {
   private final Pageable pageable;
 
   public boolean ambiguousFiltering() {
-    boolean bothFiltersSpecified = filterByCartoonComments() && filterByUserComments();
-    boolean noFilters = !filterByCartoonComments() && !filterByUserComments();
-    return bothFiltersSpecified || noFilters;
+    boolean multipleFiltersSpecified = params.size() > 1;
+    boolean noFilters = params.size() == 0;
+    return multipleFiltersSpecified || noFilters;
   }
 
-  public boolean filterByUserComments() {
+  public boolean filterByCommentsOfUser() {
     return nonNull(params.get("userId"));
   }
 
-  public boolean filterByCartoonComments() {
+  public boolean filterByCommentsOfCartoon() {
     return nonNull(params.get("cartoonId"));
+  }
+
+  public boolean filterByCommentsOfComment() {
+    return nonNull(params.get("commentId"));
   }
 
   public Long getUserId() {
@@ -32,6 +36,10 @@ public class CommentFilterSpec {
 
   public Long getCartoonId() {
     return Long.parseLong(params.get("cartoonId"));
+  }
+
+  public Long getCommentId() {
+    return Long.parseLong(params.get("commentId"));
   }
 
 }
