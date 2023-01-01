@@ -36,7 +36,7 @@ public class SuggestionModelAssembler implements RepresentationModelAssembler<Su
 
   private Link selfLink() {
     ManicUser user = entity.getUser();
-    return withUpdateAndDeleteAffordances(
+    return withSuggestionAffordances(
         linkTo(methodOn(SuggestionController.class)
             .getSuggestion(null, entity.getId(), user.getId()))
             .withSelfRel()
@@ -45,19 +45,25 @@ public class SuggestionModelAssembler implements RepresentationModelAssembler<Su
 
   private Link userLink() {
     ManicUser user = entity.getUser();
-    return linkTo(methodOn(ManicUserController.class)
-        .getUserById(null, user.getId()))
+    return linkTo(ManicUserController.class)
+        .slash(user.getId())
         .withRel("user");
   }
 
-  private Link withUpdateAndDeleteAffordances(Link link) {
+  private Link withSuggestionAffordances(Link link) {
     return Affordances.of(link)
-        .afford(HttpMethod.PATCH)
+        .afford(HttpMethod.POST)
+        .withName("createSuggestion")
         .withInputAndOutput(SuggestionDTO.class)
+        .withTarget(linkTo(SuggestionController.class).withSelfRel())
+
+        .andAfford(HttpMethod.PATCH)
         .withName("updateSuggestion")
+        .withInputAndOutput(SuggestionDTO.class)
+
         .andAfford(HttpMethod.DELETE)
-        .withOutput(SuggestionDTO.class)
         .withName("deleteSuggestion")
+        .withOutput(SuggestionDTO.class)
         .toLink();
   }
 

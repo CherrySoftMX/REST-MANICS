@@ -34,11 +34,9 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.Map;
 
 import static com.cherrysoft.manics.util.ApiDocsConstants.*;
-import static com.cherrysoft.manics.util.MediaTypeUtils.APPLICATION_HAL_JSON_VALUE;
 
 @RequiredArgsConstructor
 @RestController
@@ -66,7 +64,7 @@ public class CommentController {
       description = "The content to search for",
       schema = @Schema(type = "string")
   )
-  @GetMapping(value = "/search", produces = APPLICATION_HAL_JSON_VALUE)
+  @GetMapping("/search")
   public PagedModel<CommentDTO> searchCommentsByContent(
       @RequestParam String content,
       @PageableDefault Pageable pageable
@@ -89,7 +87,7 @@ public class CommentController {
       description = "The ID of the cartoon that the comments belong to",
       schema = @Schema(type = "number")
   )
-  @GetMapping(produces = APPLICATION_HAL_JSON_VALUE)
+  @GetMapping
   public PagedModel<CommentDTO> getComments(
       @Parameter(hidden = true) @RequestParam Map<String, String> params,
       @PageableDefault
@@ -106,7 +104,7 @@ public class CommentController {
   @ApiResponse(responseCode = "200", description = "OK", content = {
       @Content(schema = @Schema(implementation = CommentDTO.class))
   })
-  @GetMapping(value = "/{id}", produces = APPLICATION_HAL_JSON_VALUE)
+  @GetMapping("/{id}")
   public CommentDTO getCommentById(@PathVariable Long id) {
     Comment result = commentService.getCommentById(id);
     return commentModelAssembler.toModel(result);
@@ -119,7 +117,7 @@ public class CommentController {
       }),
       @ApiResponse(ref = FORBIDDEN_RESPONSE_REF, responseCode = "403")
   })
-  @PostMapping(produces = APPLICATION_HAL_JSON_VALUE)
+  @PostMapping
   @Validated(OnCreate.class)
   @PreAuthorize("#loggedUser.id == #userId")
   public ResponseEntity<CommentDTO> createComment(
@@ -127,12 +125,12 @@ public class CommentController {
       @RequestParam Long cartoonId,
       @RequestParam Long userId,
       @RequestBody @Valid CommentDTO payload
-  ) throws URISyntaxException {
+  ) {
     Comment comment = mapper.toComment(payload);
     var createCommentSpec = new CreateCommentSpec(cartoonId, userId, comment);
     Comment result = commentService.createComment(createCommentSpec);
     return ResponseEntity
-        .created(new URI(String.format("%s/%s", BASE_URL, result.getId())))
+        .created(URI.create(String.format("%s/%s", BASE_URL, result.getId())))
         .body(commentModelAssembler.toModel(result));
   }
 
@@ -143,7 +141,7 @@ public class CommentController {
       }),
       @ApiResponse(ref = FORBIDDEN_RESPONSE_REF, responseCode = "403")
   })
-  @PatchMapping(value = "/{id}", produces = APPLICATION_HAL_JSON_VALUE)
+  @PatchMapping("/{id}")
   @PreAuthorize("#loggedUser.id == #userId")
   public ResponseEntity<CommentDTO> updateComment(
       @AuthenticationPrincipal SecurityManicUser loggedUser,

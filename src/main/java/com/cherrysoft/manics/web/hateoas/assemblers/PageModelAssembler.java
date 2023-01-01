@@ -16,8 +16,8 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+import static com.cherrysoft.manics.security.utils.AuthenticationUtils.currentLoggedUserIsAdmin;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @Component
 @RequiredArgsConstructor
@@ -35,25 +35,34 @@ public class PageModelAssembler implements RepresentationModelAssembler<CartoonP
   }
 
   private Link selfLink() {
-    return withUpdateAndDeleteAffordances(
-        linkTo(methodOn(PageController.class)
-            .getPageById(entity.getId()))
+    return withPageAffordances(
+        linkTo(PageController.class)
+            .slash(entity.getId())
             .withSelfRel()
     );
   }
 
   private Link chapterLink() {
     Chapter chapter = entity.getChapter();
-    return linkTo(methodOn(ChapterController.class)
-        .getChapterById(chapter.getId()))
+    return linkTo(ChapterController.class)
+        .slash(chapter.getId())
         .withRel("chapter");
   }
 
-  private Link withUpdateAndDeleteAffordances(Link link) {
+  private Link withPageAffordances(Link link) {
+    if (!currentLoggedUserIsAdmin()) {
+      return link;
+    }
     return Affordances.of(link)
-        .afford(HttpMethod.PATCH)
+        .afford(HttpMethod.POST)
+        .withName("createPage")
+        .withInputAndOutput(CartoonPageDTO.class)
+        .withTarget(linkTo(PageController.class).withSelfRel())
+
+        .andAfford(HttpMethod.PATCH)
         .withInputAndOutput(CartoonPageDTO.class)
         .withName("updatePage")
+
         .andAfford(HttpMethod.DELETE)
         .withOutput(CartoonPageDTO.class)
         .withName("deletePage")

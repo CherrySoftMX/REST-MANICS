@@ -30,7 +30,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 import static com.cherrysoft.manics.util.ApiDocsConstants.*;
-import static com.cherrysoft.manics.util.MediaTypeUtils.APPLICATION_HAL_JSON_VALUE;
 
 @RequiredArgsConstructor
 @Validated
@@ -59,7 +58,7 @@ public class CategoryController {
       description = "The query to search for",
       schema = @Schema(type = "string")
   )
-  @GetMapping(value = "/search", produces = APPLICATION_HAL_JSON_VALUE)
+  @GetMapping("/search")
   public PagedModel<CategoryDTO> searchCategories(
       @RequestParam String query,
       @PageableDefault Pageable pageable
@@ -72,7 +71,7 @@ public class CategoryController {
   @ApiResponse(responseCode = "200", description = "OK", content = {
       @Content(schema = @Schema(implementation = CategoryDTO.class))
   })
-  @GetMapping(produces = APPLICATION_HAL_JSON_VALUE)
+  @GetMapping
   public PagedModel<CategoryDTO> getCategoriesOfCartoon(
       @RequestParam Long cartoonId,
       @PageableDefault Pageable pageable
@@ -85,7 +84,7 @@ public class CategoryController {
   @ApiResponse(responseCode = "200", description = "Category found", content = {
       @Content(schema = @Schema(implementation = CategoryDTO.class))
   })
-  @GetMapping(value = "/{id}", produces = APPLICATION_HAL_JSON_VALUE)
+  @GetMapping("/{id}")
   public CategoryDTO getCategory(@PathVariable Long id) {
     Category result = categoryService.getCategory(id);
     return categoryModelAssembler.toModel(result);
@@ -98,7 +97,7 @@ public class CategoryController {
       }),
       @ApiResponse(ref = FORBIDDEN_RESPONSE_REF, responseCode = "403")
   })
-  @PostMapping(produces = APPLICATION_HAL_JSON_VALUE)
+  @PostMapping
   @Validated(OnCreate.class)
   @PreAuthorize("hasRole('ROLE_ADMIN')")
   public ResponseEntity<CategoryDTO> createCategory(@RequestBody @Valid CategoryDTO payload) throws URISyntaxException {
@@ -116,7 +115,7 @@ public class CategoryController {
       }),
       @ApiResponse(ref = FORBIDDEN_RESPONSE_REF, responseCode = "403")
   })
-  @PatchMapping(value = "/{id}", produces = APPLICATION_HAL_JSON_VALUE)
+  @PatchMapping("/{id}")
   @PreAuthorize("hasRole('ROLE_ADMIN')")
   public CategoryDTO updateCategory(
       @PathVariable Long id,

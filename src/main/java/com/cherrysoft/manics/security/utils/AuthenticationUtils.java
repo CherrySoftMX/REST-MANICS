@@ -1,26 +1,41 @@
 package com.cherrysoft.manics.security.utils;
 
+import com.cherrysoft.manics.model.auth.ManicUser;
+import com.cherrysoft.manics.security.SecurityManicUser;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Component;
 
 import java.util.Collection;
+import java.util.Objects;
 
-@Component
 public class AuthenticationUtils {
 
-  public String getUsername() {
+  public static String getUsername() {
     return getAuthentication().getName();
   }
 
+  public static boolean sameUserAsLogged(ManicUser manicUser) {
+    SecurityManicUser securityManicUser = getPrincipal();
+    return Objects.equals(securityManicUser.getId(), manicUser.getId());
+  }
+
+  public static boolean currentLoggedUserIsAdmin() {
+    SecurityManicUser securityManicUser = getPrincipal();
+    return securityManicUser.isAdmin();
+  }
+
   @SuppressWarnings("unchecked")
-  public Collection<GrantedAuthority> getAuthorities() {
+  public static Collection<GrantedAuthority> getAuthorities() {
     return (Collection<GrantedAuthority>) getAuthentication().getAuthorities();
   }
 
-  private Authentication getAuthentication() {
+  public static Authentication getAuthentication() {
     return SecurityContextHolder.getContext().getAuthentication();
+  }
+
+  public static SecurityManicUser getPrincipal() {
+    return (SecurityManicUser) getAuthentication().getPrincipal();
   }
 
 }

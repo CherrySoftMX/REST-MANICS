@@ -33,7 +33,6 @@ import javax.validation.Valid;
 import java.net.URI;
 
 import static com.cherrysoft.manics.util.ApiDocsConstants.*;
-import static com.cherrysoft.manics.util.MediaTypeUtils.APPLICATION_HAL_JSON_VALUE;
 
 @RestController
 @RequestMapping(CartoonController.BASE_URL)
@@ -56,7 +55,7 @@ public class CartoonController {
   @ApiResponse(responseCode = "200", description = "Cartoon found", content = {
       @Content(schema = @Schema(implementation = CartoonResponseDTO.class))
   })
-  @GetMapping(value = "/{id}", produces = APPLICATION_HAL_JSON_VALUE)
+  @GetMapping("/{id}")
   public CartoonResponseDTO getCartoonById(@PathVariable Long id) {
     Cartoon result = cartoonService.getCartoonByIdAndType(id, CartoonType.COMIC);
     return cartoonModelAssembler.toModel(result);
@@ -66,7 +65,7 @@ public class CartoonController {
   @ApiResponse(responseCode = "200", description = "OK", content = {
       @Content(array = @ArraySchema(schema = @Schema(implementation = CartoonResponseDTO.class)))
   })
-  @GetMapping(produces = APPLICATION_HAL_JSON_VALUE)
+  @GetMapping
   public PagedModel<CartoonResponseDTO> getCartoons(
       @RequestParam String type,
       @PageableDefault
@@ -85,7 +84,7 @@ public class CartoonController {
       }),
       @ApiResponse(ref = FORBIDDEN_RESPONSE_REF, responseCode = "403")
   })
-  @PostMapping(produces = APPLICATION_HAL_JSON_VALUE)
+  @PostMapping
   @Validated(OnCreate.class)
   @PreAuthorize("hasRole('ROLE_ADMIN')")
   public ResponseEntity<CartoonResponseDTO> createCartoon(
@@ -107,7 +106,7 @@ public class CartoonController {
       }),
       @ApiResponse(ref = FORBIDDEN_RESPONSE_REF, responseCode = "403")
   })
-  @PatchMapping(value = "/{id}", produces = APPLICATION_HAL_JSON_VALUE)
+  @PatchMapping("/{id}")
   @PreAuthorize("hasRole('ROLE_ADMIN')")
   public CartoonResponseDTO updateCartoon(
       @PathVariable Long id,

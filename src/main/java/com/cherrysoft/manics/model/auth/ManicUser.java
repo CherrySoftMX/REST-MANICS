@@ -69,6 +69,10 @@ public class ManicUser {
   @ToString.Exclude
   private Set<Cartoon> bookmarks;
 
+  public boolean isAdmin() {
+    return roles.contains(ManicUserRole.ADMIN);
+  }
+
   public void addRoles(Set<ManicUserRole> newRoles) {
     if (isNull(roles)) {
       roles = new HashSet<>();

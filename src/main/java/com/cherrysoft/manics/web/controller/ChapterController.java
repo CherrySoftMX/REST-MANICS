@@ -30,10 +30,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.net.URI;
-import java.net.URISyntaxException;
 
 import static com.cherrysoft.manics.util.ApiDocsConstants.*;
-import static com.cherrysoft.manics.util.MediaTypeUtils.APPLICATION_HAL_JSON_VALUE;
 
 @RequiredArgsConstructor
 @RestController
@@ -56,7 +54,7 @@ public class ChapterController {
   @ApiResponse(responseCode = "200", description = "OK", content = {
       @Content(array = @ArraySchema(schema = @Schema(implementation = ChapterResponseDTO.class)))
   })
-  @GetMapping(value = "/search", produces = APPLICATION_HAL_JSON_VALUE)
+  @GetMapping("/search")
   public PagedModel<ChapterResponseDTO> searchChaptersByName(
       @RequestParam String name,
       @PageableDefault @ParameterObject Pageable pageable
@@ -69,7 +67,7 @@ public class ChapterController {
   @ApiResponse(responseCode = "200", description = "OK", content = {
       @Content(schema = @Schema(implementation = ChapterResponseDTO.class))
   })
-  @GetMapping(value = "/{id}", produces = APPLICATION_HAL_JSON_VALUE)
+  @GetMapping("/{id}")
   public ChapterResponseDTO getChapterById(@PathVariable Long id) {
     Chapter result = chapterService.getChapterById(id);
     return chapterModelAssembler.toModel(result);
@@ -79,7 +77,7 @@ public class ChapterController {
   @ApiResponse(responseCode = "200", description = "OK", content = {
       @Content(array = @ArraySchema(schema = @Schema(implementation = ChapterResponseDTO.class)))
   })
-  @GetMapping(produces = APPLICATION_HAL_JSON_VALUE)
+  @GetMapping
   public PagedModel<ChapterResponseDTO> getCartoonChapters(
       @RequestParam Long cartoonId,
       @PageableDefault @SortDefault(sort = "publicationDate") Pageable pageable
@@ -95,17 +93,17 @@ public class ChapterController {
       }),
       @ApiResponse(ref = FORBIDDEN_RESPONSE_REF, responseCode = "403")
   })
-  @PostMapping(produces = APPLICATION_HAL_JSON_VALUE)
+  @PostMapping
   @Validated(OnCreate.class)
   @PreAuthorize("hasRole('ROLE_ADMIN')")
   public ResponseEntity<ChapterResponseDTO> createChapter(
       @RequestParam Long cartoonId,
       @RequestBody @Valid ChapterDTO payload
-  ) throws URISyntaxException {
+  ) {
     Chapter newChapter = mapper.toChapter(payload);
     Chapter result = chapterService.createChapter(cartoonId, newChapter);
     return ResponseEntity
-        .created(new URI(String.format("%s/%s", BASE_URL, result.getId())))
+        .created(URI.create(String.format("%s/%s", BASE_URL, result.getId())))
         .body(chapterModelAssembler.toModel(result));
   }
 
@@ -116,7 +114,7 @@ public class ChapterController {
       }),
       @ApiResponse(ref = FORBIDDEN_RESPONSE_REF, responseCode = "403")
   })
-  @PatchMapping(value = "/{id}", produces = APPLICATION_HAL_JSON_VALUE)
+  @PatchMapping("/{id}")
   @PreAuthorize("hasRole('ROLE_ADMIN')")
   public ChapterResponseDTO updateChapter(
       @PathVariable Long id,

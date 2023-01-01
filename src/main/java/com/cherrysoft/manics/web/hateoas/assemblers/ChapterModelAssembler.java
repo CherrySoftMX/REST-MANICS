@@ -18,6 +18,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+import static com.cherrysoft.manics.security.utils.AuthenticationUtils.currentLoggedUserIsAdmin;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
@@ -37,9 +38,9 @@ public class ChapterModelAssembler implements RepresentationModelAssembler<Chapt
   }
 
   private Link selfLink() {
-    return withUpdateAndDeleteAffordances(
-        linkTo(methodOn(ChapterController.class)
-            .getChapterById(entity.getId()))
+    return withChapterAffordances(
+        linkTo(ChapterController.class)
+            .slash(entity.getId())
             .withSelfRel()
     );
   }
@@ -52,20 +53,30 @@ public class ChapterModelAssembler implements RepresentationModelAssembler<Chapt
 
   private Link cartoonLink() {
     Cartoon cartoon = entity.getCartoon();
-    return linkTo(methodOn(CartoonController.class)
-        .getCartoonById(cartoon.getId()))
+    return linkTo(CartoonController.class)
+        .slash(cartoon.getId())
         .withRel("cartoon");
   }
 
-  private Link withUpdateAndDeleteAffordances(Link link) {
+  private Link withChapterAffordances(Link link) {
+    if (!currentLoggedUserIsAdmin()) {
+      return link;
+    }
     return Affordances.of(link)
-        .afford(HttpMethod.PATCH)
+        .afford(HttpMethod.POST)
+        .withName("createChapter")
         .withInput(ChapterDTO.class)
         .withOutput(ChapterResponseDTO.class)
+        .withTarget(linkTo(ChapterController.class).withSelfRel())
+
+        .andAfford(HttpMethod.PATCH)
         .withName("updateChapter")
+        .withInput(ChapterDTO.class)
+        .withOutput(ChapterResponseDTO.class)
+
         .andAfford(HttpMethod.DELETE)
-        .withOutput(ChapterDTO.class)
         .withName("deleteChapter")
+        .withOutput(ChapterResponseDTO.class)
         .toLink();
   }
 
