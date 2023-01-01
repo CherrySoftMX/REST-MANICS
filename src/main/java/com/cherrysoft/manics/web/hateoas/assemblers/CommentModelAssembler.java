@@ -2,6 +2,7 @@ package com.cherrysoft.manics.web.hateoas.assemblers;
 
 import com.cherrysoft.manics.model.Cartoon;
 import com.cherrysoft.manics.model.Comment;
+import com.cherrysoft.manics.model.auth.ManicUser;
 import com.cherrysoft.manics.web.controller.CartoonController;
 import com.cherrysoft.manics.web.controller.CommentController;
 import com.cherrysoft.manics.web.controller.users.ManicUserController;
@@ -10,6 +11,7 @@ import com.cherrysoft.manics.web.mapper.CommentMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.mediatype.Affordances;
+import org.springframework.hateoas.mediatype.ConfigurableAffordance;
 import org.springframework.hateoas.server.RepresentationModelAssembler;
 import org.springframework.http.HttpMethod;
 import org.springframework.lang.NonNull;
@@ -17,8 +19,9 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+import static com.cherrysoft.manics.security.utils.AuthenticationUtils.currentLoggedUserIsAdmin;
+import static com.cherrysoft.manics.security.utils.AuthenticationUtils.sameUserAsLogged;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @Component
 @RequiredArgsConstructor
@@ -36,35 +39,49 @@ public class CommentModelAssembler implements RepresentationModelAssembler<Comme
   }
 
   private Link selfLink() {
-    return withUpdateAndDeleteAffordances(
-        linkTo(methodOn(CommentController.class)
-            .getCommentById(entity.getId()))
+    return withCommentAffordances(
+        linkTo(CommentController.class)
+            .slash(entity.getId())
             .withSelfRel()
     );
   }
 
   private Link userLink() {
-    return linkTo(methodOn(ManicUserController.class)
-        .getUserById(null, entity.getUser().getId()))
+    ManicUser user = entity.getUser();
+    return linkTo(ManicUserController.class)
+        .slash(user.getId())
         .withRel("user");
   }
 
   private Link cartoonLink() {
     Cartoon cartoon = entity.getCartoon();
-    return linkTo(methodOn(CartoonController.class)
-        .getCartoonById(cartoon.getId()))
+    return linkTo(CartoonController.class)
+        .slash(cartoon.getId())
         .withRel("cartoon");
   }
 
-  private Link withUpdateAndDeleteAffordances(Link link) {
-    return Affordances.of(link)
-        .afford(HttpMethod.PATCH)
+  private Link withCommentAffordances(Link link) {
+    ConfigurableAffordance configurableAffordance = Affordances.of(link)
+        .afford(HttpMethod.POST)
+        .withName("createComment")
         .withInputAndOutput(CommentDTO.class)
-        .withName("updateComment")
-        .andAfford(HttpMethod.DELETE)
-        .withOutput(CommentDTO.class)
-        .withName("deleteComment")
-        .toLink();
+        .withTarget(linkTo(CommentController.class).withSelfRel());
+
+    if (sameUserAsLogged(entity.getUser())) {
+      configurableAffordance = configurableAffordance
+          .andAfford(HttpMethod.PATCH)
+          .withName("updateComment")
+          .withInputAndOutput(CommentDTO.class);
+    }
+
+    if (currentLoggedUserIsAdmin()) {
+      configurableAffordance = configurableAffordance
+          .andAfford(HttpMethod.DELETE)
+          .withName("deleteComment")
+          .withOutput(CommentDTO.class);
+    }
+
+    return configurableAffordance.toLink();
   }
 
 }

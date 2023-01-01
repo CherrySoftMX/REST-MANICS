@@ -23,6 +23,10 @@ public class SecurityManicUser implements UserDetails {
         .collect(toList());
   }
 
+  public boolean isAdmin() {
+    return manicUser.isAdmin();
+  }
+
   public Long getId() {
     return manicUser.getId();
   }
