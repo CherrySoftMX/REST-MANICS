@@ -29,10 +29,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.net.URI;
-import java.net.URISyntaxException;
 
 import static com.cherrysoft.manics.util.ApiDocsConstants.*;
-import static com.cherrysoft.manics.util.MediaTypeUtils.APPLICATION_HAL_JSON_VALUE;
 
 @RequiredArgsConstructor
 @RestController
@@ -56,7 +54,7 @@ public class SuggestionController {
   @ApiResponse(responseCode = "200", description = "OK", content = {
       @Content(array = @ArraySchema(schema = @Schema(implementation = SuggestionDTO.class)))
   })
-  @GetMapping(value = "/search", produces = APPLICATION_HAL_JSON_VALUE)
+  @GetMapping("/search")
   public PagedModel<SuggestionDTO> searchSuggestion(
       @RequestParam String content,
       @PageableDefault Pageable pageable
@@ -69,7 +67,7 @@ public class SuggestionController {
   @ApiResponse(responseCode = "200", description = "OK", content = {
       @Content(array = @ArraySchema(schema = @Schema(implementation = SuggestionDTO.class)))
   })
-  @GetMapping(produces = APPLICATION_HAL_JSON_VALUE)
+  @GetMapping
   @PreAuthorize("hasRole('ROLE_ADMIN') or #loggedUser.id == #userId")
   public PagedModel<SuggestionDTO> getSuggestionsOfUser(
       @AuthenticationPrincipal SecurityManicUser loggedUser,
@@ -87,7 +85,7 @@ public class SuggestionController {
   @ApiResponse(responseCode = "200", description = "Suggestion found", content = {
       @Content(schema = @Schema(implementation = SuggestionDTO.class))
   })
-  @GetMapping(value = "/{id}", produces = APPLICATION_HAL_JSON_VALUE)
+  @GetMapping("/{id}")
   @PreAuthorize("hasRole('ROLE_ADMIN') or #loggedUser.id == #userId")
   public SuggestionDTO getSuggestion(
       @AuthenticationPrincipal SecurityManicUser loggedUser,
@@ -102,17 +100,17 @@ public class SuggestionController {
   @ApiResponse(responseCode = "201", description = "Suggestion created", content = {
       @Content(schema = @Schema(implementation = SuggestionDTO.class))
   })
-  @PostMapping(produces = APPLICATION_HAL_JSON_VALUE)
+  @PostMapping
   @PreAuthorize("#loggedUser.id == #userId")
   public ResponseEntity<SuggestionDTO> createSuggestion(
       @AuthenticationPrincipal SecurityManicUser loggedUser,
       @RequestParam Long userId,
       @RequestBody @Valid SuggestionDTO payload
-  ) throws URISyntaxException {
+  ) {
     Suggestion suggestion = mapper.toSuggestion(payload);
     Suggestion result = suggestionService.createSuggestion(userId, suggestion);
     return ResponseEntity
-        .created(new URI(String.format("%s/%s", BASE_URL, result.getId())))
+        .created(URI.create(String.format("%s/%s", BASE_URL, result.getId())))
         .body(suggestionModelAssembler.toModel(result));
   }
 
@@ -120,7 +118,7 @@ public class SuggestionController {
   @ApiResponse(responseCode = "200", description = "Suggestion updated", content = {
       @Content(schema = @Schema(implementation = SuggestionDTO.class))
   })
-  @PatchMapping(value = "/{id}", produces = APPLICATION_HAL_JSON_VALUE)
+  @PatchMapping("/{id}")
   @PreAuthorize("#loggedUser.id == #userId")
   public SuggestionDTO updateSuggestion(
       @AuthenticationPrincipal SecurityManicUser loggedUser,
