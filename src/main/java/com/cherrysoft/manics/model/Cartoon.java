@@ -112,6 +112,11 @@ public class Cartoon {
     }
   }
 
+  public void updateCategories(Set<Category> categories) {
+    this.categories.clear();
+    this.categories.addAll(categories);
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) {

@@ -3,6 +3,7 @@ package com.cherrysoft.manics.service;
 import com.cherrysoft.manics.exception.CartoonNotFoundException;
 import com.cherrysoft.manics.model.Cartoon;
 import com.cherrysoft.manics.model.CartoonType;
+import com.cherrysoft.manics.model.Category;
 import com.cherrysoft.manics.model.specs.CartoonSpec;
 import com.cherrysoft.manics.repository.CartoonRepository;
 import com.cherrysoft.manics.service.search.SearchingPageService;
@@ -50,8 +51,8 @@ public class CartoonService {
   public Cartoon createCartoon(CartoonSpec spec) {
     Cartoon newCartoon = spec.getCartoon();
     Set<Long> categoryIds = spec.getCategoryIds();
-    var categoryReferences = categoryService.getCategoriesById(categoryIds);
-    newCartoon.setCategories(categoryReferences);
+    var categoryRefs = categoryService.getCategoriesById(categoryIds);
+    newCartoon.setCategories(categoryRefs);
     Cartoon result = cartoonRepository.save(newCartoon);
     searchingPageService.indexPagesFromChapters(result.getChapters());
     return result;
@@ -62,9 +63,9 @@ public class CartoonService {
     Cartoon updatedCartoon = spec.getCartoon();
     Cartoon cartoon = getCartoonByIdAndType(id, updatedCartoon.getType());
     updatedCartoon.setChapters(null);
-    updatedCartoon.setCategories(null);
-    updatedCartoon.setComments(null);
     BeanUtils.copyProperties(updatedCartoon, cartoon);
+    Set<Category> categories = categoryService.getCategoriesById(spec.getCategoryIds());
+    cartoon.updateCategories(categories);
     return cartoonRepository.save(cartoon);
   }
 
