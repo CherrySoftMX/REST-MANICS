@@ -6,7 +6,7 @@ import com.cherrysoft.manics.model.specs.UpdateUserRolesSpec;
 import com.cherrysoft.manics.service.users.ManicUserRoleService;
 import com.cherrysoft.manics.web.dto.users.ManicUserDTO;
 import com.cherrysoft.manics.web.dto.users.ManicUserRoleSetDTO;
-import com.cherrysoft.manics.web.mapper.ManicUserMapper;
+import com.cherrysoft.manics.web.hateoas.assemblers.ManicUserModelAssembler;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -14,7 +14,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -36,7 +35,7 @@ import static com.cherrysoft.manics.util.ApiDocsConstants.*;
 })
 public class ManicUserRoleController {
   private final ManicUserRoleService roleService;
-  private final ManicUserMapper mapper;
+  private final ManicUserModelAssembler manicUserModelAssembler;
 
   @Operation(summary = "Adds the provided roles to the specified user")
   @ApiResponse(responseCode = "200", description = "OK", content = {
@@ -44,14 +43,14 @@ public class ManicUserRoleController {
   })
   @PutMapping("/{id}/authorities")
   @PreAuthorize("hasRole('ROLE_ADMIN')")
-  public ResponseEntity<ManicUserDTO> addUserRoles(
+  public ManicUserDTO addUserRoles(
       @PathVariable Long id,
       @RequestBody @Valid ManicUserRoleSetDTO payload
   ) {
     Set<ManicUserRole> rolesToAdd = payload.getRoles();
     var roleSpec = new UpdateUserRolesSpec(id, rolesToAdd);
     ManicUser result = roleService.addUserRoles(roleSpec);
-    return ResponseEntity.ok(mapper.toDto(result));
+    return manicUserModelAssembler.toModel(result);
   }
 
   @Operation(summary = "Removes the provided roles to the specified user")
@@ -60,14 +59,14 @@ public class ManicUserRoleController {
   })
   @DeleteMapping("/{id}/authorities")
   @PreAuthorize("hasRole('ROLE_ADMIN')")
-  public ResponseEntity<ManicUserDTO> removeUserRoles(
+  public ManicUserDTO removeUserRoles(
       @PathVariable Long id,
       @RequestBody @Valid ManicUserRoleSetDTO payload
   ) {
     Set<ManicUserRole> rolesToRemove = payload.getRoles();
     var roleSpec = new UpdateUserRolesSpec(id, rolesToRemove);
     ManicUser result = roleService.removeUserRoles(roleSpec);
-    return ResponseEntity.ok(mapper.toDto(result));
+    return manicUserModelAssembler.toModel(result);
   }
 
 }

@@ -22,10 +22,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.net.URI;
-import java.net.URISyntaxException;
 
 import static com.cherrysoft.manics.util.ApiDocsConstants.*;
-import static com.cherrysoft.manics.util.MediaTypeUtils.APPLICATION_HAL_JSON_VALUE;
 
 @RequiredArgsConstructor
 @Validated
@@ -49,8 +47,8 @@ public class ManicUserController {
   @ApiResponse(responseCode = "200", description = "User found", content = {
       @Content(schema = @Schema(implementation = ManicUserDTO.class))
   })
-  @GetMapping(value = "/{id}", produces = APPLICATION_HAL_JSON_VALUE)
-  @PreAuthorize("#loggedUser.id == #id")
+  @GetMapping("/{id}")
+  @PreAuthorize("hasRole('ROLE_ADMIN') or #loggedUser.id == #id")
   public ManicUserDTO getUserById(
       @AuthenticationPrincipal SecurityManicUser loggedUser,
       @PathVariable Long id
@@ -63,8 +61,8 @@ public class ManicUserController {
   @ApiResponse(responseCode = "200", description = "User found", content = {
       @Content(schema = @Schema(implementation = ManicUserDTO.class))
   })
-  @GetMapping(produces = APPLICATION_HAL_JSON_VALUE)
-  @PreAuthorize("#loggedUser.username == #username")
+  @GetMapping
+  @PreAuthorize("hasRole('ROLE_ADMIN') or #loggedUser.username == #username")
   public ManicUserDTO getUserByUsername(
       @AuthenticationPrincipal SecurityManicUser loggedUser,
       @RequestParam String username
@@ -77,14 +75,14 @@ public class ManicUserController {
   @ApiResponse(responseCode = "201", description = "User created", content = {
       @Content(schema = @Schema(implementation = ManicUserDTO.class))
   })
-  @PostMapping(produces = APPLICATION_HAL_JSON_VALUE)
+  @PostMapping
   @Validated(OnCreate.class)
   @PreAuthorize("hasRole('ROLE_ADMIN')")
-  public ResponseEntity<ManicUserDTO> createUser(@RequestBody @Valid ManicUserDTO payload) throws URISyntaxException {
+  public ResponseEntity<ManicUserDTO> createUser(@RequestBody @Valid ManicUserDTO payload) {
     ManicUser newUser = mapper.toManicUser(payload);
     ManicUser result = userService.createUser(newUser);
     return ResponseEntity
-        .created(new URI(String.format("%s/%s", BASE_URL, result.getId())))
+        .created(URI.create(String.format("%s/%s", BASE_URL, result.getId())))
         .body(mapper.toDto(result));
   }
 
@@ -92,7 +90,7 @@ public class ManicUserController {
   @ApiResponse(responseCode = "200", description = "User updated", content = {
       @Content(schema = @Schema(implementation = ManicUserDTO.class))
   })
-  @PatchMapping(value = "/{id}", produces = APPLICATION_HAL_JSON_VALUE)
+  @PatchMapping("/{id}")
   @PreAuthorize("#loggedUser.id == #id")
   public ManicUserDTO updateUser(
       @AuthenticationPrincipal SecurityManicUser loggedUser,
