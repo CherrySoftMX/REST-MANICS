@@ -28,10 +28,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.net.URI;
-import java.net.URISyntaxException;
 
 import static com.cherrysoft.manics.util.ApiDocsConstants.*;
-import static com.cherrysoft.manics.util.MediaTypeUtils.APPLICATION_HAL_JSON_VALUE;
 
 @RequiredArgsConstructor
 @RestController
@@ -54,7 +52,7 @@ public class PageController {
   @ApiResponse(responseCode = "200", description = "OK", content = {
       @Content(schema = @Schema(implementation = CartoonPageDTO.class))
   })
-  @GetMapping(value = "/{id}", produces = APPLICATION_HAL_JSON_VALUE)
+  @GetMapping("/{id}")
   public CartoonPageDTO getPageById(@PathVariable Long id) {
     CartoonPage result = pageService.getPageById(id);
     return pageModelAssembler.toModel(result);
@@ -64,7 +62,7 @@ public class PageController {
   @ApiResponse(responseCode = "200", description = "OK", content = {
       @Content(array = @ArraySchema(schema = @Schema(implementation = CartoonPageDTO.class)))
   })
-  @GetMapping(produces = APPLICATION_HAL_JSON_VALUE)
+  @GetMapping
   public PagedModel<CartoonPageDTO> getChapterPages(
       @RequestParam Long chapterId,
       @PageableDefault
@@ -83,17 +81,17 @@ public class PageController {
       }),
       @ApiResponse(ref = FORBIDDEN_RESPONSE_REF, responseCode = "403"),
   })
-  @PostMapping(produces = APPLICATION_HAL_JSON_VALUE)
+  @PostMapping
   @Validated(OnCreate.class)
   @PreAuthorize("hasRole('ROLE_ADMIN')")
   public ResponseEntity<CartoonPageDTO> createPage(
       @RequestParam Long chapterId,
       @RequestBody @Valid CartoonPageDTO payload
-  ) throws URISyntaxException {
+  ) {
     CartoonPage newPage = mapper.toPage(payload);
     CartoonPage result = pageService.createPage(chapterId, newPage);
     return ResponseEntity
-        .created(new URI(String.format("%s/%s", BASE_URL, result.getId())))
+        .created(URI.create(String.format("%s/%s", BASE_URL, result.getId())))
         .body(pageModelAssembler.toModel(result));
   }
 
@@ -104,7 +102,7 @@ public class PageController {
       }),
       @ApiResponse(ref = FORBIDDEN_RESPONSE_REF, responseCode = "403"),
   })
-  @PatchMapping(value = "/{id}", produces = APPLICATION_HAL_JSON_VALUE)
+  @PatchMapping("/{id}")
   @PreAuthorize("hasRole('ROLE_ADMIN')")
   public CartoonPageDTO updatePage(
       @PathVariable Long id,
