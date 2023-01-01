@@ -73,7 +73,7 @@ public class CommentController {
     return commentPagedResourcesAssembler.toModel(result, commentModelAssembler);
   }
 
-  @Operation(summary = "Returns the comments for the given user OR cartoon")
+  @Operation(summary = "Returns the comments for the given user, cartoon OR comment")
   @ApiResponse(responseCode = "200", description = "OK", content = {
       @Content(array = @ArraySchema(schema = @Schema(implementation = CommentDTO.class)))
   })
@@ -85,6 +85,11 @@ public class CommentController {
   @Parameter(
       name = "cartoonId",
       description = "The ID of the cartoon that the comments belong to",
+      schema = @Schema(type = "number")
+  )
+  @Parameter(
+      name = "commentId",
+      description = "The ID of the parent comment",
       schema = @Schema(type = "number")
   )
   @GetMapping
@@ -111,23 +116,19 @@ public class CommentController {
   }
 
   @Operation(summary = "Creates a new comment for the given user and cartoon")
-  @ApiResponses({
-      @ApiResponse(responseCode = "201", description = "Comment created", content = {
-          @Content(schema = @Schema(implementation = CommentDTO.class))
-      }),
-      @ApiResponse(ref = FORBIDDEN_RESPONSE_REF, responseCode = "403")
+  @ApiResponse(responseCode = "201", description = "Comment created", content = {
+      @Content(schema = @Schema(implementation = CommentDTO.class))
   })
   @PostMapping
   @Validated(OnCreate.class)
-  @PreAuthorize("#loggedUser.id == #userId")
   public ResponseEntity<CommentDTO> createComment(
       @AuthenticationPrincipal SecurityManicUser loggedUser,
       @RequestParam Long cartoonId,
-      @RequestParam Long userId,
+      @RequestParam Long parentId,
       @RequestBody @Valid CommentDTO payload
   ) {
     Comment comment = mapper.toComment(payload);
-    var createCommentSpec = new CreateCommentSpec(cartoonId, userId, comment);
+    var createCommentSpec = new CreateCommentSpec(cartoonId, loggedUser.getId(), parentId, comment);
     Comment result = commentService.createComment(createCommentSpec);
     return ResponseEntity
         .created(URI.create(String.format("%s/%s", BASE_URL, result.getId())))
@@ -143,7 +144,7 @@ public class CommentController {
   })
   @PatchMapping("/{id}")
   @PreAuthorize("#loggedUser.id == #userId")
-  public ResponseEntity<CommentDTO> updateComment(
+  public CommentDTO updateComment(
       @AuthenticationPrincipal SecurityManicUser loggedUser,
       @PathVariable Long id,
       @RequestParam Long userId,
@@ -151,7 +152,7 @@ public class CommentController {
   ) {
     Comment updatedComment = mapper.toComment(payload);
     Comment result = commentService.updateComment(id, updatedComment);
-    return ResponseEntity.ok(commentModelAssembler.toModel(result));
+    return commentModelAssembler.toModel(result);
   }
 
   @Operation(summary = "Deletes a comment with the given ID")

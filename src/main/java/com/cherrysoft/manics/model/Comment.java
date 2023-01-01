@@ -11,7 +11,10 @@ import org.hibernate.search.mapper.pojo.mapping.definition.annotation.Indexed;
 
 import javax.persistence.*;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Objects;
+
+import static java.util.Objects.nonNull;
 
 @Getter
 @Setter
@@ -35,6 +38,15 @@ public class Comment {
   @ToString.Exclude
   private Cartoon cartoon;
 
+  @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+  @JoinColumn(name = "parent_id", referencedColumnName = "comment_id")
+  @ToString.Exclude
+  private Comment parent;
+
+  @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL)
+  @ToString.Exclude
+  private List<Comment> comments;
+
   @Column
   @FullTextField
   private String content;
@@ -43,6 +55,10 @@ public class Comment {
   @CreationTimestamp
   @Temporal(TemporalType.TIMESTAMP)
   private Calendar createdAt;
+
+  public boolean hasParent() {
+    return nonNull(parent);
+  }
 
   @Override
   public boolean equals(Object o) {
