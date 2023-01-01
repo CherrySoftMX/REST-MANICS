@@ -36,29 +36,40 @@ public class CommentService {
     if (filterSpec.ambiguousFiltering()) {
       throw new AmbiguousFilterException("Either userId or cartoonId (NOT both) MUST be provided.");
     }
-    if (filterSpec.filterByUserComments()) {
-      return getUserComments(filterSpec);
+    if (filterSpec.filterByCommentsOfUser()) {
+      return getCommentsOfUser(filterSpec);
     }
-    if (filterSpec.filterByCartoonComments()) {
-      return getCartoonComments(filterSpec);
+    if (filterSpec.filterByCommentsOfCartoon()) {
+      return getCommentsOfCartoon(filterSpec);
+    }
+    if (filterSpec.filterByCommentsOfComment()) {
+      return getCommentsOfComment(filterSpec);
     }
     return Page.empty();
   }
 
-  public Page<Comment> getCartoonComments(CommentFilterSpec spec) {
+  public Page<Comment> getCommentsOfCartoon(CommentFilterSpec spec) {
     return commentRepository.findCommentsByCartoon_Id(spec.getCartoonId(), spec.getPageable());
   }
 
-  public Page<Comment> getUserComments(CommentFilterSpec spec) {
+  public Page<Comment> getCommentsOfUser(CommentFilterSpec spec) {
     return commentRepository.findCommentsByUser_Id(spec.getUserId(), spec.getPageable());
   }
 
+  public Page<Comment> getCommentsOfComment(CommentFilterSpec spec) {
+    return commentRepository.findCommentsByParent_Id(spec.getCommentId(), spec.getPageable());
+  }
+
   public Comment createComment(CreateCommentSpec spec) {
-    ManicUser userReference = userService.getUserReferenceById(spec.getUserId());
-    Cartoon cartoonReference = cartoonService.getCartonReferenceById(spec.getCartoonId());
+    ManicUser userRef = userService.getUserReferenceById(spec.getUserId());
+    Cartoon cartoonRef = cartoonService.getCartonReferenceById(spec.getCartoonId());
     Comment newComment = spec.getNewComment();
-    newComment.setUser(userReference);
-    newComment.setCartoon(cartoonReference);
+    newComment.setUser(userRef);
+    newComment.setCartoon(cartoonRef);
+    if (spec.parentIdProvided()) {
+      Comment parentCommentRef = commentRepository.getReferenceById(spec.getParentId());
+      newComment.setParent(parentCommentRef);
+    }
     return commentRepository.save(newComment);
   }
 

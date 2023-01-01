@@ -18,10 +18,12 @@ import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Map;
 
 import static com.cherrysoft.manics.security.utils.AuthenticationUtils.currentLoggedUserIsAdmin;
 import static com.cherrysoft.manics.security.utils.AuthenticationUtils.sameUserAsLogged;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @Component
 @RequiredArgsConstructor
@@ -34,7 +36,10 @@ public class CommentModelAssembler implements RepresentationModelAssembler<Comme
   public CommentDTO toModel(@NonNull Comment entity) {
     this.entity = entity;
     CommentDTO commentModel = mapper.toDto(entity);
-    commentModel.add(List.of(selfLink(), userLink(), cartoonLink()));
+    commentModel.add(List.of(selfLink(), commentsLink(), userLink(), cartoonLink()));
+    if (entity.hasParent()) {
+      commentModel.add(parentLink());
+    }
     return commentModel;
   }
 
@@ -44,6 +49,20 @@ public class CommentModelAssembler implements RepresentationModelAssembler<Comme
             .slash(entity.getId())
             .withSelfRel()
     );
+  }
+
+  private Link parentLink() {
+    Comment parent = entity.getParent();
+    return linkTo(CommentController.class)
+        .slash(parent.getId())
+        .withRel("parent");
+  }
+
+  private Link commentsLink() {
+    Map<String, String> params = Map.of("commentId", entity.getId().toString());
+    return linkTo(methodOn(CommentController.class)
+        .getComments(params, null))
+        .withRel("comments");
   }
 
   private Link userLink() {
