@@ -14,8 +14,8 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+import static com.cherrysoft.manics.security.utils.AuthenticationUtils.currentLoggedUserIsAdmin;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @Component
 @RequiredArgsConstructor
@@ -33,21 +33,30 @@ public class CategoryModelAssembler implements RepresentationModelAssembler<Cate
   }
 
   private Link selfLink() {
-    return withUpdateAndDeleteAffordances(
-        linkTo(methodOn(CategoryController.class)
-            .getCategory(entity.getId()))
+    return withCategoryAffordances(
+        linkTo(CategoryController.class)
+            .slash(entity.getId())
             .withSelfRel()
     );
   }
 
-  private Link withUpdateAndDeleteAffordances(Link link) {
+  private Link withCategoryAffordances(Link link) {
+    if (!currentLoggedUserIsAdmin()) {
+      return link;
+    }
     return Affordances.of(link)
-        .afford(HttpMethod.PATCH)
+        .afford(HttpMethod.POST)
+        .withName("createCategory")
         .withInputAndOutput(CategoryDTO.class)
+        .withTarget(linkTo(CategoryController.class).withSelfRel())
+
+        .andAfford(HttpMethod.PATCH)
         .withName("updateCategory")
+        .withInputAndOutput(CategoryDTO.class)
+
         .andAfford(HttpMethod.DELETE)
-        .withOutput(CategoryDTO.class)
         .withName("deleteCategory")
+        .withOutput(CategoryDTO.class)
         .toLink();
   }
 
