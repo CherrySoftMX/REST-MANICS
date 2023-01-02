@@ -47,6 +47,7 @@ public class CategoryService {
 
   public Category deleteCategory(Long id) {
     Category category = getCategory(id);
+    category.removeCartoons();
     categoryRepository.delete(category);
     return category;
   }

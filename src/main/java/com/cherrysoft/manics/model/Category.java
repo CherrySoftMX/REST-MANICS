@@ -10,6 +10,7 @@ import org.hibernate.search.mapper.pojo.mapping.definition.annotation.Indexed;
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.KeywordField;
 
 import javax.persistence.*;
+import java.util.Iterator;
 import java.util.Objects;
 import java.util.Set;
 
@@ -36,6 +37,14 @@ public class Category implements Comparable<Category> {
   @ManyToMany(mappedBy = "categories")
   @ToString.Exclude
   private Set<Cartoon> cartoons;
+
+  public void removeCartoons() {
+    for (Iterator<Cartoon> iterator = getCartoons().iterator(); iterator.hasNext(); ) {
+      Cartoon cartoon = iterator.next();
+      iterator.remove();
+      cartoon.getCategories().remove(this);
+    }
+  }
 
   @Override
   public boolean equals(Object o) {
