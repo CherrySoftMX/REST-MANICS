@@ -7,6 +7,7 @@ import com.cherrysoft.manics.service.users.ManicUserService;
 import com.cherrysoft.manics.web.dto.auth.LoginDTO;
 import com.cherrysoft.manics.web.dto.auth.TokenDTO;
 import com.cherrysoft.manics.web.dto.users.ManicUserDTO;
+import com.cherrysoft.manics.web.dto.validation.OnCreate;
 import com.cherrysoft.manics.web.mapper.ManicUserMapper;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -20,6 +21,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.server.resource.BearerTokenAuthenticationToken;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationProvider;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -30,6 +32,7 @@ import static com.cherrysoft.manics.util.ApiDocsConstants.BAD_REQUEST_RESPONSE_R
 import static com.cherrysoft.manics.util.ApiDocsConstants.NOT_FOUND_RESPONSE_REF;
 
 @RestController
+@Validated
 @Tag(name = "Auth")
 @ApiResponses({
     @ApiResponse(ref = BAD_REQUEST_RESPONSE_REF, responseCode = "400"),
@@ -65,6 +68,7 @@ public class AuthController {
   }
 
   @PostMapping("/register")
+  @Validated(OnCreate.class)
   public ResponseEntity<TokenDTO> register(@RequestBody @Valid ManicUserDTO userDto) {
     ManicUser newUser = userMapper.toManicUser(userDto);
     ManicUser result = userService.createUser(newUser);
