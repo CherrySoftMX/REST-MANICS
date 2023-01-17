@@ -64,6 +64,7 @@ public class SecurityConfig {
   SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
     return http
         .csrf(AbstractHttpConfigurer::disable)
+        .requiresChannel(channel -> channel.anyRequest().requiresSecure())
         .authorizeRequests(auth -> auth
             .antMatchers(AUTH_WHITELIST).permitAll()
             .anyRequest().authenticated()
