@@ -1,6 +1,5 @@
 package com.cherrysoft.manics.config;
 
-import com.cherrysoft.manics.exception.ErrorResponse;
 import io.swagger.v3.core.converter.AnnotatedType;
 import io.swagger.v3.core.converter.ModelConverters;
 import io.swagger.v3.oas.models.Components;
@@ -14,10 +13,14 @@ import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.responses.ApiResponse;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
+import org.springdoc.core.customizers.OpenApiCustomiser;
 import org.springdoc.core.customizers.OperationCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.zalando.problem.AbstractThrowableProblem;
+import org.zalando.problem.StatusType;
+import org.zalando.problem.ThrowableProblem;
 
 import java.util.Optional;
 
@@ -26,6 +29,7 @@ import static java.util.Objects.nonNull;
 
 @Configuration
 public class SwaggerConfig {
+  private static final String APPLICATION_JSON_VALUE = org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
   @Bean
   public OpenAPI openAPI() {
@@ -53,8 +57,8 @@ public class SwaggerConfig {
         .name("Authorization");
     final Components components = new Components()
         .addSecuritySchemes("JWT Token", securityScheme)
-        .addResponses(BAD_REQUEST_RESPONSE_REF, errorResponse("Bad request"))
-        .addResponses(NOT_FOUND_RESPONSE_REF, errorResponse("Resource not found"))
+        .addResponses(BAD_REQUEST_RESPONSE_REF, problemResponse("Bad request"))
+        .addResponses(NOT_FOUND_RESPONSE_REF, problemResponse("Resource not found"))
         .addResponses(UNAUTHORIZED_RESPONSE_REF, unauthorizedResponse())
         .addResponses(FORBIDDEN_RESPONSE_REF, forbiddenResponse());
     return new OpenAPI()
@@ -63,26 +67,28 @@ public class SwaggerConfig {
         .addSecurityItem(new SecurityRequirement().addList("JWT Token"));
   }
 
-  private ApiResponse errorResponse(String description) {
-    Schema errorResponseSchema = ModelConverters.getInstance()
-        .resolveAsResolvedSchema(new AnnotatedType(ErrorResponse.class)).schema;
-
+  private ApiResponse problemResponse(String description) {
     return new ApiResponse().content(
             new Content()
-                .addMediaType("application/json", new MediaType().schema(errorResponseSchema)))
+                .addMediaType(APPLICATION_JSON_VALUE, new MediaType().schema(problemSchema())))
         .description(description);
   }
 
   private ApiResponse unauthorizedResponse() {
     return new ApiResponse().content(new Content()
-            .addMediaType("application/json", new MediaType()))
+            .addMediaType(APPLICATION_JSON_VALUE, new MediaType().schema(problemSchema())))
         .description("Authorization information is missing or invalid");
   }
 
   private ApiResponse forbiddenResponse() {
     return new ApiResponse().content(new Content()
-            .addMediaType("application/json", new MediaType()))
+            .addMediaType(APPLICATION_JSON_VALUE, new MediaType().schema(problemSchema())))
         .description("The user doesn't have permission to access this resource");
+  }
+
+  private Schema problemSchema() {
+    return ModelConverters.getInstance()
+        .resolveAsResolvedSchema(new AnnotatedType(AbstractThrowableProblem.class)).schema;
   }
 
   @Bean
@@ -103,6 +109,21 @@ public class SwaggerConfig {
       }
       operation.setDescription(sb.toString());
       return operation;
+    };
+  }
+
+  @Bean
+  public OpenApiCustomiser additionalSchemas() {
+    return openApi -> {
+      var statusTypeSchema = ModelConverters.getInstance()
+          .resolveAsResolvedSchema(new AnnotatedType(StatusType.class)).schema.name("StatusType");
+
+      var throwableProblemSchema = ModelConverters.getInstance()
+          .resolveAsResolvedSchema(new AnnotatedType(ThrowableProblem.class)).schema.name("ThrowableProblem");
+
+      var schemas = openApi.getComponents().getSchemas();
+      schemas.put(statusTypeSchema.getName(), statusTypeSchema);
+      schemas.put(throwableProblemSchema.getName(), throwableProblemSchema);
     };
   }
 
