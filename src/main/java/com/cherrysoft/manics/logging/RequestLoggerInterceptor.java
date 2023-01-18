@@ -22,6 +22,7 @@ public class RequestLoggerInterceptor implements HandlerInterceptor {
     String httpVerb = request.getMethod();
     String queryString = requireNonNullElse(request.getQueryString(), "");
     Map<String, String> headers = extractHeaders(request);
+    obfuscateAuthorizationHeader(headers);
     var entriesToLog = Map.of("uri", uri, "httpVerb", httpVerb, "queryString", queryString, "headers", headers);
     log.info(toJsonString(entriesToLog));
     return true;
@@ -31,6 +32,13 @@ public class RequestLoggerInterceptor implements HandlerInterceptor {
     return Collections.list(request.getHeaderNames())
         .stream()
         .collect(toMap(Function.identity(), request::getHeader));
+  }
+
+  private void obfuscateAuthorizationHeader(Map<String, String> headers) {
+    String authorizationKey = "authorization";
+    if (headers.containsKey(authorizationKey)) {
+      headers.put(authorizationKey, "Bearer [*******]");
+    }
   }
 
 }
