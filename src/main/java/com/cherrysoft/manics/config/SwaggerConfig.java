@@ -60,7 +60,8 @@ public class SwaggerConfig {
         .addResponses(BAD_REQUEST_RESPONSE_REF, problemResponse("Bad request"))
         .addResponses(NOT_FOUND_RESPONSE_REF, problemResponse("Resource not found"))
         .addResponses(UNAUTHORIZED_RESPONSE_REF, unauthorizedResponse())
-        .addResponses(FORBIDDEN_RESPONSE_REF, forbiddenResponse());
+        .addResponses(FORBIDDEN_RESPONSE_REF, forbiddenResponse())
+        .addResponses(INTERNAL_SERVER_ERROR_RESPONSE_REF, internalServerErrorResponse());
     return new OpenAPI()
         .info(info)
         .components(components)
@@ -84,6 +85,10 @@ public class SwaggerConfig {
     return new ApiResponse().content(new Content()
             .addMediaType(APPLICATION_JSON_VALUE, new MediaType().schema(problemSchema())))
         .description("The user doesn't have permission to access this resource");
+  }
+
+  private ApiResponse internalServerErrorResponse() {
+    return new ApiResponse().content(new Content()).description("Internal server error");
   }
 
   private Schema problemSchema() {

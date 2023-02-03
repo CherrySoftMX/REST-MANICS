@@ -46,7 +46,7 @@ import static com.cherrysoft.manics.util.ApiDocsConstants.*;
     @ApiResponse(ref = BAD_REQUEST_RESPONSE_REF, responseCode = "400"),
     @ApiResponse(ref = UNAUTHORIZED_RESPONSE_REF, responseCode = "401"),
     @ApiResponse(ref = NOT_FOUND_RESPONSE_REF, responseCode = "404"),
-    @ApiResponse(description = "Internal server error", responseCode = "500", content = @Content)
+    @ApiResponse(ref = INTERNAL_SERVER_ERROR_RESPONSE_REF, responseCode = "500")
 })
 public class CommentController {
   public static final String BASE_URL = "/comments";

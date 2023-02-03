@@ -9,7 +9,6 @@ import com.cherrysoft.manics.web.dto.auth.TokenDTO;
 import com.cherrysoft.manics.web.dto.users.ManicUserDTO;
 import com.cherrysoft.manics.web.dto.validation.OnCreate;
 import com.cherrysoft.manics.web.mapper.ManicUserMapper;
-import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -28,8 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 
-import static com.cherrysoft.manics.util.ApiDocsConstants.BAD_REQUEST_RESPONSE_REF;
-import static com.cherrysoft.manics.util.ApiDocsConstants.NOT_FOUND_RESPONSE_REF;
+import static com.cherrysoft.manics.util.ApiDocsConstants.*;
 
 @RestController
 @Validated
@@ -37,7 +35,7 @@ import static com.cherrysoft.manics.util.ApiDocsConstants.NOT_FOUND_RESPONSE_REF
 @ApiResponses({
     @ApiResponse(ref = BAD_REQUEST_RESPONSE_REF, responseCode = "400"),
     @ApiResponse(ref = NOT_FOUND_RESPONSE_REF, responseCode = "404"),
-    @ApiResponse(description = "Internal server error", responseCode = "500", content = @Content)
+    @ApiResponse(ref = INTERNAL_SERVER_ERROR_RESPONSE_REF, responseCode = "500")
 })
 public class AuthController {
   private final ManicUserService userService;
