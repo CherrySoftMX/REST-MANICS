@@ -9,8 +9,8 @@ import com.cherrysoft.manics.service.LikeService;
 import com.cherrysoft.manics.web.dto.LikedResultDTO;
 import com.cherrysoft.manics.web.dto.cartoons.CartoonResponseDTO;
 import com.cherrysoft.manics.web.dto.users.ManicUserDTO;
-import com.cherrysoft.manics.web.hateoas.assemblers.ManicUserModelAssembler;
 import com.cherrysoft.manics.web.hateoas.assemblers.CartoonModelAssembler;
+import com.cherrysoft.manics.web.hateoas.assemblers.ManicUserModelAssembler;
 import com.cherrysoft.manics.web.mapper.LikedResultMapper;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -41,7 +41,7 @@ import static com.cherrysoft.manics.util.ApiDocsConstants.*;
     @ApiResponse(ref = BAD_REQUEST_RESPONSE_REF, responseCode = "400"),
     @ApiResponse(ref = UNAUTHORIZED_RESPONSE_REF, responseCode = "401"),
     @ApiResponse(ref = NOT_FOUND_RESPONSE_REF, responseCode = "404"),
-    @ApiResponse(description = "Internal server error", responseCode = "500", content = @Content)
+    @ApiResponse(ref = INTERNAL_SERVER_ERROR_RESPONSE_REF, responseCode = "500")
 })
 public class LikeController {
   public static final String BASE_URL = "/likes";

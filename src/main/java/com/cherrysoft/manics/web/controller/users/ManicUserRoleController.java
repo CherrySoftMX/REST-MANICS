@@ -31,7 +31,7 @@ import static com.cherrysoft.manics.util.ApiDocsConstants.*;
     @ApiResponse(ref = UNAUTHORIZED_RESPONSE_REF, responseCode = "401"),
     @ApiResponse(ref = FORBIDDEN_RESPONSE_REF, responseCode = "403"),
     @ApiResponse(ref = NOT_FOUND_RESPONSE_REF, responseCode = "404"),
-    @ApiResponse(description = "Internal server error", responseCode = "500", content = @Content)
+    @ApiResponse(ref = INTERNAL_SERVER_ERROR_RESPONSE_REF, responseCode = "500")
 })
 public class ManicUserRoleController {
   private final ManicUserRoleService roleService;

@@ -27,8 +27,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import static com.cherrysoft.manics.util.ApiDocsConstants.BAD_REQUEST_RESPONSE_REF;
-import static com.cherrysoft.manics.util.ApiDocsConstants.UNAUTHORIZED_RESPONSE_REF;
+import static com.cherrysoft.manics.util.ApiDocsConstants.*;
 
 @RestController
 @RequestMapping(SearchCartoonController.BASE_URL)
@@ -37,7 +36,7 @@ import static com.cherrysoft.manics.util.ApiDocsConstants.UNAUTHORIZED_RESPONSE_
 @ApiResponses({
     @ApiResponse(ref = BAD_REQUEST_RESPONSE_REF, responseCode = "400"),
     @ApiResponse(ref = UNAUTHORIZED_RESPONSE_REF, responseCode = "401"),
-    @ApiResponse(description = "Internal server error", responseCode = "500", content = @Content)
+    @ApiResponse(ref = INTERNAL_SERVER_ERROR_RESPONSE_REF, responseCode = "500")
 })
 public class SearchCartoonController {
   public static final String BASE_URL = "/cartoons";
