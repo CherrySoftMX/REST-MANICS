@@ -24,7 +24,6 @@
     <java.version>17</java.version>
     <maven.compiler.release>17</maven.compiler.release>
     <io.jsonwebtoken.version>0.11.5</io.jsonwebtoken.version>
-    <guava.version>31.1-jre</guava.version>
     <org.mapstruct.version>1.5.3.Final</org.mapstruct.version>
     <lombok.version>1.18.24</lombok.version>
     <mysql-connector-java.version>8.0.31</mysql-connector-java.version>
@@ -36,6 +35,7 @@
     <spring-boot-devtools.version>2.7.7</spring-boot-devtools.version>
     <hibernate-search.version>6.1.7.Final</hibernate-search.version>
     <problem-spring-web.version>0.23.0</problem-spring-web.version>
+    <flyway-maven-plugin.version>9.12.0</flyway-maven-plugin.version>
   </properties>
 
   <repositories>
@@ -74,29 +74,26 @@
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter</artifactId>
     </dependency>
-
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-web</artifactId>
     </dependency>
-
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-hateoas</artifactId>
     </dependency>
 
+    <!-- API documentation -->
     <dependency>
       <groupId>org.springdoc</groupId>
       <artifactId>springdoc-openapi-ui</artifactId>
       <version>${springdoc-openapi-ui.version}</version>
     </dependency>
-
     <dependency>
       <groupId>org.springdoc</groupId>
       <artifactId>springdoc-openapi-security</artifactId>
       <version>${springdoc-openapi-ui.version}</version>
     </dependency>
-
     <dependency>
       <groupId>org.springdoc</groupId>
       <artifactId>springdoc-openapi-hateoas</artifactId>
@@ -123,13 +120,11 @@
       <version>${lombok.version}</version>
       <scope>provided</scope>
     </dependency>
-
     <dependency>
       <groupId>org.mapstruct</groupId>
       <artifactId>mapstruct</artifactId>
       <version>${org.mapstruct.version}</version>
     </dependency>
-
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-devtools</artifactId>
@@ -141,7 +136,6 @@
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-data-jpa</artifactId>
     </dependency>
-
     <dependency>
       <groupId>mysql</groupId>
       <artifactId>mysql-connector-java</artifactId>
@@ -153,13 +147,11 @@
       <groupId>org.springframework.data</groupId>
       <artifactId>spring-data-elasticsearch</artifactId>
     </dependency>
-
     <dependency>
       <groupId>jakarta.json</groupId>
       <artifactId>jakarta.json-api</artifactId>
       <version>${jakarta.json-api.version}</version>
     </dependency>
-
     <dependency>
       <groupId>org.hibernate.search</groupId>
       <artifactId>hibernate-search-mapper-orm</artifactId>
@@ -183,31 +175,19 @@
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-security</artifactId>
     </dependency>
-
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-oauth2-resource-server</artifactId>
     </dependency>
 
-    <!-- JWT-->
+    <!-- Migrations -->
     <dependency>
-      <groupId>io.jsonwebtoken</groupId>
-      <artifactId>jjwt-api</artifactId>
-      <version>${io.jsonwebtoken.version}</version>
+      <groupId>org.flywaydb</groupId>
+      <artifactId>flyway-core</artifactId>
     </dependency>
-
     <dependency>
-      <groupId>io.jsonwebtoken</groupId>
-      <artifactId>jjwt-impl</artifactId>
-      <version>${io.jsonwebtoken.version}</version>
-      <scope>runtime</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>io.jsonwebtoken</groupId>
-      <artifactId>jjwt-jackson</artifactId>
-      <version>${io.jsonwebtoken.version}</version>
-      <scope>runtime</scope>
+      <groupId>org.flywaydb</groupId>
+      <artifactId>flyway-mysql</artifactId>
     </dependency>
 
     <!-- Image extraction-->
@@ -224,6 +204,7 @@
       </exclusions>
     </dependency>
 
+    <!-- Testing -->
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-test</artifactId>
@@ -250,8 +231,8 @@
         <artifactId>maven-compiler-plugin</artifactId>
         <version>3.8.1</version>
         <configuration>
-          <source>11</source>
-          <target>11</target>
+          <source>17</source>
+          <target>17</target>
           <annotationProcessorPaths>
             <path>
               <groupId>org.mapstruct</groupId>
@@ -269,6 +250,20 @@
               <version>0.2.0</version>
             </dependency>
           </annotationProcessorPaths>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.flywaydb</groupId>
+        <artifactId>flyway-maven-plugin</artifactId>
+        <version>${flyway-maven-plugin.version}</version>
+        <configuration>
+          <user>root</user>
+          <password>password</password>
+          <schemas>manics</schemas>
+          <url>jdbc:mysql://localhost:3306/manics</url>
+          <locations>
+            filesystem:src/main/resources/db/migration
+          </locations>
         </configuration>
       </plugin>
     </plugins>
